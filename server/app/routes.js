@@ -1,3 +1,7 @@
-const { error404} = require('./controllers/errors');
+'use strict';
 
-exports.error =git
+const { error404 } = require('./controllers/errors');
+
+module.exports = app => {
+    app.all('*', error404);
+};

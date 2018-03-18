@@ -6,10 +6,11 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "config": "^1.30.0",
+    "babel-eslint": "^8.2.2",
     "body-parser": "1.18.2",
-    "morgan": "^1.9.0",
-    "express": "4.16.3"
+    "config": "^1.30.0",
+    "express": "4.16.3",
+    "morgan": "^1.9.0"
   },
   "devDependencies": {
     "eslint": "^4.8.0",
