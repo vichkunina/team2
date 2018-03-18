@@ -1,7 +1,17 @@
-const express = require('express');
+'use strict';
+
+const path = require('path');
+
 const bodyParser = require('body-parser');
+const config = require('config');
+const express = require('express');
+const morgan = require('morgan');
 
 const app = express();
+
+if (config.get('debug')) {
+  app.use(morgan('dev'));
+}
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
