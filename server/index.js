@@ -1,7 +1,5 @@
 'use strict';
 
-// const path = require('path');
-
 const bodyParser = require('body-parser');
 const config = require('config');
 const express = require('express');
