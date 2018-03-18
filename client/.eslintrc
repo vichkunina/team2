@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "hrundel/node",
+    "plugin:react/recommended"
+  ],
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "env": {
+    "browser": true
+  }
+}
