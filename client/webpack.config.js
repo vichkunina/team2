@@ -8,6 +8,7 @@ const vendorLibs = [
 ];
 
 module.exports = {
+    mode: process.env.NODE_ENV,
     entry: {
         index: path.join(__dirname, '/src/index.js'),
         vendor: vendorLibs
@@ -47,5 +48,10 @@ module.exports = {
                 }
             }
         ]
+    },
+    devServer: {
+        contentBase: path.join(__dirname, 'dist'),
+        compress: true,
+        port: 9000
     }
 };
