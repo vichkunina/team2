@@ -1,14 +1,18 @@
 .Search
 {
     border: none;
-    width: 280px;
-    padding: 5px;
-    margin: 10px;
-    background: rgb(212, 212, 212);
-    border-radius: 4px;
+    background: rgba(212, 212, 212, 0.63);
 }
 
-.Search:focus
+input
+{
+    width: 100%;
+    border: none;
+    height: 40px;
+    background: transparent;
+}
+
+.SearchInput:focus
 {
     background-color: white;
     outline-color: #6dc0c8;

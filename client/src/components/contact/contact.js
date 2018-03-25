@@ -7,12 +7,12 @@ export default class Contact extends Component {
             <img src="http://bipbap.ru/wp-content/uploads/2017/04/72fqw2qq3kxh.jpg"
                 className={styles.MessageAvatar}/>
             <div className={styles.MessageDescription}>
-                <div className={styles.MessageAuthor}>{ this.props.name }</div>
-                <div className={styles.MessageContent}>{ this.props.message }</div>
+                <div className={styles.MessageAuthor}>Билли</div>
+                <div className={styles.MessageContent}>Хочу молоко</div>
             </div>
             <div className={styles.MessageBlock}>
-                <div className={styles.MessageDate}>{ this.props.date }</div>
-                <div className={styles.MessageAmount}>{ this.props.unread }</div>
+                <div className={styles.MessageDate}>12/08</div>
+                <div className={styles.MessageAmount}>5</div>
             </div>
         </div>;
     }

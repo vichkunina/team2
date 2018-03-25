@@ -9,20 +9,23 @@
 .ContentDate
 {
     text-align: center;
+    padding-bottom: 20px;
 }
 
 .ContentMessages
 {
+    padding-top: 50px;
     max-height: 100%;
-    height: 400px;
+    height: 350px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
 }
 
 .MessageFriend,
 .MessageMe
 {
-    max-width: 40%;
+    width: 35%;
     border: 1px solid black;
     border-radius: 20px;
 }
@@ -30,11 +33,15 @@
 .MessageFriend
 {
     align-self: flex-start;
+    background-color:  #6dc0c8;
+    color: white;
 }
 
 .MessageMe
 {
     align-self: flex-end;
+    background-color:  #6dc0c8;
+    color: white;
 }
 
 .MessageFriendInfo,
@@ -43,6 +50,7 @@
 .MessageMeText
 {
     display: inline-block;
+    padding: 10px;
 }
 
 .MessageFriendTime,
@@ -50,4 +58,5 @@
 {
     display: block;
     text-align: right;
+    padding: 3px;
 }

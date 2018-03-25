@@ -12,7 +12,8 @@ export default class Search extends Component {
     // }
 
     render() {
-        return <input placeholder="Search" /* onChange = {this.onTextChanged}*/
-            className={styles.Search}/>;
+        return <div className={styles.Search}>
+            <input placeholder="Search" /* onChange = {this.onTextChanged}*/
+                className={styles.SearchInput}/></div>;
     }
 }

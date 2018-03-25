@@ -1,5 +1,3 @@
-'use strict';
-
 const ogs = require('open-graph-scraper');
 
 function getOpenGraphInfo(url) {

@@ -8,9 +8,16 @@
 
 .EntryField
 {
-    height: 32px;
-    position: absolute;
-    bottom: 20px;
+    height: 8%;
+    margin-top: 270px;
+    /* position: absolute; */
+    bottom: 0;
+    background-color:  #6dc0c8;
+}
+
+input
+{
+    background: white;
 }
 
 .EntryFieldText

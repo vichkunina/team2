@@ -1,3 +1,4 @@
+/* eslint react/prop-types: 0 */
 import React, { Component } from 'react';
 import Search from '../search';
 import styles from './contactsList.css';
@@ -10,7 +11,7 @@ export default class ContactList extends Component {
     render() {
         return (
             <div className={styles.Contacts}>
-                <h2 className={styles.Title}>CONTACTI</h2>
+                <h2 className={styles.Title}>Контакты</h2>
                 <Search/>
                 <div className={styles.Content}>
                     {this.props.children}

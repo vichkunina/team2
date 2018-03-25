@@ -1,11 +1,6 @@
-html
+.Page
 {
-    color: rgb(94, 93, 93);
-    display: flex;
-    background-color: rgb(241, 240, 240);
-}
-
-.root__content
-{
-    display: flex;
+    border: 1px solid  #6dc0c8;
+    background: #6dc0c80c;
+    padding: 20px;
 }

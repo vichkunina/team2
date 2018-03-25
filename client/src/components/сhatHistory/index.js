@@ -1,2 +1,2 @@
-import chatHistory from './chatHistory';
-export default chatHistory;
+import СhatHistory from './сhatHistory';
+export default СhatHistory;

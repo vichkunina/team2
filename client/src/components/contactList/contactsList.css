@@ -9,7 +9,7 @@
     padding: 18px;
     font-size: 15px;
     color: white;
-    background-color:  #6dc0c8;
+    background-color: #6dc0c8;
     margin: 0;
 }
 
@@ -22,7 +22,7 @@
 
 ::-webkit-scrollbar
 {
-    width: 4px;
+    width: 1px;
 }
 
 ::-webkit-scrollbar-thumb
