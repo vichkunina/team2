@@ -46,6 +46,17 @@ module.exports = {
                     plugins: ['transform-decorators-legacy',
                         'transform-class-properties']
                 }
+            },
+            {
+                test: /\.css$/,
+                loader: 'style-loader'
+            },
+            {
+                test: /\.css$/,
+                loader: 'css-loader',
+                query: {
+                    modules: true
+                }
             }
         ]
     },

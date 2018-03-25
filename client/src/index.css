@@ -1,0 +1,11 @@
+html
+{
+    color: rgb(94, 93, 93);
+    display: flex;
+    background-color: rgb(241, 240, 240);
+}
+
+.root__content
+{
+    display: flex;
+}

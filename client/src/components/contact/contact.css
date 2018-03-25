@@ -1,0 +1,65 @@
+.MessageDate
+{
+    margin-left: 35px;
+    font-size: 10px;
+    opacity: .7;
+    margin-bottom: 10px;
+}
+
+.MessageAvatar
+{
+    width: 45px;
+    height: 45px;
+    margin: 8px 16px 8px;
+}
+
+.MessageItem
+{
+    display: flex;
+    border-bottom: 1px solid aliceblue;
+    width: 300px;
+}
+
+.MessageDescription
+{
+    margin-top: 8px;
+    width: 130px;
+    margin-left: 8px;
+}
+
+.MessageBlock
+{
+    margin-top: 8px;
+}
+
+.MessageContent
+{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: .7;
+}
+
+.MessageAmount
+{
+    color: white;
+    margin-left: 45px;
+    display: inline-block;
+    padding: 1px 6px;
+    border: 1px solid #a0e075;;
+    border-radius: 100%;
+    background-color:#a0e075;
+}
+
+.MessageAuthor
+{
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.MessageItem:hover
+{
+    background: #6dc0c8;
+    cursor: pointer;
+    color: white;
+}
