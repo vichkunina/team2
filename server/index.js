@@ -14,7 +14,7 @@ if (config.get('debug')) {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
     console.info(`Server started on ${port}`);

@@ -1,0 +1,13 @@
+language: node_js
+node_js: node
+env:
+  matrix:
+  - TEST_DIR=client
+  - TEST_DIR=server
+  global:
+    secure: YOAJruVKmOHr9oDHJaC97h4TD0M8xM6VJ8LSxh98QDd4Pf0/SUHxkQtm01UD2JdugSmZyFSCIfspf0P0vnc7c9wPOZwSiNKZKoyxbmQCCPyyH/zK0IXNNUxnQsx7rHRhhpvh+34O1zhGujUQjI3+gYT5IZg+/nek/s1aLtQf/+vQ75xPSS2oBKysU+MrWUEzNgXFsUnvF9esgENEAp0wdyZ/sZapZLNIXfrZVgpewl2u/GfVknlnm/mEQsj62DF6qozdM1k2q4JWIBdoRIbmpglryFXEDHZ33Bury6M2R42wG2fhO3uLA1cM9cp6sjk37aDBOpx0oa3J9l38W/ue6lbI4HIcZDvpD0G7zxKe/tXx24II5CAcausOLlskllvvifhmolupLhtvMxAm7QFsWUygM+sK99zYnVFlIL7PHokB6dN08/CptUi3slA023g8OvYYOotuoZ0ZEeINwdMhZV5KA3ejp3PgueHDQHnzUZW+RsOK8VgGdST8Gv53wQZkbKCbcMpql40Eq2nfVS1bh+ImWVP651ul3glK7MlNKI+MuxeCJSc+7dYIbgmimh8uJdag4UBR+UMcrnWeUUDrt+dkn7GG0P+eLMrdsn898K/MlVrD2l6Y64Mzo/i01Xtl2NxUnXZ7OsWsUopQOEo/fFCCLpJd/mOsJ33pC4iyD8M=
+script: cd $TEST_DIR && npm install && npm test
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: npm run deploy
