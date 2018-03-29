@@ -1,8 +1,9 @@
 'use strict';
+
 module.exports = {
     id: String(),
-    fromId: String(),
+    sender: String(),
     body: String(),
-    date: String(),
+    date: Number(),
     chatId: String()
 };
