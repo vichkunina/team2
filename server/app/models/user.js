@@ -1,3 +1,4 @@
+'use strict';
 const { makeModel } = require('hruhru');
 const userScheme = require('../schemes/userScheme');
 
