@@ -1,3 +1,5 @@
+'use strict';
+
 const { makeModel } = require('hruhru');
 const messageScheme = require('../schemes/messageScheme');
 

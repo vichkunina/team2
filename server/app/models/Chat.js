@@ -1,3 +1,5 @@
+'use strict';
+
 const { makeModel } = require('hruhru');
 const chatScheme = require('../schemes/chatScheme');
 
