@@ -1,0 +1,11 @@
+.Wrapper {
+    flex-grow: 2;
+
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: stretch;
+
+    min-width: 300px;
+
+    overflow-y: auto;
+}

@@ -1,0 +1,18 @@
+.Wrapper {
+}
+
+.Input {
+    padding: 10px 16px;
+    width: 100%;
+
+    font-size: 14px;
+
+    background: #fffffa;
+    
+    border: none;
+    box-sizing: border-box;
+}
+
+.Input:focus {
+    outline: none;
+}

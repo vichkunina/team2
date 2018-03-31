@@ -1,0 +1,23 @@
+.Wrapper {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+
+    width: 270px;
+
+    z-index: 1;
+    box-shadow: 0 0 12px #00000034;
+
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+/* Mobile */
+@media screen and (max-width: 767px) {
+    .Wrapper {
+        display: none;
+
+        width: 100%;
+    }
+}

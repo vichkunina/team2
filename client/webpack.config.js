@@ -1,4 +1,5 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const vendorLibs = [
     'react',
@@ -57,9 +58,25 @@ module.exports = {
                 query: {
                     modules: true
                 }
+            },
+            {
+                test: /\.(pdf|jpg|png|gif|svg|ico)$/,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            name: '/assets/[name].[ext]'
+                        }
+                    }
+                ]
             }
         ]
     },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: 'index.html'
+        })
+    ],
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
         compress: true,
