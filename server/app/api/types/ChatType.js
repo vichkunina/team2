@@ -4,13 +4,11 @@ const {
     GraphQLObjectType,
     GraphQLID,
     GraphQLString,
-    GraphQLList
+    GraphQLList,
+    GraphQLBoolean
 } = require('graphql');
-const GraphQLDate = require('graphql-date');
 
-const UserType = require('./UserType');
-
-module.exports = new GraphQLObjectType({
+const ChatType = new GraphQLObjectType({
     name: 'Chat',
     fields: () => ({
         id: {
@@ -19,16 +17,30 @@ module.exports = new GraphQLObjectType({
         },
         name: {
             description: 'Chat name',
-            type: GraphQLString
+            type: GraphQLString,
+            resolve: async (chat, req) => {
+                if (chat.dialog) {
+                    const user = (await chat.getByLink('users'))
+                        .filter(u => u.id !== req.user.id)[0];
+
+                    return user.name;
+                }
+
+                return chat.name;
+            }
+        },
+        dialog: {
+            description: 'Chat or dialog',
+            type: GraphQLBoolean
         },
         users: {
             description: 'List of users in chat',
-            type: new GraphQLList(UserType)
-            // resolve
-        },
-        createdAt: {
-            description: 'Date of chat\'s creation',
-            type: GraphQLDate
+            type: new GraphQLList(require('./UserType')),
+            resolve: async (chat) => {
+                return await chat.getByLink('users');
+            }
         }
     })
 });
+
+module.exports = ChatType;

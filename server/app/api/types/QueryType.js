@@ -2,32 +2,54 @@
 
 const {
     GraphQLObjectType,
+    GraphQLNonNull,
     GraphQLID,
-    GraphQLString,
+    GraphQLInt,
     GraphQLList
 } = require('graphql');
-const UserModel = require('../../models/User');
 const UserType = require('./UserType');
+const MessageType = require('./MessageType');
+const {
+    UserModel,
+    ChatModel,
+    messageModelFactory
+} = require('../../models');
 
 module.exports = new GraphQLObjectType({
     name: 'Query',
     fields: () => ({
         profile: {
             type: UserType,
+            resolve: async (_, args, req) => {
+                try {
+                    return UserModel.getById(req.user.id);
+                } catch (error) {
+                    throw error;
+                }
+            }
+        },
+        getLastMessages: {
+            type: new GraphQLList(MessageType),
             args: {
-                id: {
-                    type: GraphQLID
+                chatId: {
+                    type: new GraphQLNonNull(GraphQLID)
                 },
-                gitHubId: {
-                    type: GraphQLID
+                count: {
+                    type: GraphQLInt
                 }
             },
-            resolve: async (_, { id }) => {
-                try {
-                    return UserModel.getById(id);
-                } catch (error) {
-                    return error;
+            resolve: async (_, { chatId, count }, req) => {
+                const chat = await ChatModel.getById(chatId);
+
+                if (!chat.users.some(id => id === req.user.id)) {
+                    return [];
                 }
+
+                const MessageModel = messageModelFactory(chatId);
+
+                return await MessageModel.getList({
+                    limit: count
+                });
             }
         }
     })

@@ -1,8 +1,7 @@
 'use strict';
 
 module.exports = {
-    id: String(),
-    name: String(),
+    name: '',
     users: [],
-    createdAt: Number()
+    dialog: false
 };

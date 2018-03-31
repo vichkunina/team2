@@ -1,10 +1,9 @@
 'use strict';
 
 module.exports = {
-    login: String(),
-    name: String(),
+    login: '',
+    name: '',
     githubId: String(),
     chats: [],
-    contacts: [],
-    createdAt: Number()
+    contacts: []
 };

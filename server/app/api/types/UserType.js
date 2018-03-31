@@ -8,9 +8,6 @@ const {
 } = require('graphql');
 const GraphQLDate = require('graphql-date');
 const ChatType = require('./ChatType');
-const UserModel = require('../../models/User');
-
-UserModel.makeLink('contacts', UserModel);
 
 const UserType = new GraphQLObjectType({
     name: 'User',
@@ -34,21 +31,33 @@ const UserType = new GraphQLObjectType({
         contacts: {
             description: 'Contact list of user',
             type: new GraphQLList(UserType),
-            resolve: async (user) => {
-                try {
-                    const model = await UserModel.getById(user.id);
+            resolve: async (user, _, req) => {
+                if (user.id !== req.user.id) {
+                    return [];
+                }
 
-                    return model.getByLink('contacts');
+                try {
+                    return user.getByLink('contacts');
                 } catch (error) {
-                    console.log(error);
+                    return error;
                 }
             }
         },
-        /*chats: {
+        chats: {
             description: 'List of user\'s chats',
-            type: new GraphQLList(ChatType)
-            // resolve
-        },*/
+            type: new GraphQLList(ChatType),
+            resolve: async (user, _, req) => {
+                if (user.id !== req.user.id) {
+                    return [];
+                }
+
+                try {
+                    return user.getByLink('chats');
+                } catch (error) {
+                    return error;
+                }
+            }
+        },
         createdAt: {
             description: 'Date of user\'s registration',
             type: GraphQLDate
