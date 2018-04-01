@@ -9,6 +9,7 @@ const findHref = (currentMessage) => {
     }
 
     const link = linkData[0];
+<<<<<<< HEAD
 
     return { link };
 };
@@ -25,6 +26,23 @@ const getHrefArray = (currentMessage, hrefArray) => {
     return hrefArray;
 };
 
+=======
+    const index = linkData.index;
+
+    return { link, index };
+};
+
+const getHrefArray = (currentMessage) => {
+    let link = findHref(currentMessage);
+    if (link.link && link.index + link.link.length - 1 < currentMessage.length) {
+        hrefArray.push(link.link);
+        let currentMessageSlice = currentMessage.slice(link.index + link.link.length);
+        getHrefArray(currentMessageSlice);
+    }
+};
+
+getHrefArray(currentMessage);
+>>>>>>> fix
 exports.getHrefArray = getHrefArray;
 
 
