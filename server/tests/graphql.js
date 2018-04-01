@@ -60,7 +60,7 @@ describe('GraphQL тесты', () => {
                 operationName: null,
                 variables: null,
                 query: `
-                    {  
+                    {
                         profile {
                             id,
                             contacts {
@@ -84,7 +84,7 @@ describe('GraphQL тесты', () => {
                 operationName: null,
                 variables: null,
                 query: `
-                    mutation {  
+                    mutation {
                         addContact(id: "${user.id}") {
                             users {
                                 id
@@ -124,7 +124,7 @@ describe('GraphQL тесты', () => {
                 operationName: null,
                 variables: null,
                 query: `
-                    {  
+                    {
                         profile {
                             contacts {
                                 id
@@ -153,7 +153,7 @@ describe('GraphQL тесты', () => {
                 operationName: null,
                 variables: null,
                 query: `
-                    mutation {  
+                    mutation {
                         sendMessage(chatId: "${chats[0].id}", text: "test1") {
                             from {
                                 id
@@ -170,7 +170,7 @@ describe('GraphQL тесты', () => {
                 operationName: null,
                 variables: null,
                 query: `
-                    {  
+                    {
                         profile {
                             id,
                             chats {
@@ -187,8 +187,9 @@ describe('GraphQL тесты', () => {
                 operationName: null,
                 variables: null,
                 query: `
-                {  
-                    getLastMessages(chatId: "${resp2.body.data.profile.chats[0].id}", count: ${100}) {
+                {
+                    getLastMessages(chatId: "${resp2.body.data.profile.chats[0].id}",
+                    count: ${100}) {
                         body
                         from {
                             id
@@ -208,3 +209,4 @@ describe('GraphQL тесты', () => {
         await user.remove();
     });
 });
+
