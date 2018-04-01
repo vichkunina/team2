@@ -90,7 +90,7 @@ export default class App extends Component {
                         <ChatHistoryUserMessage fromMe={true} name="Billy" body="Hello!"
                             date={new Date()}
                             ogURL="localhost" ogTitle="Hey!"
-                            ogDescription="Hey-hey! Hello! Hello! Hello! Hello! Hello! Hello! Hello!"
+                            ogDescription="Hey-hey! Hello! Hello! Hello! Hello! Hello!"
                             ogImage="123.png" />
                         <ChatHistoryUserMessage fromMe={false} name="Mark" body="Hello!"
                             date={new Date()} />
