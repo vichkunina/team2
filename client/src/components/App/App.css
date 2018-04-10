@@ -1,0 +1,62 @@
+body {
+    margin: 0;
+}
+
+.Wrapper {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+    justify-content: stretch;
+
+    width: 100%;
+    height: 100vh;
+
+    background: #fffffa;
+    color: #1e1e24;
+
+    font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+
+    overflow: hidden;
+}
+
+/* Desktop */
+@media screen and (min-width: 1024px) {
+    .Wrapper {
+        grid-template-columns: min-content auto min-content;
+        grid-template-areas: 'contacts chat profile';
+    }
+}
+
+/* Tablet */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .Wrapper {
+        grid-template-columns: min-content auto;
+        grid-template-areas: 'contacts chat';
+    }
+}
+
+/* Mobile */
+@media screen and (max-width: 767px) {
+    .Wrapper {
+        grid-template-columns: auto;
+        grid-template-areas: 'chat';
+    }
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: #eee; 
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 0px;
+    background-color:#1e1e2438;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #1e1e248f; 
+}

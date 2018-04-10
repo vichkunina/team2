@@ -1,4 +1,5 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const vendorLibs = [
     'react',
@@ -8,6 +9,7 @@ const vendorLibs = [
 ];
 
 module.exports = {
+    mode: process.env.NODE_ENV,
     entry: {
         index: path.join(__dirname, '/src/index.js'),
         vendor: vendorLibs
@@ -41,10 +43,43 @@ module.exports = {
                 exclude: /node_modules/,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['react', 'mobx'],
-                    plugins: []
+                    presets: ['react'],
+                    plugins: ['transform-decorators-legacy',
+                        'transform-class-properties']
                 }
+            },
+            {
+                test: /\.css$/,
+                loader: 'style-loader'
+            },
+            {
+                test: /\.css$/,
+                loader: 'css-loader',
+                query: {
+                    modules: true
+                }
+            },
+            {
+                test: /\.(pdf|jpg|png|gif|svg|ico)$/,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            name: '/assets/[name].[ext]'
+                        }
+                    }
+                ]
             }
         ]
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: 'index.html'
+        })
+    ],
+    devServer: {
+        contentBase: path.join(__dirname, 'dist'),
+        compress: true,
+        port: 9000
     }
 };
