@@ -16,4 +16,6 @@ class GithubAvatar {
     toImgSrc(){
         return 'data:image/png;base64,' + this.toBase64();
     }
-};
+}
+
+module.exports = GithubAvatar;

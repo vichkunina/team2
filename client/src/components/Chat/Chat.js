@@ -19,7 +19,7 @@ export default class Chat extends Component {
             PropTypes.arrayOf(PropTypes.element),
             PropTypes.element
         ])
-    }
+    };
 
     render() {
         return (

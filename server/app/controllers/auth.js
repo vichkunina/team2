@@ -31,7 +31,7 @@ module.exports = app => {
         // Если не удачно, то отправляем на /
         passport.authenticate('github', { failureRedirect: '/' }),
         (req, res) => {
-            res.redirect('/');
+            res.redirect('http://localhost:9000/');
         }
     );
 

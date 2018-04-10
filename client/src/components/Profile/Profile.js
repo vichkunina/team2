@@ -9,7 +9,7 @@ export default class Profile extends Component {
         status: PropTypes.string.isRequired,
         login: PropTypes.string.isRequired,
         transistFromProfileToChat: PropTypes.func.isRequired
-    }
+    };
 
     render() {
         return (
