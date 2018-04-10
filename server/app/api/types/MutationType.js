@@ -9,6 +9,7 @@ const {
 } = require('graphql');
 const MessageType = require('./MessageType');
 const ChatType = require('./ChatType');
+const AvatarModel = require('../../avatarGenerator/githubAvatar');
 const {
     UserModel,
     ChatModel,
@@ -26,18 +27,54 @@ module.exports = new GraphQLObjectType({
                 }
             },
             resolve: async (_, { id }, req) => {
+                const userToAddTo = await UserModel.getById(req.user.id);
                 const user = await UserModel.getById(id);
-                await req.user.addContact(user);
+
+                userToAddTo.contacts.push(user.id);
+                await userToAddTo.save();
 
                 const chat = new ChatModel({
+                    avatar: new AvatarModel(req.user.id).toImgSrc(),
+                    name: user.login,
                     dialog: true
                 });
                 await chat.save();
 
                 await chat.addUser(user);
-                await chat.addUser(req.user);
+                await chat.addUser(userToAddTo);
 
                 return chat;
+            }
+        },
+        deleteChat: {
+            type: GraphQLString,
+            args: {
+                id: {
+                    type: GraphQLID
+                }
+            },
+            resolve: async (_, { id }) => {
+                console.log('Deleting');
+                console.log(await ChatModel.removeById(id));
+                console.log('Deleted');
+
+                return id;
+            }
+        },
+        deleteProfile: {
+            type: GraphQLString,
+            args: {
+                id: {
+                    type: GraphQLID
+                }
+            },
+
+            resolve: async (_, { id }) => {
+                console.log('Deleting');
+                console.log(await UserModel.removeById(id));
+                console.log('Deleted');
+
+                return id;
             }
         },
         createChat: {
@@ -52,9 +89,10 @@ module.exports = new GraphQLObjectType({
             },
             resolve: async (_, { name, users }, req) => {
                 const chat = new ChatModel({
-                    name: name,
-                    users: [req.user.id]
-                });
+                      name: name,
+                      // avatar:
+                      users: [req.user.id]
+                  });
                 await chat.save();
 
                 for (let userId of users) {

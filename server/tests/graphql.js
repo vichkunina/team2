@@ -94,6 +94,8 @@ describe('GraphQL тесты', () => {
                 `
             });
 
+        console.log(`user id: ${user.id}`);
+
         const resp2 = await request(app)
             .post('/api?')
             .send({

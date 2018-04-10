@@ -15,6 +15,7 @@ const MutationType = require('./app/api/types/MutationType');
 const morgan = require('morgan');
 const hbs = require('hbs');
 const path = require('path');
+const cors = require('cors');
 
 const makePassport = require('./app/passport');
 const { strategy } = require('./app/authStrategy');
@@ -25,6 +26,13 @@ const app = express();
 
 connect(process.env.DB_URL, process.env.DB_TOKEN);
 setTimeout(2 * 1000);
+
+const corsOptions = {
+    origin: 'http://localhost:9000',
+    credentials: true
+};
+
+app.use(cors(corsOptions));
 
 passport.use(strategy);
 app.use(expressSession({
