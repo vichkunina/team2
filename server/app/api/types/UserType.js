@@ -24,6 +24,10 @@ const UserType = new GraphQLObjectType({
             description: 'User name',
             type: GraphQLString
         },
+        avatar: {
+            description: `User's avatar`,
+            type: GraphQLString
+        },
         githubID: {
             description: 'ID of user\'s GitHub account',
             type: GraphQLID

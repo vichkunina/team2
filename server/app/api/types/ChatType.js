@@ -15,15 +15,30 @@ const ChatType = new GraphQLObjectType({
             description: 'Chat ID in UUID format',
             type: GraphQLID
         },
+        avatar: {
+            description: 'Chat avatar',
+            type: GraphQLString,
+            resolve: async (chat, _, req) => {
+                if (chat.dialog) {
+                    const user = (await chat.getByLink('users'))
+                      .filter(u => u.id !== req.user.id)[0];
+
+                    return user.avatar;
+                }
+
+                return chat.avatar;
+            }
+        },
         name: {
             description: 'Chat name',
             type: GraphQLString,
-            resolve: async (chat, req) => {
+            resolve: async (chat, _, req) => {
                 if (chat.dialog) {
                     const user = (await chat.getByLink('users'))
-                        .filter(u => u.id !== req.user.id)[0];
+                      .filter(u => u.id !== req.user.id)[0];
 
-                    return user.name;
+                    // return user.name;
+                    return user.login;
                 }
 
                 return chat.name;

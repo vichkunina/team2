@@ -9,6 +9,7 @@ const {
 } = require('graphql');
 const UserType = require('./UserType');
 const MessageType = require('./MessageType');
+const ChatType = require('./ChatType');
 const {
     UserModel,
     ChatModel,
@@ -22,6 +23,8 @@ module.exports = new GraphQLObjectType({
             type: UserType,
             resolve: async (_, args, req) => {
                 try {
+                    console.log('req');
+                    console.log(req);
                     return UserModel.getById(req.user.id);
                 } catch (error) {
                     throw error;
@@ -50,6 +53,21 @@ module.exports = new GraphQLObjectType({
                 return await MessageModel.getList({
                     limit: count
                 });
+            }
+        },
+        chat: {
+            type: ChatType,
+            args: {
+                chatId: {
+                    type: new GraphQLNonNull(GraphQLID)
+                }
+            },
+            resolve: async (_, { chatId }) => {
+                try {
+                    return ChatModel.getById(chatId);
+                } catch (error) {
+                    throw error;
+                }
             }
         }
     })

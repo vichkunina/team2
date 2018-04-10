@@ -77,6 +77,37 @@ export default class App extends Component {
     }
 
     render() {
+        const ProfileEntry = () => (
+          <Query
+            query={gql`
+                {
+                    profile {
+                        login
+                        avatar
+                      }
+                }
+                `}>
+              {({ loading, error, data }) => {
+                  if (loading) return <p>Loading...</p>;
+                  if (error) return <p>Error :(</p>;
+                  console.log('data: ');
+                  console.log(data);
+                  if (data.profile.login && data.profile.avatar) {
+                      return <Profile
+                        photoURL={data.profile.avatar}
+                        name={data.profile.login} status="Online" login={data.profile.login}
+                        transistFromProfileToChat={this.transistFromProfileToChat}/>;
+
+                  } else {
+                  }
+                  return (
+                    <div>
+                        You have no login and avatar
+                    </div>
+                  );
+              }}
+          </Query>
+        );
         const ChatList = () => (
           <Query
             query={gql`
@@ -84,6 +115,8 @@ export default class App extends Component {
             profile {
                 chats {
                   id
+                  avatar
+                  name
                 }
               }
             }
@@ -95,8 +128,8 @@ export default class App extends Component {
                   console.log('data: ');
                   console.log(data);
                   if (data.profile.chats && data.profile.chats.length !== 0) {
-                      return data.profile.chats.map(({ id }) => (
-                        <ChatEntry key={id} photoURL={'sosat'} name={id} lastMessage={'hey'}
+                      return data.profile.chats.map(({ id, avatar, name }) => (
+                        <ChatEntry key={id} photoURL={avatar} name={name} lastMessage={'hey'}
                           lastMessageDate={new Date()} unreadCount={id.charCodeAt(0)}/>
                       ));
                   } else {
@@ -147,10 +180,7 @@ export default class App extends Component {
                   </Chat>}
                   {this.state.showProfile &&
                   /* eslint-disable-next-line max-len */
-                  <Profile
-                    photoURL="https://pbs.twimg.com/profile_images/929933611754708992/ioSgz49P_400x400.jpg"
-                    name="Billy" status="Online" login="billy"
-                    transistFromProfileToChat={this.transistFromProfileToChat}/>}
+                  <ProfileEntry/>}
               </div>
           </ApolloProvider>
         );

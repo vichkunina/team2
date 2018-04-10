@@ -9,7 +9,7 @@ const {
 } = require('graphql');
 const MessageType = require('./MessageType');
 const ChatType = require('./ChatType');
-const AvatarModel = require('../../avatarGenerator/githubAvatar');
+const AvatarGenerator = require('../../avatarGenerator/githubAvatar');
 const {
     UserModel,
     ChatModel,
@@ -34,7 +34,7 @@ module.exports = new GraphQLObjectType({
                 await userToAddTo.save();
 
                 const chat = new ChatModel({
-                    avatar: new AvatarModel(req.user.id).toImgSrc(),
+                    avatar: new AvatarGenerator(req.user.id).toImgSrc(),
                     name: user.login,
                     dialog: true
                 });
@@ -54,9 +54,7 @@ module.exports = new GraphQLObjectType({
                 }
             },
             resolve: async (_, { id }) => {
-                console.log('Deleting');
-                console.log(await ChatModel.removeById(id));
-                console.log('Deleted');
+                await ChatModel.removeById(id);
 
                 return id;
             }
@@ -70,9 +68,7 @@ module.exports = new GraphQLObjectType({
             },
 
             resolve: async (_, { id }) => {
-                console.log('Deleting');
-                console.log(await UserModel.removeById(id));
-                console.log('Deleted');
+                await UserModel.removeById(id);
 
                 return id;
             }
@@ -89,10 +85,10 @@ module.exports = new GraphQLObjectType({
             },
             resolve: async (_, { name, users }, req) => {
                 const chat = new ChatModel({
-                      name: name,
-                      // avatar:
-                      users: [req.user.id]
-                  });
+                    name: name,
+                    // avatar:
+                    users: [req.user.id]
+                });
                 await chat.save();
 
                 for (let userId of users) {
