@@ -1,16 +1,31 @@
 const { execute, subscribe } = require('graphql');
 const { SubscriptionServer } = require('subscriptions-transport-ws');
 
-module.exports = function(schema, webSocketServer) {
+module.exports = function(schema, sessionStore) {
     return new SubscriptionServer({
+        schema,
         execute,
         subscribe,
-        schema,
-        onConnect: (params, socket) => {
-            console.log(socket.handshake)
+        onConnect: async (sid, socket) => {
+            const uid = getSession(sessionStore, sid.split(':')[1].split('.')[0]);
+
+            if (uid) {
+                console.log(uid);
+            } else {
+
+            }
         }
 
     }, {
-        server: webSocketServer
+        port: 8081
     })
 };
+
+function getSession(store, id) {
+    const session = store.sessions[id];
+    if (session) {
+        return JSON.parse(session).passport.user;
+    }
+
+    return null;
+}

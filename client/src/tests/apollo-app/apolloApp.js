@@ -1,31 +1,46 @@
-/* eslint-disable */
-
-import React, {Component} from 'react';
-import {observer} from 'mobx-react';
+import React, { Component } from 'react';
+import { observer } from 'mobx-react';
 import Contacts from '../../components/Contacts/Contacts';
 import ChatEntry from '../../components/Contacts/ContactsEntry/ContactsEntry';
 import Profile from '../../components/Profile/Profile';
 import Chat from '../../components/Chat/Chat';
 import ChatHistoryServiceMessage from
-  '../../components/Chat/ChatHistory/ChatHistoryServiceMessage/ChatHistoryServiceMessage';
+    '../../components/Chat/ChatHistory/ChatHistoryServiceMessage/ChatHistoryServiceMessage';
 import ChatHistoryUserMessage from
-  '../../components/Chat/ChatHistory/ChatHistoryUserMessage/ChatHistoryUserMessage';
+    '../../components/Chat/ChatHistory/ChatHistoryUserMessage/ChatHistoryUserMessage';
 import styles from '../../components/App/App.css';
 
-import {InMemoryCache} from 'apollo-cache-inmemory';
-import {createHttpLink} from 'apollo-link-http';
-import {ApolloClient} from 'apollo-client';
-import {ApolloProvider, Query} from 'react-apollo';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { WebSocketLink } from 'apollo-link-ws';
+import ApolloClient from 'apollo-client';
+import { HttpLink }  from 'apollo-link-http';
+import { split as apsplit } from 'apollo-link';
+import { ApolloProvider, Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { getCookie } from '../../utils/cookie'
 
-const link = createHttpLink({
-    uri: 'http://localhost:8080/api',
-    credentials: 'include',
-});
+const link = apsplit(
+    ({ query: { definitions } }) =>
+        definitions.some(
+            ({ kind, operation }) =>
+                kind === 'OperationDefinition' && operation === 'subscription',
+        ),
+    new WebSocketLink({
+        uri:
+            'ws://localhost:8081',
+        options: {
+            reconnect: true,
+            connectionParams: getCookie('connect.sid')
+        },
+    }),
+    new HttpLink({
+        uri: 'http://localhost:8080/api',
+    }),
+);
 
 const client = new ApolloClient({
     cache: new InMemoryCache(),
-    link,
+    link
 });
 
 // client.query({
@@ -78,81 +93,87 @@ export default class App extends Component {
 
     render() {
         const ChatList = () => (
-          <Query
-            query={gql`
+            <Query
+                query={gql`
             {
-            profile {
-                chats {
-                  id
+                profile {
+                    chats {
+                        id
+                    }
                 }
-              }
             }
 
               `}>
-              {({ loading, error, data }) => {
-                  if (loading) return <p>Loading...</p>;
-                  if (error) return <p>Error :(</p>;
-                  console.log('data: ');
-                  console.log(data);
-                  if (data.profile.chats && data.profile.chats.length !== 0) {
-                      return data.profile.chats.map(({ id }) => (
-                        <ChatEntry key={id} photoURL={'sosat'} name={id} lastMessage={'hey'}
-                          lastMessageDate={new Date()} unreadCount={id.charCodeAt(0)}/>
-                      ));
-                  } else {
-                      return (
+                {({ loading, error, data }) => {
+                    if (loading) {
+                        return <p>Loading...</p>;
+                    }
+                    if (error) {
+                        return <p>Error :(</p>;
+                    }
+                    console.log('data: ');
+                    console.log(data);
+                    if (data.profile.chats && data.profile.chats.length !== 0) {
+                        return data.profile.chats.map(({ id }) => (
+                            <ChatEntry key={id} photoURL={'sosat'} name={id} lastMessage={'hey'}
+                                lastMessageDate={new Date()} unreadCount={id.charCodeAt(0)}/>
+                        ));
+                    }
+
+                    return (
                         <div>
                             You have no friends sorry
                         </div>
-                      );
-                  }
-              }}
-          </Query>
+                    );
+
+                }}
+            </Query>
         );
+
         return (
-          <ApolloProvider client={client}>
-              <div className={styles.Wrapper}>
-                  {this.state.showContacts &&
+            <ApolloProvider client={client}>
+                <div className={styles.Wrapper}>
+                    {this.state.showContacts &&
                   <Contacts>
                       <ChatList/>
                   </Contacts>
-                  }
-                  {this.state.showChat &&
+                    }
+                    {this.state.showChat &&
                   <Chat photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                    name="Mark" status="Онлайн"
-                    transistFromChatToContacts={this.transistFromChatToContacts}>
+                      name="Mark" status="Онлайн"
+                      transistFromChatToContacts={this.transistFromChatToContacts}>
                       <ChatHistoryServiceMessage text="12 марта"/>
                       <ChatHistoryUserMessage fromMe={true} name="Billy" body="Hello!"
-                        date={new Date()}
-                        ogURL="localhost" ogTitle="Hey!"
-                        ogDescription="Hey-hey! Hello! Hello! Hello! Hello! Hello!"
-                        ogImage="123.png"/>
+                          date={new Date()}
+                          ogURL="localhost" ogTitle="Hey!"
+                          ogDescription="Hey-hey! Hello! Hello! Hello! Hello! Hello!"
+                          ogImage="123.png"/>
                       <ChatHistoryUserMessage fromMe={false} name="Mark" body="Hello!"
-                        date={new Date()}/>
+                          date={new Date()}/>
                       <ChatHistoryUserMessage fromMe={true} name="Billy" body="Hello!"
-                        date={new Date()}/>
+                          date={new Date()}/>
                       <ChatHistoryUserMessage fromMe={false} name="Mark" body="Hello!"
-                        date={new Date()}/>
+                          date={new Date()}/>
                       <ChatHistoryUserMessage fromMe={true} name="Billy"
-                        body="Hey-hey! Hello! Hello! Hello! Hello! Hello! Hello! Hello"
-                        date={new Date()}
-                        ogURL="localhost" ogTitle="Hey!"
-                        ogImage="123.png"/>
+                          body="Hey-hey! Hello! Hello! Hello! Hello! Hello! Hello! Hello"
+                          date={new Date()}
+                          ogURL="localhost" ogTitle="Hey!"
+                          ogImage="123.png"/>
                       <ChatHistoryUserMessage fromMe={true} name="Billy" body="Hello!"
-                        date={new Date()}/>
+                          date={new Date()}/>
                       <ChatHistoryUserMessage fromMe={true} name="Billy" body="Hello!"
-                        date={new Date()}/>
+                          date={new Date()}/>
                       <ChatHistoryUserMessage fromMe={false} name="Mark" body="Hello!"
-                        date={new Date()}/>
+                          date={new Date()}/>
                   </Chat>}
-                  {this.state.showProfile &&
+                    {this.state.showProfile &&
                   /* eslint-disable-next-line max-len */
                   <Profile
-                    photoURL="https://pbs.twimg.com/profile_images/929933611754708992/ioSgz49P_400x400.jpg"
-                    name="Billy" status="Online" login="billy"
-                    transistFromProfileToChat={this.transistFromProfileToChat}/>}
-              </div>
-          </ApolloProvider>
+                      photoURL="https://pbs.twimg.com/profile_images/929933611754708992/ioSgz49P_400x400.jpg"
+                      name="Billy" status="Online" login="billy"
+                      transistFromProfileToChat={this.transistFromProfileToChat}/>}
+                </div>
+            </ApolloProvider>
         );
     }
 

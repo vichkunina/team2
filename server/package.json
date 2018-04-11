@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "babel-eslint": "^8.2.2",
+    "bluebird": "^3.5.1",
     "body-parser": "1.18.2",
     "config": "^1.30.0",
     "connect-ensure-login": "^0.1.1",
@@ -26,6 +27,7 @@
     "hbs": "^4.0.1",
     "hruhru": "git+https://github.com/yuickhahirasawa/HruHru.git",
     "identicon.js": "^2.3.2",
+    "memorystore": "^1.6.0",
     "morgan": "^1.9.0",
     "open-graph-scraper": "^3.1.5",
     "passport": "^0.4.0",
