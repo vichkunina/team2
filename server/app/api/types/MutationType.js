@@ -15,6 +15,7 @@ const {
     ChatModel,
     messageModelFactory
 } = require('../../models');
+const pubSub = require('../subscribtions');
 
 module.exports = new GraphQLObjectType({
     name: 'Mutation',
@@ -89,10 +90,10 @@ module.exports = new GraphQLObjectType({
             },
             resolve: async (_, { name, users }, req) => {
                 const chat = new ChatModel({
-                      name: name,
-                      // avatar:
-                      users: [req.user.id]
-                  });
+                    name: name,
+                    // avatar:
+                    users: [req.user.id]
+                });
                 await chat.save();
 
                 for (let userId of users) {
@@ -118,15 +119,30 @@ module.exports = new GraphQLObjectType({
                 }
             },
             resolve: async (_, { chatId, text }, req) => {
-                const MessageModel = messageModelFactory(chatId);
-                const message = new MessageModel({
-                    from: req.user.id,
-                    body: text
-                });
+                try {
+                    const chat = await ChatModel.getById(chatId);
 
-                await message.save();
+                    if (chat.users.indexOf(req.user.id) === -1) {
+                        throw new Error('Not your chat!');
+                    }
 
-                return message;
+                    const MessageModel = messageModelFactory(chatId);
+                    const message = new MessageModel({
+                        from: req.user.id,
+                        body: text
+                    });
+
+                    await message.save();
+
+                    pubSub.publish('newMessage', {
+                        newMessage: message,
+                        users: chat.users
+                    });
+
+                    return message;
+                } catch (error) {
+                    console.log(error);
+                }
             }
         }
     })

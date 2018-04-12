@@ -13,7 +13,7 @@ class GithubAvatar {
         return new Identicon(this.hash, this.size).toString();
     }
 
-    toImgSrc(){
+    toImgSrc() {
         return 'data:image/png;base64,' + this.toBase64();
     }
 }

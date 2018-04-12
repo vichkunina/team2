@@ -7,11 +7,12 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const config = require('config');
 const express = require('express');
-const graphql = require('express-graphql');
+const graphQLExpress = require('express-graphql');
 const { GraphQLSchema } = require('graphql');
 const { connect, setTimeout } = require('hruhru');
 const QueryType = require('./app/api/types/QueryType');
 const MutationType = require('./app/api/types/MutationType');
+const SubscribeType = require('./app/api/types/SubscribeType');
 const morgan = require('morgan');
 const hbs = require('hbs');
 const path = require('path');
@@ -64,9 +65,10 @@ app.use(bodyParser.json());
 
 const schema = new GraphQLSchema({
     query: QueryType,
-    mutation: MutationType
+    mutation: MutationType,
+    subscription: SubscribeType
 });
-app.use('/api', graphql({
+app.use('/api', graphQLExpress({
     schema,
     graphiql: true
 }));
@@ -75,7 +77,7 @@ routes(app);
 
 const port = process.env.PORT || 8080;
 
-require('./app/websockets')(schema, sessionStore);
+require('./app/websockets')(schema, sessionStore, app);
 
 app.listen(port, () => {
     console.info(`Server started on ${port}`);

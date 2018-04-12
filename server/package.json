@@ -24,6 +24,7 @@
     "express-session": "^1.15.6",
     "graphql": "^0.13.2",
     "graphql-date": "^1.0.3",
+    "graphql-subscriptions": "^0.5.8",
     "hbs": "^4.0.1",
     "hruhru": "git+https://github.com/yuickhahirasawa/HruHru.git",
     "identicon.js": "^2.3.2",
