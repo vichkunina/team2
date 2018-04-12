@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import styles from './ChatInput.css';
 
+
 export default class Input extends Component {
     render() {
         return (
-            <div className= {styles.Wrapper}>
+            <form className= {styles.Wrapper}>
                 <input className={styles.Input} type="text" placeholder="Напишите сообщение..." />
-            </div>
+                <input type = "image" value = "Send" className={styles.Send}/>
+            </form>
         );
     }
 }
