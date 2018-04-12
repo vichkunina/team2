@@ -1,15 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Store from './components/Store/Store';
-// import App from './components/App/App';
-import App from './tests/apollo-app/apolloApp';
+import App from './components/App/App';
+import { getCookie } from './utils/cookie';
+import io from 'socket.io-client';
 
-const store = new Store();
+const s = io('http://localhost:8080', {
+    transports: ["websocket"],
+    query: {token: getCookie('connect.sid').split(':')[1].split('.')[0]}
+});
+s.on('GetProfileResult', (data) => {
+    console.log(data);
+});
+s.emit('GetProfile');
 
-if (!(sessionStorage && sessionStorage.getItem('auth'))) {
-    sessionStorage.setItem('auth', 1);
-    window.location = 'http://localhost:8080/login';
-}
 
-ReactDOM.render(<App store={store}/>, document.getElementById('root'));
+ReactDOM.render(<App/>, document.getElementById('root'));
