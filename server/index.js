@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars*/
 'use strict';
 
 require('dotenv').config();
@@ -7,23 +6,19 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const config = require('config');
 const express = require('express');
-const graphQLExpress = require('express-graphql');
-const { GraphQLSchema } = require('graphql');
 const { connect, setTimeout } = require('hruhru');
-const QueryType = require('./app/api/types/QueryType');
-const MutationType = require('./app/api/types/MutationType');
-const SubscribeType = require('./app/api/types/SubscribeType');
 const morgan = require('morgan');
 const hbs = require('hbs');
 const path = require('path');
 const cors = require('cors');
-const MemoryStore = require('memorystore');
+const { createServer } = require('http');
 
 const makePassport = require('./app/passport');
 const { strategy } = require('./app/authStrategy');
 const routes = require('./app/routes');
 
 const app = express();
+const httpServer = createServer(app);
 const sessionStore = new session.MemoryStore();
 
 connect(process.env.DB_URL, process.env.DB_TOKEN);
@@ -63,23 +58,13 @@ app.set('views', viewsDir);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const schema = new GraphQLSchema({
-    query: QueryType,
-    mutation: MutationType,
-    subscription: SubscribeType
-});
-app.use('/api', graphQLExpress({
-    schema,
-    graphiql: true
-}));
-
 routes(app);
 
 const port = process.env.PORT || 8080;
 
-require('./app/websockets')(schema, sessionStore, app);
+require('./app/websockets')(httpServer, sessionStore);
 
-app.listen(port, () => {
+httpServer.listen(port, () => {
     console.info(`Server started on ${port}`);
     console.info(`Open http://localhost:${port}/`);
 });

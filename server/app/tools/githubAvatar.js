@@ -1,7 +1,7 @@
 'use strict';
 
 const CryptoJS = require('crypto-js');
-const Identicon = require('identicon.js');
+const Identicon = require('../../node_modules/identicon.js/identicon');
 
 class GithubAvatar {
     constructor(login, size) {
