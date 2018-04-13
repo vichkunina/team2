@@ -58,11 +58,10 @@ export default class App extends Component {
                     <Chats chats={this.props.store.chats}
                         store={this.props.store}
                         transitFromChatToContacts={ this.transitFromChatToContacts }/> }
-                { (this.state.showChat && this.props.store.currentChat) &&
+                { this.state.showChat &&
                     <Chat currentChat={this.props.store.currentChat}
                         profile={this.props.store.profile}/> }
                 { this.state.showProfile &&
-                    /* eslint-disable-next-line max-len */
                     <Profile profile={this.props.store.profile}
                         transistFromProfileToChat={ this.transitFromProfileToChat } /> }
             </div>
