@@ -1,18 +1,29 @@
 import React from 'react';
+import { PropTypes } from 'mobx-react';
 import styles from './ChatInput.css';
+import uuid from 'uuid/v4';
 
-class ChatInput extends React.Component {
+export default class ChatInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = { chatInput: '' };
-        this.submitHandler = this.submitHandler.bind(this);
-        this.textChangeHandler = this.textChangeHandler.bind(this);
     }
 
+    static propTypes = {
+        currentChatHistory: PropTypes.observableArray,
+        profile: PropTypes.observableObject
+    };
+
     submitHandler(event) {
+        this.props.currentChatHistory.push({
+            id: uuid(),
+            body: this.state.chatInput,
+            name: this.props.profile.login,
+            date: new Date(),
+            fromMe: true
+        });
         event.preventDefault();
         this.setState({ chatInput: '' });
-        this.onSend(this.state.chatInput);
     }
 
     textChangeHandler(event) {
@@ -21,20 +32,14 @@ class ChatInput extends React.Component {
 
     render() {
         return (
-            <form className={styles.Wrapper} onSubmit={this.submitHandler}>
+            <form className={styles.Wrapper} onSubmit={this.submitHandler.bind(this)}>
                 <input type="text" className={styles.Input}
-                    onChange={this.textChangeHandler}
                     value={this.state.chatInput}
                     placeholder="Write a message..."
+                    onChange={this.textChangeHandler.bind(this)}
                 />
-                <input type = "submit" value = "Send" className={styles.Send}/>
+                <input type="submit" value="Send" className={styles.Send}/>
             </form>
         );
     }
 }
-
-ChatInput.defaultProps = {
-};
-
-export default ChatInput;
-
