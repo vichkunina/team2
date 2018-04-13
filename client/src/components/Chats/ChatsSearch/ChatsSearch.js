@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from './ContactsSearch.css';
+import styles from './ChatsSearch.css';
 
 export default class ContactsSearch extends Component {
     constructor(props) {

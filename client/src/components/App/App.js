@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'mobx-react';
+import ReactPropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import Contacts from '../Contacts/Contacts';
-import ContactsEntry from '../Contacts/ContactsEntry/ContactsEntry';
+import Chats from '../Chats/Chats';
 import Profile from '../Profile/Profile';
 import Chat from '../Chat/Chat';
 import ChatHistoryServiceMessage from
@@ -21,6 +22,13 @@ export default class App extends Component {
             showProfile: true
         };
     }
+
+    static propTypes = {
+        store: ReactPropTypes.shape({
+            chats: PropTypes.observableArray
+        }
+        )
+    };
 
     componentWillMount() {
         this.openContacts = this.openContacts.bind(this);
@@ -49,38 +57,7 @@ export default class App extends Component {
         return (
             <div className={styles.Wrapper}>
                 { this.state.showContacts &&
-                    <Contacts>
-                        <ContactsEntry photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                            name="Mark" lastMessage="Hello! How are you, my friend?"
-                            lastMessageDate={new Date()} unreadCount={2} />
-                        <ContactsEntry photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                            name="Mark" lastMessage="Hello!"
-                            lastMessageDate={new Date()} unreadCount={12} />
-                        <ContactsEntry photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                            name="Mark" lastMessage="Hello! Hello! Hello! Hello!"
-                            lastMessageDate={new Date()} unreadCount={0} />
-                        <ContactsEntry photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                            name="Mark" lastMessage="Hello!"
-                            lastMessageDate={new Date()} unreadCount={4} />
-                        <ContactsEntry photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                            name="Mark" lastMessage="Hello!"
-                            lastMessageDate={new Date()} unreadCount={345} />
-                        <ContactsEntry photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                            name="Mark" lastMessage="Hello!"
-                            lastMessageDate={new Date()} unreadCount={1} />
-                        <ContactsEntry photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                            name="Mark" lastMessage="Hello!"
-                            lastMessageDate={new Date()} unreadCount={0} />
-                        <ContactsEntry photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                            name="Mark" lastMessage="Hello!"
-                            lastMessageDate={new Date()} unreadCount={2} />
-                        <ContactsEntry photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                            name="Mark" lastMessage="Hello!"
-                            lastMessageDate={new Date()} unreadCount={2} />
-                        <ContactsEntry photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                            name="Mark" lastMessage="Hello!"
-                            lastMessageDate={new Date()} unreadCount={2} />
-                    </Contacts>
+                    <Chats chats={this.props.store.chats}/>
                 }
                 { this.state.showChat &&
                     <Chat photoURL="http://www.baretly.org/uploads/14775998111.jpg"
@@ -143,3 +120,4 @@ export default class App extends Component {
         this.setState({ showProfile: false });
     }
 }
+
