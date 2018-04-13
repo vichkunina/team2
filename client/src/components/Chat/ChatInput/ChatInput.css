@@ -1,4 +1,28 @@
 .Wrapper {
+    display: flex;
+}
+
+.Send
+{
+    color: white;
+    text-decoration: none;
+    user-select: none;
+    background: rgb(146, 165, 155);
+    padding: .7em 1.5em;
+    outline: none;
+    border: 0;
+
+}
+
+.Send:hover
+{
+    background: rgb(92, 197, 145);
+}
+
+.Send:active
+{
+  background: rgb(33,147,90);
+  box-shadow: 0 3px rgb(33,147,90) inset;
 }
 
 .Input {
@@ -8,7 +32,7 @@
     font-size: 14px;
 
     background: #fffffa;
-    
+
     border: none;
     box-sizing: border-box;
 }
@@ -16,3 +40,4 @@
 .Input:focus {
     outline: none;
 }
+

@@ -26,5 +26,3 @@ const getHrefArray = (currentMessage, hrefArray) => {
 };
 
 exports.getHrefArray = getHrefArray;
-
-
