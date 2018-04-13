@@ -27,9 +27,10 @@ export default class Chat extends Component {
     render() {
         if (this.props.currentChat) {
             const chatHistory = this.props.currentChat.chatHistory.map(message => (
-                    <ChatHistoryUserMessage key={message.id} fromMe={message.fromMe} name={message.name}
-                        body={message.body} date={message.date || new Date()}/>
-                )
+                <ChatHistoryUserMessage key={message.id}
+                    fromMe={message.fromMe} name={message.name}
+                    body={message.body} date={message.date || new Date()}/>
+            )
             );
 
             return (
@@ -44,12 +45,12 @@ export default class Chat extends Component {
                         profile={this.props.profile}/>
                 </div>
             );
-        } else {
-            return (
-                <div className={styles.Wrapper}>
-                    <span className={styles.EmptyChat}>Choose chat to start messaging</span>
-                </div>
-            );
         }
+
+        return (
+            <div className={styles.Wrapper}>
+                <span className={styles.EmptyChat}>Choose chat to start messaging</span>
+            </div>
+        );
     }
 }
