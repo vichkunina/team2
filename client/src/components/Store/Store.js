@@ -51,6 +51,7 @@ export default class Store {
                 }
             ]
         },
+
         {
             id: '321',
             /* eslint-disable-next-line max-len */
