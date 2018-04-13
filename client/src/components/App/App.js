@@ -56,8 +56,9 @@ export default class App extends Component {
             <div className={styles.Wrapper}>
                 { this.state.showContacts &&
                     <Chats chats={this.props.store.chats}
+                        store={this.props.store}
                         transitFromChatToContacts={ this.transitFromChatToContacts }/> }
-                { this.state.showChat &&
+                { (this.state.showChat && this.props.store.currentChat) &&
                     <Chat currentChat={this.props.store.currentChat}
                         profile={this.props.store.profile}/> }
                 { this.state.showProfile &&
