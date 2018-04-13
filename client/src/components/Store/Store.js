@@ -1,13 +1,6 @@
-import { observable, computed } from 'mobx';
+import { observable } from 'mobx';
 
 export default class Store {
-
-    @observable profile = {
-        id: '1488',
-        name: 'Doma',
-        login: 'WBDiamond'
-    };
-
     @observable chats = [
         {
             id: '123',
@@ -16,31 +9,41 @@ export default class Store {
             lastMessage: 'message last',
             lastMessageDate: new Date(),
             unreadCount: 10,
-            users: [
+            chatHistory = [
                 {
-                    id: '999',
-                    login: 'dosha',
-                    name: 'h3h3',
-                    avatar: 'avatar'
-                }
-            ],
-            chatHistory: [
-                {
-                    id: '111',
-                    body: 'privet menya zovut Dosha',
-                    name: 'Roma',
+                    id: '11',
+                    body: 'qqq',
                     fromMe: true,
+                    name: dosha,
                     date: new Date()
                 },
+
                 {
-                    id: '112',
-                    body: 'privet menya zovut Roma',
-                    name: 'Dosha',
+                    id: '12',
+                    body: 'hello',
                     fromMe: false,
+                    name: qq,
+                    date: new Date()
+                },
+
+                {
+                    id: '13',
+                    body: 'whwhwh',
+                    fromMe: true,
+                    name: dosha,
+                    date: new Date()
+                },
+
+                {
+                    id: '14',
+                    body: 'pppp',
+                    fromMe: true,
+                    name: dosha,
                     date: new Date()
                 }
-            ]
+            ],
         },
+
         {
             id: '321',
             avatar: 'nice url',
@@ -51,9 +54,11 @@ export default class Store {
         }
     ];
 
-    @computed
-    get currentChat() {
-        return this.chats[0];
-    }
+    @observable currentChat = '123';
+    @observable profile = {
+        id: '11',
+        name: 'dosha',
+        login: 'do'
+    };
 
 }

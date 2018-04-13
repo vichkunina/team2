@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import ReactPropTypes from 'prop-types';
-import { PropTypes } from 'mobx-react';
+import PropTypes from 'prop-types';
 import ChatHeader from './ChatHeader/ChatHeader';
 import ChatHistory from './ChatHistory/ChatHistory';
 import ChatInput from './ChatInput/ChatInput';
 import styles from './Chat.css';
-import ChatHistoryUserMessage from './ChatHistory/ChatHistoryUserMessage/ChatHistoryUserMessage';
+import ChatHistoryServiceMessage from
+    '../Chat/ChatHistory/ChatHistoryServiceMessage/ChatHistoryServiceMessage';
 
 export default class Chat extends Component {
     constructor(props) {
@@ -13,30 +13,31 @@ export default class Chat extends Component {
     }
 
     static propTypes = {
-        currentChat: ReactPropTypes.shape({
-            chatHistory: PropTypes.observableArray,
-            avatar: ReactPropTypes.string,
-            name: ReactPropTypes.string
-        }),
-        transitFromChatToContacts: ReactPropTypes.func.isRequired
-    };
+        photoURL: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        status: PropTypes.string,
+        transistFromChatToContacts: PropTypes.func.isRequired,
+        children: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.element),
+            PropTypes.element
+        ])
+    }
 
     render() {
-        const chatHistory = this.props.currentChat.chatHistory.map(message => (
-            <ChatHistoryUserMessage key={message.id} fromMe={message.fromMe} name={message.name}
-                body={message.body} date={message.date || new Date()}/>
-        )
-        );
+
+        const chatHistory = this.props.chatHistory.map(message => (
+            <ChatHistoryUserMessage id={message.id} avatar={message.body}
+                name={message.name} from={message.fromMe}
+            />
+        ));
 
         return (
             <div className={styles.Wrapper}>
-                <ChatHeader photoURL={this.props.currentChat.avatar}
-                    name={this.props.currentChat.name} status={'online'}
-                    transitFromChatToContacts={this.props.transitFromChatToContacts}/>
-                <ChatHistory>
-                    {chatHistory}
-                </ChatHistory>
-                <ChatInput/>
+                <ChatHeader photoURL={this.props.photoURL}
+                    name={this.props.name} status={this.props.status}
+                    transistFromChatToContacts={ this.props.transistFromChatToContacts } />
+                        chatHistory
+                <ChatInput />
             </div>
         );
     }
