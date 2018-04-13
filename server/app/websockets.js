@@ -7,6 +7,7 @@ const WebSocketServer = require('./classes/WebSocketServer');
 const {
     ChatModel,
     UserModel,
+    UserIdLoginModel,
     messageModelFactory
 } = require('./models');
 
@@ -17,6 +18,7 @@ module.exports = function (app, sessionStore) {
     wsServer.on('authUserConnected', ({ socket, uid }) => {
         socket.on('GetMessages', execute.bind(null, wsServer, uid, GetMessages));
         socket.on('GetProfile', execute.bind(null, wsServer, uid, GetProfile));
+        socket.on('SearchByLogin', execute.bind(null, wsServer, uid, SearchByLogin));
         socket.on('AddContact', async (userId) => {
             try {
                 const result = await AddContact(uid, userId);
@@ -111,6 +113,20 @@ async function GetProfile(uid, userId) {
     const user = await UserModel.getById(userId || uid);
 
     return getProfileFromUser(user);
+}
+
+async function SearchByLogin(uid, login) {
+    const foundUsers = [];
+    const allUsersIterator = UserIdLoginModel.getIterator();
+    const userIdAndLogin = await allUsersIterator.next();
+    while (userIdAndLogin) {
+        if (userIdAndLogin.login.indexOf(login) !== -1) {
+            foundUsers.push(getProfileFromUser(await userIdAndLogin.getByLink('userId')));
+        }
+        userIdAndLogin = await allUsersIterator.next();
+    }
+
+    return foundUsers;
 }
 
 async function AddContact(uid, userId) {
