@@ -1,6 +1,13 @@
-import { observable } from 'mobx';
+import { observable, computed } from 'mobx';
 
 export default class Store {
+
+    @observable profile = {
+        id: '1488',
+        name: 'Doma',
+        login: 'WBDiamond'
+    };
+
     @observable chats = [
         {
             id: '123',
@@ -9,39 +16,30 @@ export default class Store {
             lastMessage: 'message last',
             lastMessageDate: new Date(),
             unreadCount: 10,
-            chatHistory = [
+            users: [
                 {
-                    id: '11',
-                    body: 'qqq',
-                    fromMe: true,
-                    name: dosha,
-                    date: new Date()
-                },
-
-                {
-                    id: '12',
-                    body: 'hello',
-                    fromMe: false,
-                    name: qq,
-                    date: new Date()
-                },
-
-                {
-                    id: '13',
-                    body: 'whwhwh',
-                    fromMe: true,
-                    name: dosha,
-                    date: new Date()
-                },
-
-                {
-                    id: '14',
-                    body: 'pppp',
-                    fromMe: true,
-                    name: dosha,
-                    date: new Date()
+                    id: '999',
+                    login: 'dosha',
+                    name: 'h3h3',
+                    avatar: 'avatar'
                 }
             ],
+            chatHistory: [
+                {
+                    id: '111',
+                    body: 'privet menya zovut Dosha',
+                    name: 'Roma',
+                    fromMe: true,
+                    date: new Date()
+                },
+                {
+                    id: '112',
+                    body: 'privet menya zovut Roma',
+                    name: 'Dosha',
+                    fromMe: false,
+                    date: new Date()
+                }
+            ]
         },
 
         {
@@ -54,11 +52,9 @@ export default class Store {
         }
     ];
 
-    @observable currentChat = '123';
-    @observable profile = {
-        id: '11',
-        name: 'dosha',
-        login: 'do'
-    };
+    @computed
+    get currentChat() {
+        return this.chats[0];
+    }
 
 }
