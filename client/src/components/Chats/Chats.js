@@ -6,7 +6,8 @@ import styles from './Chats.css';
 export default class ContactsSearch extends Component {
 
     static propTypes = {
-        chats: PropTypes.observableArray
+        chats: PropTypes.observableArray,
+        store: PropTypes.observableObject
     };
 
     constructor(props) {
@@ -22,12 +23,18 @@ export default class ContactsSearch extends Component {
         this.setState({ chats: res });
     }
 
+    changeChat(chat) {
+        console.log('CHAT CHANGED');
+        this.props.store.currentChat = chat;
+    }
+
     render() {
 
         const chats = this.state.chats.map(chat => (
             <ChatEntry key={chat.id} photoURL={chat.avatar}
                 name={chat.name} lastMessage={chat.lastMessage}
-                lastMessageDate={new Date()} unreadCount={chat.unreadCount}/>
+                lastMessageDate={new Date()} unreadCount={chat.unreadCount}
+                onClick={this.changeChat.bind(this, chat)}/>
         ));
 
         return (
