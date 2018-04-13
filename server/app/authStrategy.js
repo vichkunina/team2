@@ -7,8 +7,6 @@ const User = require('./models/User');
 const UserIdLogin = require('./models/UserIdLogin');
 const GithubAvatar = require('./tools/githubAvatar');
 
-const AvatarGenerator = require('./tools/githubAvatar');
-
 Github.makeLink('uid', User);
 
 const strategy = new passportGithub.Strategy(
