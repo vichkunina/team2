@@ -22,18 +22,19 @@ export default class App extends Component {
     static propTypes = {
         store: ReactPropTypes.shape({
             chats: PropTypes.observableArray,
-            currentChat: PropTypes.observableObject
+            currentChat: PropTypes.observableObject,
+            profile: PropTypes.observableObject
         }
         )
     };
 
     componentWillMount() {
-        // this.openContacts = this.openContacts.bind(this);
+        this.openContacts = this.openContacts.bind(this);
         this.openChat = this.openChat.bind(this);
         this.openProfile = this.openProfile.bind(this);
 
         this.closeContacts = this.closeContacts.bind(this);
-        // this.closeChat = this.closeChat.bind(this);
+        this.closeChat = this.closeChat.bind(this);
         this.closeProfile = this.closeProfile.bind(this);
 
         this.transitFromChatToContacts = this.transitFromChatToContacts.bind(this);
@@ -55,21 +56,20 @@ export default class App extends Component {
             <div className={styles.Wrapper}>
                 { this.state.showContacts &&
                     <Chats chats={this.props.store.chats}
-                        transitFromChatToContacts={this.transitFromChatToContacts()}/>
-                }
+                        transitFromChatToContacts={ this.transitFromChatToContacts }/> }
                 { this.state.showChat &&
-                    <Chat currentChat={this.props.store.currentChat}/>}
+                    <Chat currentChat={this.props.store.currentChat}
+                        profile={this.props.store.profile}/> }
                 { this.state.showProfile &&
                     /* eslint-disable-next-line max-len */
-                    <Profile photoURL="https://pbs.twimg.com/profile_images/929933611754708992/ioSgz49P_400x400.jpg"
-                        name="Billy" status="Online" login="billy"
+                    <Profile profile={this.props.store.profile}
                         transistFromProfileToChat={ this.transitFromProfileToChat } /> }
             </div>
         );
     }
 
     openContacts() {
-        // this.setState({ showContacts: true });
+        this.setState({ showContacts: true });
     }
 
     openChat() {
@@ -85,7 +85,7 @@ export default class App extends Component {
     }
 
     closeChat() {
-        // this.setState({ showChat: false });
+        this.setState({ showChat: false });
     }
 
     closeProfile() {
