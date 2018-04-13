@@ -28,7 +28,8 @@ module.exports = new GraphQLObjectType({
         },
         createdAt: {
             description: 'Date of message creation',
-            type: GraphQLDate
+            type: GraphQLDate,
+            resolve: message => new Date(message.createdAt)
         }
     })
 });

@@ -2,8 +2,8 @@
 
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import Contacts from '../../components/Contacts/Contacts';
-import ChatEntry from '../../components/Contacts/ContactsEntry/ContactsEntry';
+import Chats from '../../components/Contacts/Contacts';
+import ChatListEntry from '../../components/Contacts/ContactsEntry/ContactsEntry';
 import Profile from '../../components/Profile/Profile';
 import Chat from '../../components/Chat/Chat';
 import ChatHistoryServiceMessage from
@@ -28,18 +28,6 @@ const client = new ApolloClient({
     link,
 });
 
-// client.query({
-//     query: gql`
-//         mutation {
-//             addContact(id: "${user.id}") {
-//                 users {
-//                     id
-//                 }
-//             }
-//         }
-//     `
-// });
-
 
 @observer
 export default class App extends Component {
@@ -49,11 +37,28 @@ export default class App extends Component {
         this.state = {
             showContacts: true,
             showChat: true,
-            showProfile: true
+            showProfile: true,
+            currentChat: {}
         };
     }
 
     componentWillMount() {
+        client.query({
+            query: gql`
+        {
+            profile {
+                chats {
+                    id
+                    avatar
+                    name
+                }
+            }
+        }`
+        }).then(({ data }) => {
+            console.log(data);
+            this.setState({currentChat: data.profile.chats[0] || {}})
+        });
+
         this.openContacts = this.openContacts.bind(this);
         this.openChat = this.openChat.bind(this);
         this.openProfile = this.openProfile.bind(this);
@@ -62,21 +67,54 @@ export default class App extends Component {
         this.closeChat = this.closeChat.bind(this);
         this.closeProfile = this.closeProfile.bind(this);
 
-        this.transistFromChatToContacts = this.transistFromChatToContacts.bind(this);
-        this.transistFromProfileToChat = this.transistFromProfileToChat.bind(this);
+        this.transitFromChatToContacts = this.transitFromChatToContacts.bind(this);
+        this.transitFromProfileToChat = this.transitFromProfileToChat.bind(this);
     }
 
-    transistFromChatToContacts() {
+    transitFromChatToContacts() {
         this.closeChat();
         this.openContacts();
     }
 
-    transistFromProfileToChat() {
+    transitFromProfileToChat() {
         this.closeProfile();
         this.openChat();
     }
 
     render() {
+        const ChatHistory = ({ chatId }) => (
+          <Query query={gql`
+                {
+                    getLastMessages(chatId:"${chatId}", count:20) {
+                        id
+                        body
+                        from {
+                          login
+                        }
+                        createdAt
+                    }
+                    profile {
+                        login
+                    }
+            }
+            `}>
+              {({ loading, error, data }) => {
+                  if (loading) return <p>Loading...</p>;
+                  if (error) return <p>Error :(</p>;
+
+                  if (data.getLastMessages.length !== 0) {
+                      return data.getLastMessages.map(({ id, from, body, createdAt }) => (
+                        <ChatHistoryUserMessage key={id} fromMe={data.profile.login === from.login}
+                          name={from.login} body={body} date={new Date(createdAt)}/>
+                      ));
+                  } else {
+                      return (<div>
+                          There are no messages yet
+                      </div>)
+                  }
+              }}
+          </Query>
+        );
         const ProfileEntry = () => (
           <Query
             query={gql`
@@ -84,19 +122,18 @@ export default class App extends Component {
                     profile {
                         login
                         avatar
-                      }
+                    }
                 }
                 `}>
               {({ loading, error, data }) => {
                   if (loading) return <p>Loading...</p>;
                   if (error) return <p>Error :(</p>;
-                  console.log('data: ');
-                  console.log(data);
+
                   if (data.profile.login && data.profile.avatar) {
                       return <Profile
                         photoURL={data.profile.avatar}
                         name={data.profile.login} status="Online" login={data.profile.login}
-                        transistFromProfileToChat={this.transistFromProfileToChat}/>;
+                        transistFromProfileToChat={this.transitFromProfileToChat}/>;
 
                   } else {
                   }
@@ -112,25 +149,28 @@ export default class App extends Component {
           <Query
             query={gql`
             {
-            profile {
-                chats {
-                  id
-                  avatar
-                  name
-                }
-              }
+                profile {
+                    chats {
+                      id
+                      avatar
+                      name
+                      lastMessage {
+                            body
+                        }
+                    }
+                  }
             }
 
               `}>
               {({ loading, error, data }) => {
                   if (loading) return <p>Loading...</p>;
                   if (error) return <p>Error :(</p>;
-                  console.log('data: ');
-                  console.log(data);
+
                   if (data.profile.chats && data.profile.chats.length !== 0) {
-                      return data.profile.chats.map(({ id, avatar, name }) => (
-                        <ChatEntry key={id} photoURL={avatar} name={name} lastMessage={'hey'}
-                          lastMessageDate={new Date()} unreadCount={id.charCodeAt(0)}/>
+                      return data.profile.chats.map((chat) => (
+                        <ChatListEntry key={chat.id} photoURL={chat.avatar} name={chat.name}
+                          lastMessage={chat.lastMessage ? chat.lastMessage.body : 'These are not messages yet'}
+                          lastMessageDate={new Date()} unreadCount={chat.id.charCodeAt(0)}/>
                       ));
                   } else {
                       return (
@@ -146,40 +186,18 @@ export default class App extends Component {
           <ApolloProvider client={client}>
               <div className={styles.Wrapper}>
                   {this.state.showContacts &&
-                  <Contacts>
+                  <Chats>
                       <ChatList/>
-                  </Contacts>
+                  </Chats>
                   }
                   {this.state.showChat &&
-                  <Chat photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                    name="Mark" status="Онлайн"
-                    transistFromChatToContacts={this.transistFromChatToContacts}>
+                  <Chat photoURL={this.state.currentChat.avatar}
+                    name={this.state.currentChat.name} status="Онлайн"
+                    transistFromChatToContacts={this.transitFromChatToContacts}>
                       <ChatHistoryServiceMessage text="12 марта"/>
-                      <ChatHistoryUserMessage fromMe={true} name="Billy" body="Hello!"
-                        date={new Date()}
-                        ogURL="localhost" ogTitle="Hey!"
-                        ogDescription="Hey-hey! Hello! Hello! Hello! Hello! Hello!"
-                        ogImage="123.png"/>
-                      <ChatHistoryUserMessage fromMe={false} name="Mark" body="Hello!"
-                        date={new Date()}/>
-                      <ChatHistoryUserMessage fromMe={true} name="Billy" body="Hello!"
-                        date={new Date()}/>
-                      <ChatHistoryUserMessage fromMe={false} name="Mark" body="Hello!"
-                        date={new Date()}/>
-                      <ChatHistoryUserMessage fromMe={true} name="Billy"
-                        body="Hey-hey! Hello! Hello! Hello! Hello! Hello! Hello! Hello"
-                        date={new Date()}
-                        ogURL="localhost" ogTitle="Hey!"
-                        ogImage="123.png"/>
-                      <ChatHistoryUserMessage fromMe={true} name="Billy" body="Hello!"
-                        date={new Date()}/>
-                      <ChatHistoryUserMessage fromMe={true} name="Billy" body="Hello!"
-                        date={new Date()}/>
-                      <ChatHistoryUserMessage fromMe={false} name="Mark" body="Hello!"
-                        date={new Date()}/>
+                      <ChatHistory chatId={this.state.currentChat.id}/>
                   </Chat>}
                   {this.state.showProfile &&
-                  /* eslint-disable-next-line max-len */
                   <ProfileEntry/>}
               </div>
           </ApolloProvider>

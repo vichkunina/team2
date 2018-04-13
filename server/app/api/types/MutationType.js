@@ -31,7 +31,9 @@ module.exports = new GraphQLObjectType({
                 const user = await UserModel.getById(id);
 
                 userToAddTo.contacts.push(user.id);
+                user.contacts.push(req.user.id);
                 await userToAddTo.save();
+                await user.save();
 
                 const chat = new ChatModel({
                     avatar: new AvatarGenerator(req.user.id).toImgSrc(),
@@ -117,12 +119,27 @@ module.exports = new GraphQLObjectType({
                 const MessageModel = messageModelFactory(chatId);
                 const message = new MessageModel({
                     from: req.user.id,
-                    body: text
+                    body: text,
                 });
 
                 await message.save();
 
                 return message;
+            }
+        },
+        deleteMessages: {
+            type: GraphQLString,
+            args: {
+                chatId: {
+                    type: new GraphQLNonNull(GraphQLID)
+                }
+            },
+            resolve: async (_, {chatId}) => {
+                const MessageModel = messageModelFactory(chatId);
+
+                await MessageModel.clear();
+
+                return `messages deleted`;
             }
         }
     })

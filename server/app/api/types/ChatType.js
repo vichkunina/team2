@@ -8,6 +8,8 @@ const {
     GraphQLBoolean
 } = require('graphql');
 
+const { messageModelFactory } = require('../../models/index');
+
 const ChatType = new GraphQLObjectType({
     name: 'Chat',
     fields: () => ({
@@ -53,6 +55,22 @@ const ChatType = new GraphQLObjectType({
             type: new GraphQLList(require('./UserType')),
             resolve: async (chat) => {
                 return await chat.getByLink('users');
+            }
+        }
+        ,
+        lastMessage: {
+            description: 'Last message in chat',
+            type: require('./MessageType'),
+            resolve: async (chat) => {
+                const MessageModel = messageModelFactory(chat.id);
+
+                const message = await MessageModel.getList({
+                    limit: 1,
+                    sort: 'date'
+                });
+
+                console.log(message);
+                return message[0];
             }
         }
     })

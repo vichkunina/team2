@@ -23,8 +23,6 @@ module.exports = new GraphQLObjectType({
             type: UserType,
             resolve: async (_, args, req) => {
                 try {
-                    console.log('req');
-                    console.log(req);
                     return UserModel.getById(req.user.id);
                 } catch (error) {
                     throw error;
