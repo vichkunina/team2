@@ -24,7 +24,6 @@ export default class ContactsSearch extends Component {
     }
 
     changeChat(chat) {
-        console.log('CHAT CHANGED');
         this.props.store.currentChat = chat;
     }
 

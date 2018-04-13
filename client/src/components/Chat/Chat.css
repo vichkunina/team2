@@ -5,7 +5,12 @@
     flex-flow: column nowrap;
     align-items: stretch;
 
+    justify-content: center;
     min-width: 300px;
 
     overflow-y: auto;
+}
+
+.EmptyChat {
+    align-self: center;
 }

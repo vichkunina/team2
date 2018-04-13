@@ -25,23 +25,31 @@ export default class Chat extends Component {
     };
 
     render() {
-        const chatHistory = this.props.currentChat.chatHistory.map(message => (
-            <ChatHistoryUserMessage key={message.id} fromMe={message.fromMe} name={message.name}
-                body={message.body} date={message.date || new Date()}/>
-        )
-        );
+        if (this.props.currentChat) {
+            const chatHistory = this.props.currentChat.chatHistory.map(message => (
+                    <ChatHistoryUserMessage key={message.id} fromMe={message.fromMe} name={message.name}
+                        body={message.body} date={message.date || new Date()}/>
+                )
+            );
 
-        return (
-            <div className={styles.Wrapper}>
-                <ChatHeader photoURL={this.props.currentChat.avatar}
-                    name={this.props.currentChat.name} status={'online'}
-                    transitFromChatToContacts={this.props.transitFromChatToContacts}/>
-                <ChatHistory>
-                    {chatHistory}
-                </ChatHistory>
-                <ChatInput currentChatHistory={this.props.currentChat.chatHistory}
-                    profile={this.props.profile}/>
-            </div>
-        );
+            return (
+                <div className={styles.Wrapper}>
+                    <ChatHeader photoURL={this.props.currentChat.avatar}
+                        name={this.props.currentChat.name} status={'online'}
+                        transitFromChatToContacts={this.props.transitFromChatToContacts}/>
+                    <ChatHistory>
+                        {chatHistory}
+                    </ChatHistory>
+                    <ChatInput currentChatHistory={this.props.currentChat.chatHistory}
+                        profile={this.props.profile}/>
+                </div>
+            );
+        } else {
+            return (
+                <div className={styles.Wrapper}>
+                    <span className={styles.EmptyChat}>Choose chat to start messaging</span>
+                </div>
+            );
+        }
     }
 }
