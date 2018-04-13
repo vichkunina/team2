@@ -4,6 +4,8 @@ import ChatHeader from './ChatHeader/ChatHeader';
 import ChatHistory from './ChatHistory/ChatHistory';
 import ChatInput from './ChatInput/ChatInput';
 import styles from './Chat.css';
+import ChatHistoryServiceMessage from
+    '../Chat/ChatHistory/ChatHistoryServiceMessage/ChatHistoryServiceMessage';
 
 export default class Chat extends Component {
     constructor(props) {
@@ -22,14 +24,19 @@ export default class Chat extends Component {
     }
 
     render() {
+
+        const chatHistory = this.props.chatHistory.map(message => (
+            <ChatHistoryUserMessage id={message.id} avatar={message.body}
+                name={message.name} from={message.fromMe}
+            />
+        ));
+
         return (
             <div className={styles.Wrapper}>
                 <ChatHeader photoURL={this.props.photoURL}
                     name={this.props.name} status={this.props.status}
                     transistFromChatToContacts={ this.props.transistFromChatToContacts } />
-                <ChatHistory>
-                    {this.props.children}
-                </ChatHistory>
+                        chatHistory
                 <ChatInput />
             </div>
         );

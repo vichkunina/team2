@@ -63,29 +63,6 @@ export default class App extends Component {
                     <Chat photoURL="http://www.baretly.org/uploads/14775998111.jpg"
                         name="Mark" status="Онлайн"
                         transistFromChatToContacts={ this.transistFromChatToContacts }>
-                        <ChatHistoryServiceMessage text="12 марта"/>
-                        <ChatHistoryUserMessage fromMe={true} name="Billy" body="Hello!"
-                            date={new Date()}
-                            ogURL="localhost" ogTitle="Hey!"
-                            ogDescription="Hey-hey! Hello! Hello! Hello! Hello! Hello!"
-                            ogImage="123.png" />
-                        <ChatHistoryUserMessage fromMe={false} name="Mark" body="Hello!"
-                            date={new Date()} />
-                        <ChatHistoryUserMessage fromMe={true} name="Billy" body="Hello!"
-                            date={new Date()} />
-                        <ChatHistoryUserMessage fromMe={false} name="Mark" body="Hello!"
-                            date={new Date()} />
-                        <ChatHistoryUserMessage fromMe={true} name="Billy"
-                            body="Hey-hey! Hello! Hello! Hello! Hello! Hello! Hello! Hello"
-                            date={new Date()}
-                            ogURL="localhost" ogTitle="Hey!"
-                            ogImage="123.png" />
-                        <ChatHistoryUserMessage fromMe={true} name="Billy" body="Hello!"
-                            date={new Date()} />
-                        <ChatHistoryUserMessage fromMe={true} name="Billy" body="Hello!"
-                            date={new Date()} />
-                        <ChatHistoryUserMessage fromMe={false} name="Mark" body="Hello!"
-                            date={new Date()} />
                     </Chat> }
                 { this.state.showProfile &&
                     /* eslint-disable-next-line max-len */
