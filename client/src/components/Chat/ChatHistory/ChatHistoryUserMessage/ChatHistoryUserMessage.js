@@ -18,7 +18,7 @@ export default class ChatHistoryUserMessage extends Component {
         ogTitle: PropTypes.string,
         ogDescription: PropTypes.string,
         ogImage: PropTypes.string
-    }
+    };
 
     render() {
         const className =
