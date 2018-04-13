@@ -17,7 +17,7 @@
 
 .Photo {
     grid-area: p;
-    
+
     width: 54px;
     height: 54px;
 
@@ -55,14 +55,14 @@
 
     padding: 1px 6.5px 1px 6.5px;
 
-    background-color:#104fd7;
+    background-color: rgba(93, 196, 144, 0.884);
     color: #fffffa;
 
     border-radius: 28px;
 }
 
 .Wrapper:hover {
-    background: #104fd7;
+    background: rgba(92, 197, 145, 0.89);
     cursor: pointer;
 }
 
