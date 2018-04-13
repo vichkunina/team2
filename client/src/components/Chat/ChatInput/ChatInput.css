@@ -16,13 +16,13 @@
 
 .Send:hover
 {
-    background: rgb(92, 197, 145);
+    background: #5579c7;
 }
 
 .Send:active
 {
-  background: rgb(33,147,90);
-  box-shadow: 0 3px rgb(33,147,90) inset;
+  background: #1250d4b0;
+  box-shadow: 0 3px #1645aab0 inset;
 }
 
 .Input {
