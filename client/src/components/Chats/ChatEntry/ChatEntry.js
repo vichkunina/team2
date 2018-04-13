@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './ContactsEntry.css';
+import styles from './ChatEntry.css';
 
 export default class ContactsEntry extends Component {
     constructor(props) {

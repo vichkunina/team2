@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import Contacts from '../../components/Contacts/Contacts';
-import ChatEntry from '../../components/Contacts/ContactsEntry/ContactsEntry';
+import Contacts from '../../components/Chats/Chats';
+import ChatEntry from '../../components/Chats/ChatEntry/ContactsEntry';
 import Profile from '../../components/Profile/Profile';
 import Chat from '../../components/Chat/Chat';
 import ChatHistoryServiceMessage from
