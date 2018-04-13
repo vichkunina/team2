@@ -15,7 +15,7 @@ export default class ContactsEntry extends Component {
         lastMessage: PropTypes.string.isRequired,
         lastMessageDate: PropTypes.instanceOf(Date).isRequired,
         unreadCount: PropTypes.number.isRequired
-    };
+    }
 
     render() {
         return (

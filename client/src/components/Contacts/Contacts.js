@@ -14,7 +14,7 @@ export default class Contacts extends Component {
             PropTypes.arrayOf(PropTypes.element),
             PropTypes.element
         ])
-    };
+    }
 
     render() {
         return (

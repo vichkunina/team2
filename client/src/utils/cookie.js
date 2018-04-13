@@ -1,5 +1,4 @@
-'use strict';
-
+/* eslint-disable no-shadow */
 module.exports.getCookie = function (name) {
     const cookiesObj = document
         .cookie.split(';')
@@ -8,7 +7,7 @@ module.exports.getCookie = function (name) {
             const [name, value] = next.split('=');
             obj[name] = value;
 
-            return obj
+            return obj;
         }, {});
 
     return decodeURIComponent(cookiesObj[name]);
