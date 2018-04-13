@@ -6,6 +6,7 @@ import Chats from '../Chats/Chats';
 import Profile from '../Profile/Profile';
 import Chat from '../Chat/Chat';
 import styles from './App.css';
+import ChatEntry from '../Chats/ChatEntry/ChatEntry';
 
 @observer
 export default class App extends Component {
@@ -51,16 +52,31 @@ export default class App extends Component {
         this.openChat();
     }
 
+    changeChat(chat) {
+        this.props.store.currentChat = chat;
+    }
+
     render() {
+        const chats = this.props.store.chats.map(chat => (
+            <ChatEntry key={chat.id} photoURL={chat.avatar}
+                name={chat.name} lastMessage={chat.lastMessage}
+                lastMessageDate={new Date()} unreadCount={chat.unreadCount}
+                onClick={this.changeChat.bind(this, chat)}/>
+        ));
+
         return (
             <div className={styles.Wrapper}>
                 { this.state.showContacts &&
                     <Chats chats={this.props.store.chats}
-                        store={this.props.store}
-                        transitFromChatToContacts={ this.transitFromChatToContacts }/> }
+                        currentChat={this.props.store.currentChat}
+                        transitFromChatToContacts={ this.transitFromChatToContacts }>
+                        {chats}
+                    </Chats>
+                }
                 { this.state.showChat &&
                     <Chat currentChat={this.props.store.currentChat}
-                        profile={this.props.store.profile}/> }
+                        profile={this.props.store.profile}/>
+                }
                 { this.state.showProfile &&
                     <Profile profile={this.props.store.profile}
                         transistFromProfileToChat={ this.transitFromProfileToChat } /> }

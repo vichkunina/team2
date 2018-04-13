@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'mobx-react';
-import ChatEntry from './ChatEntry/ChatEntry';
+import ReactPropTypes from 'prop-types';
 import styles from './Chats.css';
 
 export default class ContactsSearch extends Component {
 
     static propTypes = {
         chats: PropTypes.observableArray,
-        store: PropTypes.observableObject
+        children: ReactPropTypes.element
     };
 
     constructor(props) {
@@ -23,25 +23,13 @@ export default class ContactsSearch extends Component {
         this.setState({ chats: res });
     }
 
-    changeChat(chat) {
-        this.props.store.currentChat = chat;
-    }
-
     render() {
-
-        const chats = this.state.chats.map(chat => (
-            <ChatEntry key={chat.id} photoURL={chat.avatar}
-                name={chat.name} lastMessage={chat.lastMessage}
-                lastMessageDate={new Date()} unreadCount={chat.unreadCount}
-                onClick={this.changeChat.bind(this, chat)}/>
-        ));
-
         return (
             <div className={styles.Wrapper}>
                 <div className={styles.Wrappers}>
                     <input placeholder="Поиск" className={styles.Input}
                         onChange={this.filteredList.bind(this)}/>
-                    {chats}
+                    {this.props.children}
                 </div>
             </div>
         );
