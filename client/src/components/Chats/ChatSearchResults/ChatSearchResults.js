@@ -30,5 +30,9 @@ export default class ChatSearchResults extends Component {
                 {searchResult}
             )
         }
+
+        return (
+            <div/>
+        )
     }
 }
