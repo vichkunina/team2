@@ -41,7 +41,7 @@ module.exports = function (app, sessionStore) {
         socket.on('GetChatList', execute.bind(null, wsServer, uid, GetChatList));
         socket.on('SendMessage', async ({ chatId, text }) => {
             try {
-                const message = SendMessage(uid, chatId, text);
+                const message = await SendMessage(uid, chatId, text);
                 const chat = await ChatModel.getById(chatId);
 
                 wsServer.emitByUID(uid, 'SendMessageResult', {
