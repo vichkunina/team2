@@ -33,7 +33,7 @@ export default class Chat extends Component {
             chatHistoryToRender = chatHistory.messages.map(message => (
                 <ChatHistoryUserMessage key={message.id}
                     fromMe={message.from === this.props.profile.id} name={message.name}
-                    body={message.body} date={message.date || new Date()}/>
+                    body={message.body} date={new Date(message.createdAt) || new Date()}/>
             ));
         }
 

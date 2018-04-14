@@ -17,7 +17,7 @@ class SendQueue {
 
     push(chatId, message) {
         if (!this._queues[chatId]) {
-            this._queues = new queue(this._task.bind(null, chatId));
+            this._queues[chatId] = queue(this._task.bind(null, chatId));
         }
 
         this._queues[chatId].push(message);

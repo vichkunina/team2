@@ -46,7 +46,6 @@ export class WorkerWrapper {
         const handlers = this._handlers[response.action];
 
         if (response.type === Types.RESPONSE) {
-            console.info(response)
             handlers.forEach(handler => handler(null, response.result.value));
 
             return;
@@ -54,8 +53,6 @@ export class WorkerWrapper {
 
         if (response.type === Types.EMIT) {
             handlers.forEach(handler => handler(null, response.result));
-
-            return;
         }
     }
 
