@@ -31,7 +31,8 @@ module.exports = function (app, sessionStore) {
                     value: result
                 });
 
-                wsServer.emitByUID(userId, 'NewChat', result);
+                const me = getProfileFromUser(await UserModel.getById(uid));
+                wsServer.emitByUID(userId, 'NewChat', me);
             } catch (error) {
                 wsServer.emitByUID(uid, 'AddContactResult', {
                     success: false,
