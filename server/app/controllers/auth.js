@@ -1,6 +1,7 @@
 'use strict';
 
 const passport = require('passport');
+const config = require('config');
 
 module.exports = app => {
     // Главная страница
@@ -8,7 +9,7 @@ module.exports = app => {
         '/',
         (req, res) => {
             if (req.isAuthenticated()) {
-                res.render('index', { tokenID: req.user.id });
+                res.render('app', { staticPath: config.get('staticPath') });
             } else {
                 res.send('Not authenticated!');
             }
@@ -28,9 +29,9 @@ module.exports = app => {
         '/login/return',
         // Заканчиваем аутентифицировать пользователя
         // Если не удачно, то отправляем на /
-        passport.authenticate('github', { failureRedirect: '/' }),
+        passport.authenticate('github', { failureRedirect: '/error' }),
         (req, res) => {
-            res.redirect('http://localhost:9000/');
+            res.redirect(config.get('clientHost'));
         }
     );
 

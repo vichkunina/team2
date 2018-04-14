@@ -7,10 +7,15 @@ const methods =
     ['GetMessages', 'GetProfile', 'SearchByLogin', 'AddContact', 'GetChatList',
         'SendMessage', 'DeleteProfile'];
 
+const host = 'https://kilogram-team2.now.sh';
+// const host = process.env.HOST || 'localhost:8080';
+console.info(host);
+
 function initSocket() {
-    socket = io('http://localhost:8080', {
+    socket = io(host, {
         transports: ['websocket'],
-        query: { token: TOKEN }
+        query: { token: TOKEN },
+        secure: true
     });
 
     socket.on('NewMessage', message => {

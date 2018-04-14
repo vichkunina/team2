@@ -6,7 +6,7 @@ import Store from './components/Store/Store';
 import App from './components/App/App';
 import { WorkerWrapper } from './websocket/worker-wrapper';
 
-const worker = new WorkerWrapper('message-worker.js');
+const worker = new WorkerWrapper();
 const store = new Store();
 
 worker.subscribe('SearchByLogin', (error, result) => {

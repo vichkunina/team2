@@ -1,6 +1,7 @@
 'use strict';
 
 const PassportMemStoreSessionGetter = require('./classes/PassportMemStoreSessionGetter');
+// eslint-disable-next-line no-unused-vars
 const olesya = require('./tools/olesya');
 const WebSocketServer = require('./classes/WebSocketServer');
 const SendQueue = require('./classes/SendQueue');
@@ -48,7 +49,7 @@ module.exports = async function (app, sessionStore) {
         ));
         socket.on('AddContact', pushAction.bind(null, uid, async (userId) => {
             try {
-                const result = await AddContact(uid, userId);
+                const result = await addContact(uid, userId);
 
                 result.users.forEach(user => {
                     wsServer.emitByUID(user.id, 'NewChat', result);
@@ -72,7 +73,7 @@ module.exports = async function (app, sessionStore) {
         ));
         socket.on('SendMessage', pushAction.bind(null, uid, async ({ chatId, text }) => {
             try {
-                const message = await SendMessage(uid, chatId, text);
+                const message = await sendMessage(uid, chatId, text);
                 const chat = await ChatModel.getById(chatId);
 
                 wsServer.emitByUID(uid, 'SendMessageResult', {
@@ -132,7 +133,7 @@ async function execute(socket, uid, fn, data) {
     }
 }
 
-async function SendMessage(uid, chatId, text) {
+async function sendMessage(uid, chatId, text) {
     const chat = await ChatModel.getById(chatId);
 
     if (chat.users.indexOf(uid) === -1) {
@@ -196,7 +197,7 @@ async function SearchByLogin(uid, login) {
     return findLoginInDB(login, me);
 }
 
-async function AddContact(uid, userId) {
+async function addContact(uid, userId) {
     if (uid === userId) {
         throw new Error('You can\'t add yourself!');
     }
