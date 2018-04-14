@@ -32,7 +32,7 @@ const strategy = new passportGithub.Strategy(
                 contacts: [],
                 chats: [],
                 date: Date.now(),
-                avatar: new GithubAvatar(profile.username, 300).toBase64()
+                avatar: new GithubAvatar(profile.username, 200).toImgSrc()
             });
 
             const github = new Github({

@@ -12,8 +12,8 @@ export class WorkerWrapper {
         this._handlers = {};
     }
 
-    getMessages() {
-        this._worker.postMessage({ action: 'GetMessages' });
+    getMessages({ chatId, offset, limit }) {
+        this._worker.postMessage({ action: 'GetMessages', value: { chatId, offset, limit } });
     }
 
     getProfile() {
@@ -30,6 +30,10 @@ export class WorkerWrapper {
 
     sendMessage({ chatId, text }) {
         this._worker.postMessage({ action: 'SendMessage', value: { chatId, text } });
+    }
+
+    deleteProfile(userId) {
+        this._worker.postMessage({ action: 'DeleteProfile', value: { userId } });
     }
 
     _handleResponse(response) {

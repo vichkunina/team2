@@ -3,7 +3,8 @@ import io from 'socket.io-client';
 let TOKEN;
 let socket;
 const methods =
-    ['GetMessages', 'GetProfile', 'SearchByLogin', 'AddContact', 'GetChatList', 'SendMessage'];
+    ['GetMessages', 'GetProfile', 'SearchByLogin', 'AddContact', 'GetChatList',
+        'SendMessage', 'DeleteProfile'];
 
 function initSocket() {
     socket = io('http://localhost:8080', {

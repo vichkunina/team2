@@ -15,13 +15,16 @@ export default class ChatInput extends React.Component {
     };
 
     submitHandler(event) {
+        console.log('this.props.currentChatHistory: ');
+        console.log(this.props.currentChatHistory);
         this.props.currentChatHistory.push({
-            id: uuid(),
+            from: this.props.profile.id,
             body: this.state.chatInput,
-            name: this.props.profile.login,
-            date: new Date(),
-            fromMe: true
+            id: uuid(),
+            createdAt: Date.now(),
+            editedAt: Date.now()
         });
+        console.log(this.props.currentChatHistory);
         event.preventDefault();
         this.setState({ chatInput: '' });
     }

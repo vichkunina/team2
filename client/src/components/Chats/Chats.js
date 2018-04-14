@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import { PropTypes } from 'mobx-react';
 import ReactPropTypes from 'prop-types';
 import styles from './Chats.css';
+import { observer } from 'mobx-react';
 
+@observer
 export default class ContactsSearch extends Component {
 
     static propTypes = {
         chats: PropTypes.observableArray,
-        children: ReactPropTypes.element
+        chatInput: '',
+        children: ReactPropTypes.element,
+        addContact: ReactPropTypes.func
     };
 
     constructor(props) {
@@ -19,16 +23,25 @@ export default class ContactsSearch extends Component {
         const res = this.props.chats.filter(chat => {
             return chat.name.toLowerCase().search(event.target.value) !== -1;
         });
-
+        this.setState({ chatInput: event.target.value });
         this.setState({ chats: res });
+    }
+
+    addContact(event) {
+        event.preventDefault();
+        this.props.addContact(this.state.chatInput);
+        this.setState({ chatInput: '' });
     }
 
     render() {
         return (
             <div className={styles.Wrapper}>
                 <div className={styles.Wrappers}>
-                    <input placeholder="Поиск" className={styles.Input}
-                        onChange={this.filteredList.bind(this)}/>
+                    <form onSubmit={this.addContact.bind(this)}>
+                        <input placeholder="Поиск" className={styles.Input}
+                            value={this.state.chatInput}
+                            onChange={this.filteredList.bind(this)}/>
+                    </form>
                     {this.props.children}
                 </div>
             </div>
