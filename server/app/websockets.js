@@ -164,8 +164,7 @@ async function AddContact(uid, userId) {
     me.addContact(he);
 
     const chat = new ChatModel({
-        dialog: true,
-        users: [uid, userId]
+        dialog: true
     });
 
     await chat.addUser(he);
