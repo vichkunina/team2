@@ -7,8 +7,8 @@ import Profile from '../Profile/Profile';
 import Chat from '../Chat/Chat';
 import styles from './App.css';
 import ChatEntry from '../Chats/ChatEntry/ChatEntry';
-/* eslint-disable-next-line max-len */
-import ChatHistoryUserMessage from '../Chat/ChatHistory/ChatHistoryUserMessage/ChatHistoryUserMessage';
+import ChatHistoryUserMessage from
+    '../Chat/ChatHistory/ChatHistoryUserMessage/ChatHistoryUserMessage';
 
 @observer
 export default class App extends Component {
@@ -24,7 +24,7 @@ export default class App extends Component {
 
     static propTypes = {
         store: ReactPropTypes.shape({
-
+            addMessage: ReactPropTypes.func,
             chats: PropTypes.observableArray,
             currentChat: PropTypes.observableObject,
             profile: PropTypes.observableObject,
@@ -70,8 +70,6 @@ export default class App extends Component {
 
     render() {
         const chats = this.props.store.chats.map(chat => {
-            console.log('chat: ');
-            console.log(chat);
             const chatHistory = this.props.store.chatHistories[chat.id];
             let lastMessage = '';
             if (chatHistory && chatHistory.length > 0) {

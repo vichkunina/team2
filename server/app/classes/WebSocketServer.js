@@ -1,4 +1,3 @@
-/* eslint-disable max-depth */
 'use strict';
 
 const io = require('socket.io');

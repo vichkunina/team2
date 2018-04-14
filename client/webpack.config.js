@@ -1,6 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-let FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 const vendorLibs = [
     'react',

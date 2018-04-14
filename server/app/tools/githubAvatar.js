@@ -5,7 +5,6 @@ const Identicon = require('../../node_modules/identicon.js/identicon');
 
 class GithubAvatar {
     constructor(login, size) {
-        /* eslint-disable-next-line new-cap */
         this.hash = CryptoJS.MD5(login).toString();
         this.size = size;
     }

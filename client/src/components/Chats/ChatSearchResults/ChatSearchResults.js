@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class ChatSearchResults extends Component {
     constructor(props) {
         super(props);
     }
 
-    render() {
-        console.log('RENDER CHAT SEARCH');
-        console.log('this.props.searchResult: ');
-        console.log(this.props.searchResult);
+    static propTypes = {
+        children: PropTypes.element
+    }
 
+    render() {
         return (
             <div>
                 {this.props.children}

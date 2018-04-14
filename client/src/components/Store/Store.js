@@ -89,11 +89,11 @@ export default class Store {
     ];
 
     @observable chatHistories = [];
-        //     {
-        //          chatId: '123,
-        //         messages:
-        //     }
-        // ]
+    //     {
+    //          chatId: '123,
+    //         messages:
+    //     }
+    // ]
 
     @observable currentChat = {};
 

@@ -2,5 +2,9 @@
   "extends": "hrundel/node",
   "parserOptions": {
     "sourceType": "script"
+  },
+  "rules": {
+    "max-depth": ["error", 4],
+    "new-cap": "off"
   }
 }

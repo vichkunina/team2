@@ -6,8 +6,8 @@ import ChatHeader from './ChatHeader/ChatHeader';
 import ChatHistory from './ChatHistory/ChatHistory';
 import ChatInput from './ChatInput/ChatInput';
 import styles from './Chat.css';
-/* eslint-disable-next-line max-len */
-import ChatHistoryUserMessage from './ChatHistory/ChatHistoryUserMessage/ChatHistoryUserMessage';
+import ChatHistoryUserMessage from
+    './ChatHistory/ChatHistoryUserMessage/ChatHistoryUserMessage';
 
 @observer
 export default class Chat extends Component {
@@ -18,11 +18,13 @@ export default class Chat extends Component {
     static propTypes = {
         chatHistories: PropTypes.observableArrayOf(PropTypes.observableObject),
         addMessage: ReactPropTypes.func,
+        sendMessage: ReactPropTypes.func,
         children: ReactPropTypes.element,
         profile: PropTypes.observableObject,
         transitFromChatToContacts: ReactPropTypes.func.isRequired,
         name: ReactPropTypes.string,
         avatar: ReactPropTypes.string,
+        chatId: ReactPropTypes.string
     };
 
     render() {

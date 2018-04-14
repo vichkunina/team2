@@ -15,10 +15,12 @@ export default class ChatInput extends React.Component {
     static propTypes = {
         chatHistories: PropTypes.observableArrayOf(PropTypes.observableObject),
         addMessage: ReactPropTypes.func,
+        sendMessage: ReactPropTypes.func,
         chatId: ReactPropTypes.string,
         profile: PropTypes.observableObject
     };
 
+    /* eslint-disable no-console */
     submitHandler(event) {
         console.log('this.props.currentChatHistory: ');
         console.log(this.props.chatHistories

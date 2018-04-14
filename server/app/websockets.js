@@ -1,4 +1,3 @@
-/* eslint-disable new-cap */
 'use strict';
 
 const PassportMemStoreSessionGetter = require('./classes/PassportMemStoreSessionGetter');
