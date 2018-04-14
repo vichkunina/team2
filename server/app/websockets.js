@@ -160,6 +160,7 @@ async function AddContact(uid, userId) {
 
     const he = await UserModel.getById(userId);
     const me = await UserModel.getById(uid);
+
     me.addContact(he);
 
     const chat = new ChatModel({
@@ -167,7 +168,8 @@ async function AddContact(uid, userId) {
         users: [uid, userId]
     });
 
-    await chat.save();
+    await chat.addContact(he);
+    await chat.addContact(me);
 
     return getChatForEmit(chat, uid);
 }
@@ -189,17 +191,12 @@ async function GetChatList(uid) {
 async function getChatForEmit(chat, uid) {
     const users = await chat.getByLink('users');
 
-    const result = {
+    return {
         id: chat.id,
         name: chat.name,
         dialog: chat.dialog,
         users: users.map(getProfileFromUser)
     };
-
-    const userForAvatar = await UserModel.getById(chat.users.filter(u => u !== uid)[0]);
-    result.avatar = userForAvatar.avatar;
-
-    return result;
 }
 
 async function getProfileFromUser(user) {
