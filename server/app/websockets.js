@@ -34,31 +34,27 @@ module.exports = async function (app, sessionStore) {
         socket.on('GetMessages', pushAction.bind(
             null,
             uid,
-            execute.bind(null, wsServer, uid, GetMessages)
+            execute.bind(null, socket, uid, GetMessages)
         ));
         socket.on('GetProfile', pushAction.bind(
             null,
             uid,
-            execute.bind(null, wsServer, uid, GetProfile)
+            execute.bind(null, socket, uid, GetProfile)
         ));
         socket.on('SearchByLogin', pushAction.bind(
             null,
             uid,
-            execute.bind(null, wsServer, uid, SearchByLogin)
+            execute.bind(null, socket, uid, SearchByLogin)
         ));
         socket.on('AddContact', pushAction.bind(null, uid, async (userId) => {
             try {
                 const result = await AddContact(uid, userId);
 
-                socket.emit('AddContactResult', {
-                    success: true,
-                    value: result
+                result.users.forEach(user => {
+                    wsServer.emitByUID(user.id, 'NewChat', result);
                 });
-
-                const me = getProfileFromUser(await UserModel.getById(uid));
-                wsServer.emitByUID(userId, 'NewChat', me);
             } catch (error) {
-                wsServer.emitByUID(uid, 'AddContactResult', {
+                socket.emitByUID(uid, 'AddContactResult', {
                     success: false,
                     error: error.message || error.body
                 });
@@ -72,7 +68,7 @@ module.exports = async function (app, sessionStore) {
         socket.on('GetChatList', pushAction.bind(
             null,
             uid,
-            execute.bind(null, wsServer, uid, GetChatList)
+            execute.bind(null, socket, uid, GetChatList)
         ));
         socket.on('SendMessage', pushAction.bind(null, uid, async ({ chatId, text }) => {
             try {
@@ -97,12 +93,12 @@ module.exports = async function (app, sessionStore) {
             try {
                 const answer = await olesya.ask(text);
 
-                wsServer.emitByUID(uid, 'AskOlesyaResult', {
+                socket('AskOlesyaResult', {
                     success: true,
                     value: answer
                 });
             } catch (error) {
-                wsServer.emitByUID(uid, 'AskOlesyaResult', {
+                socket('AskOlesyaResult', {
                     success: false,
                     error: error.message || error.body
                 });
@@ -120,16 +116,16 @@ function pushAction(uid, action, data) {
     executeQueues[uid].push({ action, data });
 }
 
-async function execute(wsServer, uid, fn, data) {
+async function execute(socket, uid, fn, data) {
     try {
         const result = await fn(uid, data);
 
-        wsServer.emitByUID(uid, fn.name + 'Result', {
+        socket.emit(fn.name + 'Result', {
             success: true,
             value: result
         });
     } catch (error) {
-        wsServer.emitByUID(uid, fn.name + 'Result', {
+        socket.emit(fn.name + 'Result', {
             success: false,
             error: error.message || error.body
         });
@@ -220,7 +216,7 @@ async function AddContact(uid, userId) {
     await chat.addUser(he);
     await chat.addUser(me);
 
-    return getChatForEmit(chat, uid);
+    return getChatForEmit(chat);
 }
 
 async function GetChatList(uid) {
