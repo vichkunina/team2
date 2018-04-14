@@ -30,6 +30,14 @@ class WebSocketServer extends EventEmitter {
         this._ioServer.emit(type, value);
     }
 
+    getUserConnectionsCount(uid) {
+        if (!this._users[uid]) {
+            return 0;
+        }
+
+        return Object.keys(this._users[uid]).length;
+    }
+
     async _onConnect(socket) {
         const uid = await this._sessionGetter.get(socket.handshake.query.token);
 

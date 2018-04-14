@@ -5,6 +5,8 @@ const PassportMemStoreSessionGetter = require('./classes/PassportMemStoreSession
 const olesya = require('./tools/olesya');
 const WebSocketServer = require('./classes/WebSocketServer');
 const SendQueue = require('./classes/SendQueue');
+const uuid = require('uuid').v4;
+const { queue } = require('async');
 
 const {
     ChatModel,
@@ -13,20 +15,28 @@ const {
     messageModelFactory
 } = require('./models');
 const sendQueue = new SendQueue();
+const executeQueues = {};
 
 module.exports = function (app, sessionStore) {
     const sessionGetter = new PassportMemStoreSessionGetter(sessionStore);
     const wsServer = new WebSocketServer(app, sessionGetter);
 
     wsServer.on('authUserConnected', ({ socket, uid }) => {
-        socket.on('GetMessages', execute.bind(null, wsServer, uid, GetMessages));
-        socket.on('GetProfile', execute.bind(null, wsServer, uid, GetProfile));
-        socket.on('SearchByLogin', execute.bind(null, wsServer, uid, SearchByLogin));
-        socket.on('AddContact', async (userId) => {
+        if (!executeQueues[uid]) {
+            executeQueues[uid] = queue(async (task, callback) => {
+                await task();
+                callback();
+            });
+        }
+
+        socket.on('GetMessages', pushAction.bind(null, uid, execute.bind(null, wsServer, uid, GetMessages)));
+        socket.on('GetProfile', pushAction.bind(null, uid, execute.bind(null, wsServer, uid, GetProfile)));
+        socket.on('SearchByLogin', pushAction.bind(null, uid, execute.bind(null, wsServer, uid, SearchByLogin)));
+        socket.on('AddContact', pushAction.bind(null, uid, async (userId) => {
             try {
                 const result = await AddContact(uid, userId);
 
-                wsServer.emitByUID(uid, 'AddContactResult', {
+                socket.emit('AddContactResult', {
                     success: true,
                     value: result
                 });
@@ -39,10 +49,10 @@ module.exports = function (app, sessionStore) {
                     error: error.message || error.body
                 });
             }
-        });
-        socket.on('DeleteProfile', execute.bind(null, wsServer, uid, DeleteProfile));
-        socket.on('GetChatList', execute.bind(null, wsServer, uid, GetChatList));
-        socket.on('SendMessage', async ({ chatId, text }) => {
+        }));
+        socket.on('DeleteProfile', pushAction.bind(null, uid, execute.bind(null, wsServer, uid, DeleteProfile)));
+        socket.on('GetChatList', pushAction.bind(null, uid, execute.bind(null, wsServer, uid, GetChatList)));
+        socket.on('SendMessage', pushAction.bind(null, uid, async ({ chatId, text }) => {
             try {
                 const message = await SendMessage(uid, chatId, text);
                 const chat = await ChatModel.getById(chatId);
@@ -60,8 +70,8 @@ module.exports = function (app, sessionStore) {
                     error: error.message || error.body
                 });
             }
-        });
-        socket.on('AskOlesya', async (text) => {
+        }));
+        socket.on('AskOlesya', pushAction.bind(null, uid, async (text) => {
             try {
                 const answer = await olesya.ask(text);
 
@@ -75,12 +85,22 @@ module.exports = function (app, sessionStore) {
                     error: error.message || error.body
                 });
             }
+        }));
+        socket.on('disconnect', () => {
+            if (wsServer.getUserConnectionsCount(uid) === 0) {
+                delete executeQueues[uid];
+            }
         });
     });
 };
 
+function pushAction(uid, action) {
+    executeQueues[uid].push(action);
+}
+
 async function execute(wsServer, uid, fn, data) {
     try {
+        console.log(uid, fn.name);
         const result = await fn(uid, data);
 
         wsServer.emitByUID(uid, fn.name + 'Result', {
