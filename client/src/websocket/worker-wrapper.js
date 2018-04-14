@@ -2,6 +2,7 @@ import Worker from './message-worker.js';
 import { getCookie } from '../utils/cookie';
 import * as Types from '../enum/WSActionType';
 
+
 export class WorkerWrapper {
     constructor(filename) {
         this._worker = new Worker(filename);
