@@ -228,10 +228,14 @@ async function GetChatList(uid) {
 
     const result = [];
     for (const chatId of user.chats) {
-        const chat = await ChatModel.getById(chatId);
-        const emitChat = await getChatForEmit(chat);
+        try {
+            const chat = await ChatModel.getById(chatId);
+            const emitChat = await getChatForEmit(chat);
 
-        result.push(emitChat);
+            result.push(emitChat);
+        } catch (error) {
+            console.error(`Can't find chat ${chatId}`);
+        }
     }
 
     return result;
