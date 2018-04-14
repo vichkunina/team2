@@ -54,7 +54,8 @@ export default class Chats extends Component {
                     {this.props.children}
                     <div className={styles.Separator} />
                     <ChatSearchResults>
-                        {this.props.searchResult.map(result =>
+                        {this.props.searchResult &&
+                        this.props.searchResult.map(result =>
                             <SearchResult
                                 key={result.id}
                                 login={result.login}

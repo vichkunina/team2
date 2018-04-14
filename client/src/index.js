@@ -10,9 +10,9 @@ const worker = new WorkerWrapper('message-worker.js');
 const store = new Store();
 
 worker.subscribe('SearchByLogin', (error, result) => {
-    console.log('result: ');
-    console.log(result);
-    console.log(error);
+    console.info('result: ');
+    console.info(result);
+    console.info(error);
     store.searchResult = result;
 });
 worker.subscribe('DeleteProfile', (error, result) => {
@@ -26,7 +26,7 @@ worker.subscribe('NewMessage', (error, result) => {
             .find(history => history.chatId === result.chatId)
             .messages.push(result);
     }
-    console.log(store.chatHistories);
+    console.info(store.chatHistories);
 });
 worker.subscribe('SendMessage', (error, result) => {
     console.info('result: ');
@@ -34,7 +34,7 @@ worker.subscribe('SendMessage', (error, result) => {
     console.info(error);
 });
 worker.subscribe('GetProfile', (error, profile) => {
-    console.log('err', error, profile);
+    console.info('err', error, profile);
     store.profile = profile;
 });
 worker.subscribe('GetChatList', (error, chats) => {
@@ -47,12 +47,16 @@ worker.subscribe('GetChatList', (error, chats) => {
     });
     store.chats = store.chats.concat(chats.map(initChat));
 
-    console.log('chats: ', chats);
+    console.info('chats: ', chats);
 });
 
 function initChat(chat) {
+    if (!chat) {
+        return;
+    }
+    console.info('chat: ', chat);
     const user = chat.users.find(entry => entry.id !== store.profile.id);
-    console.log(chat, store.profile.id);
+    console.info(chat, store.profile.id);
     chat.avatar = user.avatar;
     chat.name = user.login;
 
@@ -60,6 +64,9 @@ function initChat(chat) {
 }
 
 worker.subscribe('GetMessages', (error, data) => {
+    if (!data) {
+        return;
+    }
     const chatHistory = store.chatHistories
         .find(history => history.chatId === data.chatId);
     if (chatHistory) {
@@ -70,8 +77,8 @@ worker.subscribe('GetMessages', (error, data) => {
             messages: data.messages
         });
     }
-    console.log('store.chatHistories: ');
-    console.log(store.chatHistories);
+    console.info('store.chatHistories: ');
+    console.info(store.chatHistories);
 });
 
 /* eslint-disable handle-callback-err */
