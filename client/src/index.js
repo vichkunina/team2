@@ -23,8 +23,8 @@ worker.subscribe('AddContact', (error, contact) => {
     console.info('ac', error);
 });
 // worker.getProfile();
-// worker.getChatList();
-worker.addContact('dced0fed-96fb-4c77-bfd4-83f9955606a7');
+worker.getChatList();
+//worker.addContact('dced0fed-96fb-4c77-bfd4-83f9955606a7');
 
 const store = new Store();
 
