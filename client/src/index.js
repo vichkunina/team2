@@ -44,8 +44,19 @@ worker.subscribe('GetChatList', (error, chats) => {
             limit: 50
         });
     });
-    store.chats = store.chats.concat(chats);
+    store.chats = store.chats.concat(chats.map(initChat));
+
+    console.log('chats: ', chats);
 });
+
+function initChat(chat) {
+    const user = chat.users.find(user => user.id !== store.profile.id);
+    chat.avatar = user.avatar;
+    chat.name = user.login;
+
+    return chat;
+}
+
 worker.subscribe('GetMessages', (error, data) => {
     const chatHistory = store.chatHistories
         .find(history => history.chatId === data.chatId);
@@ -61,8 +72,8 @@ worker.subscribe('GetMessages', (error, data) => {
     console.log(store.chatHistories);
 });
 worker.subscribe('NewChat', (err, chat) => {
-    store.chats = store.chats.concat([chat]);
-    store.chatHistories = store.chatHistories.concat([{chatId: chat.id, messages: []}]);
+    store.chats = store.chats.concat([initChat(chat)]);
+    store.chatHistories = store.chatHistories.concat([{ chatId: chat.id, messages: [] }]);
 });
 
 ReactDOM.render(<App store={store} worker={worker}/>, document.getElementById('root'));
