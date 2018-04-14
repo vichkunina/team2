@@ -8,7 +8,6 @@ const chatBaseModel = makeModel(chatScheme, 'chats');
 chatBaseModel.prototype.addUser = async function (user) {
     this.users.push(user.id);
 
-    user.chats = user.chats ? user.chats : [];
     user.chats.push(this.id);
 
     await this.save();

@@ -4,6 +4,7 @@
 const PassportMemStoreSessionGetter = require('./classes/PassportMemStoreSessionGetter');
 const olesya = require('./tools/olesya');
 const WebSocketServer = require('./classes/WebSocketServer');
+const SendQueue = require('./classes/SendQueue');
 
 const {
     ChatModel,
@@ -11,6 +12,7 @@ const {
     UserIdLoginModel,
     messageModelFactory
 } = require('./models');
+const sendQueue = new SendQueue();
 
 module.exports = function (app, sessionStore) {
     const sessionGetter = new PassportMemStoreSessionGetter(sessionStore);
@@ -58,21 +60,21 @@ module.exports = function (app, sessionStore) {
                 });
             }
         });
-        // socket.on('AskOlesya', async ({ text }) => {
-        //     try {
-        //         const answer = await olesya.ask(text);
+        socket.on('AskOlesya', async (text) => {
+            try {
+                const answer = await olesya.ask(text);
 
-        //         wsServer.emitByUID(uid, 'SendMessageResult', {
-        //             success: true,
-        //             value: answer
-        //         });
-        //     } catch (error) {
-        //         wsServer.emitByUID(uid, 'SendMessageResult', {
-        //             success: false,
-        //             error: error.message || error.body
-        //         });
-        //     }
-        // });
+                wsServer.emitByUID(uid, 'AskOlesyaResult', {
+                    success: true,
+                    value: answer
+                });
+            } catch (error) {
+                wsServer.emitByUID(uid, 'AskOlesyaResult', {
+                    success: false,
+                    error: error.message || error.body
+                });
+            }
+        });
     });
 };
 
@@ -105,7 +107,7 @@ async function SendMessage(uid, chatId, text) {
         body: text
     });
 
-    await message.save();
+    sendQueue.push(chatId, message);
     message.chatId = chatId;
 
     return message;
