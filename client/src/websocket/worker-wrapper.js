@@ -42,8 +42,14 @@ export class WorkerWrapper {
 
     _handleResponse(response) {
         const handlers = this._handlers[response.action];
-        if (response.result.success === false) {
+        console.log(response);
+        if (response.result && response.result.success === false) {
             handlers.forEach(handler => handler(response.result.error, null));
+
+            return;
+        }
+        if (response.action === "NewMessage") {
+            handlers.forEach(handler => handler(null, response.message));
 
             return;
         }

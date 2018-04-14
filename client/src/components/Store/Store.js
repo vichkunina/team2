@@ -1,4 +1,4 @@
-import { observable } from 'mobx';
+import { observable, action } from 'mobx';
 
 export default class Store {
 
@@ -88,16 +88,17 @@ export default class Store {
         // }
     ];
 
-    @observable chatHistories = {
-        // chatId: [
+    @observable chatHistories = [];
         //     {
-        //         id: '123',
-        //         body: 'b0ss',
-        //         createdAt:
+        //          chatId: '123,
+        //         messages:
         //     }
         // ]
-    };
 
     @observable currentChat = {};
+
+    @action addMessage(chatId, message) {
+        this.chatHistories.find(history => history.chatId === chatId).messages.push(message);
+    }
 
 }

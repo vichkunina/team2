@@ -27,7 +27,7 @@ export default class App extends Component {
             chats: PropTypes.observableArray,
             currentChat: PropTypes.observableObject,
             profile: PropTypes.observableObject,
-            chatHistories: PropTypes.observableObject
+            chatHistories: PropTypes.observableArrayOf(PropTypes.observableObject)
         }),
         worker: ReactPropTypes.object
     };
@@ -36,7 +36,7 @@ export default class App extends Component {
         this.props.worker.getProfile();
         this.props.worker.getChatList();
 
-        // this.props.worker.deleteProfile("9c917d1d-6a74-48cd-8ccc-e7eb98c07d9c");
+        // this.props.worker.deleteProfile('babba9c5-366d-4786-9ae4-0ce6eeadaf91');
     }
 
     componentWillMount() {
@@ -51,6 +51,15 @@ export default class App extends Component {
             console.info(result);
             console.info(error);
         });
+        this.props.worker.subscribe('NewMessage', (error, result) => {
+            console.info(error);
+            if (this.props.store.profile.id !== result.from) {
+                this.props.store.chatHistories
+                    .find(history => history.chatId === result.chatId)
+                    .messages.push(result);
+            }
+            console.log(this.props.store.chatHistories);
+        });
         this.props.worker.subscribe('SendMessage', (error, result) => {
             console.info('result: ');
             console.info(result);
@@ -64,18 +73,24 @@ export default class App extends Component {
                 this.props.worker.getMessages({
                     chatId: chat.id,
                     offset: 0,
-                    limit: 10
+                    limit: 50
                 });
             });
             this.props.store.chats.push(...chats);
         });
         this.props.worker.subscribe('GetMessages', (error, data) => {
-            const chatHistory = this.props.store.chatHistories[data.chatId];
+            const chatHistory = this.props.store.chatHistories
+                .find(history => history.chatId === data.chatId);
             if (chatHistory) {
-                chatHistory.push(...data.messages);
+                chatHistory.messages.push(...data.messages);
             } else {
-                this.props.store.chatHistories[data.chatId] = data.messages;
+                this.props.store.chatHistories.push({
+                    chatId: data.chatId,
+                    messages: data.messages
+                });
             }
+            console.log('this.props.store.chatHistories: ');
+            console.log(this.props.store.chatHistories);
         });
 
         this.openContacts = this.openContacts.bind(this);
@@ -105,10 +120,11 @@ export default class App extends Component {
     }
 
     render() {
+        console.log('NOW WE RENDER ALL APP');
         const chats = this.props.store.chats.map(chat => {
             const chatHistory = this.props.store.chatHistories[chat.id];
             let lastMessage = '';
-            if (chatHistory) {
+            if (chatHistory && chatHistory.length > 0) {
                 lastMessage = chatHistory[chatHistory.length - 1].body;
             }
 
@@ -142,7 +158,10 @@ export default class App extends Component {
                 }
                 {this.state.showChat &&
                 <Chat name={this.props.store.currentChat.name}
-                    chatHistory={chatHistory}
+                    chatId={this.props.store.currentChat.id}
+                    addMessage={this.props.store.addMessage.bind(this.props.store)}
+                    sendMessage={this.props.worker.sendMessage.bind(this.props.worker)}
+                    chatHistories={this.props.store.chatHistories}
                     profile={this.props.store.profile}
                     transitFromChatToContacts={this.transitFromChatToContacts}>
                     {chatHistoryToRender}
