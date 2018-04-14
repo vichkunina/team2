@@ -1,4 +1,6 @@
+/* eslint-disable max-depth */
 'use strict';
+
 const io = require('socket.io');
 const uuid = require('uuid').v4;
 const EventEmitter = require('events').EventEmitter;

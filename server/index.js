@@ -8,7 +8,6 @@ const config = require('config');
 const express = require('express');
 const { connect, setTimeout } = require('hruhru');
 const morgan = require('morgan');
-const hbs = require('hbs');
 const path = require('path');
 const cors = require('cors');
 const { createServer } = require('http');

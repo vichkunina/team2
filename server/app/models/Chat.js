@@ -11,13 +11,10 @@ module.exports = class extends chatBaseModel {
     }
 
     async addUser(user) {
-
         this.users.push(user.id);
 
         user.chats = user.chats ? user.chats : [];
         user.chats.push(this.id);
-
-        console.log(`add chat: ${this.id} to user ${user.login}`);
 
         await this.save();
         await user.save();

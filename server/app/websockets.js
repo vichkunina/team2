@@ -134,7 +134,7 @@ async function GetProfile(uid, userId) {
 async function SearchByLogin(uid, login) {
     const foundUsers = [];
     const allUsersIterator = UserIdLoginModel.getIterator();
-    const userIdAndLogin = await allUsersIterator.next();
+    let userIdAndLogin = await allUsersIterator.next();
     while (userIdAndLogin) {
         if (userIdAndLogin.login.indexOf(login) !== -1) {
             foundUsers.push(getProfileFromUser(await userIdAndLogin.getByLink('userId')));
@@ -150,10 +150,9 @@ async function AddContact(uid, userId) {
         throw new Error('You can\'t add yourself!');
     }
 
-    await UserModel.getById(userId);
-
+    const he = await UserModel.getById(userId);
     const me = await UserModel.getById(uid);
-    me.add(userId);
+    me.addContact(he);
 
     const chat = new ChatModel({
         dialog: true,
