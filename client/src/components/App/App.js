@@ -38,7 +38,7 @@ export default class App extends Component {
         this.props.worker.getProfile();
         this.props.worker.getChatList();
 
-        // this.props.worker.deleteProfile('d32865d1-b6f0-4770-aa36-8541ba2b0cef');
+        // this.props.worker.deleteProfile('ab0af3ea-4b9b-4783-b1dd-a1565fd30dc7');
     }
 
     componentWillMount() {
