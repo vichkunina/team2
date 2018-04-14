@@ -27,7 +27,7 @@ export default class ChatHistoryUserMessage extends Component {
         return (
             <div className={className}>
                 <span className={styles.Name}>{this.props.name}</span>
-                <div className={styles.Body}>{this.props.body}</div>
+                <div className={styles.Body} dangerouslySetInnerHTML={{ __html: this.props.body }}/>
                 {this.props.ogTitle &&
                     <ChatHistoryUserMessageOGAttachment
                         url={this.props.ogURL} title={this.props.ogTitle}

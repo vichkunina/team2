@@ -20,11 +20,17 @@ worker.subscribe('DeleteProfile', (error, result) => {
     console.info(error);
 });
 worker.subscribe('NewMessage', (error, result) => {
-    console.info(error);
+    console.info(error, result);
     if (store.profile.id !== result.from) {
-        store.chatHistories
-            .find(history => history.chatId === result.chatId)
+        const history = store
+            .chatHistories
+            .find(h => h.chatId === result.chatId)
             .messages.push(result);
+
+        store.chatHistories = store
+            .chatHistories
+            .filter(h => h.chatId !== result.chatId)
+            .concat([history]);
     }
     console.info(store.chatHistories);
 });

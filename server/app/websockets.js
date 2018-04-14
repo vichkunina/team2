@@ -6,6 +6,7 @@ const olesya = require('./tools/olesya');
 const WebSocketServer = require('./classes/WebSocketServer');
 const SendQueue = require('./classes/SendQueue');
 const { queue } = require('async');
+const { markdownIt } = require('./tools/markdown');
 let LOGINS_CACHE = [];
 
 const {
@@ -143,7 +144,7 @@ async function sendMessage(uid, chatId, text) {
     const MessageModel = messageModelFactory(chatId);
     const message = new MessageModel({
         from: uid,
-        body: text
+        body: markdownIt(text)
     });
 
     sendQueue.push(chatId, message);
