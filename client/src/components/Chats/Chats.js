@@ -13,14 +13,14 @@ export default class Chats extends Component {
         chatInput: '',
         children: ReactPropTypes.element,
         addContact: ReactPropTypes.func,
-        searchByLogin: ReactPropTypes.func
+        searchByLogin: ReactPropTypes.func,
+        searchResult: ReactPropTypes.array
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            chats: this.props.chats,
-            searchResults: []
+            chats: this.props.chats
         };
     }
 
@@ -51,7 +51,7 @@ export default class Chats extends Component {
                             onChange={this.filteredList.bind(this)}/>
                     </form>
                     {this.props.children}
-                    <ChatSearchResults searchResults={this.state.searchResults}/>
+                    <ChatSearchResults searchResult={this.props.searchResult}/>
                 </div>
             </div>
         );

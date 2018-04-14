@@ -144,8 +144,13 @@ async function SearchByLogin(uid, login) {
     const allUsersIterator = UserIdLoginModel.getIterator();
     let userIdAndLogin = await allUsersIterator.next();
     while (userIdAndLogin) {
-        if (userIdAndLogin.login.indexOf(login) !== -1) {
-            foundUsers.push(getProfileFromUser(await userIdAndLogin.getByLink('userId')));
+        if (userIdAndLogin.login.toLowerCase().indexOf(login.toLowerCase()) !== -1) {
+            try {
+                const user = await userIdAndLogin.getByLink('userId');
+                foundUsers.push(user);
+            } catch (error) {
+                console.error(error.message);
+            }
         }
         userIdAndLogin = await allUsersIterator.next();
     }
