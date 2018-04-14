@@ -1,4 +1,5 @@
 import io from 'socket.io-client';
+import * as Types from '../enum/WSActionType';
 
 let TOKEN;
 let socket;
@@ -13,16 +14,16 @@ function initSocket() {
     });
 
     socket.on('NewMessage', message => {
-        postMessage({ action: 'NewMessage', message });
+        postMessage({ action: 'NewMessage', result: message, type: Types.EMIT });
     });
     socket.on('NewChat', chat => {
-        postMessage({ action: 'NewChat', chat });
+        postMessage({ action: 'NewChat', result: chat, type: Types.EMIT });
     });
 
     for (const method of methods) {
         socket.on(`${method}Result`, result => {
             console.info(result);
-            postMessage({ action: method, result });
+            postMessage({ action: method, result, type: Types.RESPONSE });
         });
     }
 }

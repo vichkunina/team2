@@ -1,36 +1,3 @@
-.Wrapper {
-    display: grid;
-    grid-template-columns: 2fr 10fr 1fr;
-    grid-template-areas: 'p n d'
-    'p m c';
-
-    align-items: center;
-
-    padding: 12px 16px;
-
-    width: 100%;
-
-    font-size: 14px;
-
-    box-sizing: border-box;
-}
-
-.Photo {
-    grid-area: p;
-
-    width: 54px;
-    height: 54px;
-
-    border-radius: 50%;
-}
-
-.Name {
-    grid-area: n;
-
-    margin: 0 0 0 16px;
-    font-weight: 600;
-}
-
 .LastMessage {
     grid-area: m;
 
@@ -59,19 +26,4 @@
     color: #fffffa;
 
     border-radius: 28px;
-}
-
-.Wrapper:hover {
-    background: #104fd7;
-    cursor: pointer;
-}
-
-.Wrapper:hover,
-.Wrapper:hover > .LastMessage {
-    color: #fffffa;
-}
-
-.Wrapper:hover > .UnreadCount {
-    background-color:#fffffa;
-    color: #104fd7;
 }
