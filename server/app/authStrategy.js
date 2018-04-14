@@ -23,7 +23,7 @@ const strategy = new passportGithub.Strategy(
             console.info(`User exist ${user.login}`);
             done(null, user);
         } catch (error) {
-            console.info(error);
+            console.info(error.message);
 
             const user = new User({
                 login: profile.username,
