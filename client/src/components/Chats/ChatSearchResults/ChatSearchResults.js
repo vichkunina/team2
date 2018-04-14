@@ -7,8 +7,8 @@ export default class ChatSearchResults extends Component {
     }
 
     static propTypes = {
-        children: PropTypes.element
-    }
+        children: PropTypes.array
+    };
 
     render() {
         return (

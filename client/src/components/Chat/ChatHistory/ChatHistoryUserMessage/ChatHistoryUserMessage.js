@@ -11,7 +11,7 @@ export default class ChatHistoryUserMessage extends Component {
 
     static propTypes = {
         fromMe: PropTypes.bool.isRequired,
-        name: PropTypes.string.isRequired,
+        name: PropTypes.string,
         body: PropTypes.string.isRequired,
         date: PropTypes.instanceOf(Date).isRequired,
         ogURL: PropTypes.string,

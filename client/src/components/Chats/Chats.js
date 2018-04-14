@@ -11,11 +11,11 @@ export default class Chats extends Component {
 
     static propTypes = {
         chats: PropTypes.observableArray,
-        chatInput: '',
-        children: ReactPropTypes.element,
+        chatInput: ReactPropTypes.string,
+        children: ReactPropTypes.array,
         addContact: ReactPropTypes.func,
         searchByLogin: ReactPropTypes.func,
-        searchResult: ReactPropTypes.array
+        searchResult: PropTypes.observableArray
     };
 
     constructor(props) {

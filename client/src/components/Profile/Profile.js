@@ -6,7 +6,7 @@ import { observer } from 'mobx-react';
 @observer
 export default class Profile extends Component {
     static propTypes = {
-        transitFromProfileToChat: ReactPropTypes.func.isRequired,
+        transitFromProfileToChat: ReactPropTypes.func,
         profile: ReactPropTypes.shape({
             avatar: ReactPropTypes.string,
             name: ReactPropTypes.string,
@@ -20,7 +20,7 @@ export default class Profile extends Component {
             <div className={styles.Wrapper}>
                 <button className={styles.BackButton}
                     onClick={this.props.transitFromProfileToChat}>&larr;</button>
-                <img className={styles.Photo} src={this.props.profile.avatar}></img>
+                <img className={styles.Photo} src={this.props.profile.avatar}/>
                 <div className={styles.Info}>
                     <div className={styles.Name}>{this.props.profile.name}</div>
                     <div className={styles.Status}>{'online'}</div>
