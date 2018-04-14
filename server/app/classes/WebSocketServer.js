@@ -1,4 +1,3 @@
-/* eslint-disable max-depth */
 'use strict';
 
 const io = require('socket.io');
@@ -28,6 +27,14 @@ class WebSocketServer extends EventEmitter {
 
     broadcastEmit(type, value) {
         this._ioServer.emit(type, value);
+    }
+
+    getUserConnectionsCount(uid) {
+        if (!this._users[uid]) {
+            return 0;
+        }
+
+        return Object.keys(this._users[uid]).length;
     }
 
     async _onConnect(socket) {

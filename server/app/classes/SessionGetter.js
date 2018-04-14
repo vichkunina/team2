@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-empty-function */
 'use strict';
 
 class SessionGetter {
@@ -7,6 +5,7 @@ class SessionGetter {
         this._sessionStore = sessionStore;
     }
 
+    /* eslint-disable-next-line no-unused-vars, no-empty-function */
     async get(token) {}
 }
 

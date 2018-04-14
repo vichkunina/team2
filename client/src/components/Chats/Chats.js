@@ -4,7 +4,7 @@ import ReactPropTypes from 'prop-types';
 import styles from './Chats.css';
 import { observer } from 'mobx-react';
 import ChatSearchResults from './ChatSearchResults/ChatSearchResults';
-import SearchResult from "./ChatSearchResults/SearchResult/SearchResult";
+import SearchResult from './ChatSearchResults/SearchResult/SearchResult';
 
 @observer
 export default class Chats extends Component {
@@ -52,10 +52,11 @@ export default class Chats extends Component {
                             onChange={this.filteredList.bind(this)}/>
                     </form>
                     {this.props.children}
-                    <hr/>
+                    <div className={styles.Separator} />
                     <ChatSearchResults>
                         {this.props.searchResult.map(result =>
                             <SearchResult
+                                key={result.id}
                                 login={result.login}
                                 avatar={result.avatar}
                                 onAdd={() => this.props.addContact(result.id)}/>

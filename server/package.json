@@ -34,6 +34,7 @@
     "node-fetch": "^2.1.2",
     "node-geocoder": "^3.22.0",
     "open-graph-scraper": "^3.1.5",
+    "pagedown": "^1.1.0",
     "passport": "^0.4.0",
     "passport-github": "^1.1.0",
     "socket.io": "^2.1.0",

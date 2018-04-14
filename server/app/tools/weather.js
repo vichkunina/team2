@@ -4,7 +4,6 @@ const { URL } = require('url');
 const fetch = require('node-fetch');
 const NodeGeocoder = require('node-geocoder');
 
-// eslint-disable-next-line new-cap
 const GEOCODER = NodeGeocoder({
     provider: 'google',
     apiKey: 'AIzaSyBzdcHsJxq2nDqO9nItOJiyC7hjAXmtO7k'
