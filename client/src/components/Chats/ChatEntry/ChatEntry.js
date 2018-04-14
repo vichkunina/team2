@@ -31,8 +31,6 @@ export default class ChatsEntry extends Component {
                 <span className={styles.LastMessageDate}>
                     {this._formatDate(this.props.lastMessageDate)}
                 </span>
-                {this.props.unreadCount !== 0 &&
-                    <span className={styles.UnreadCount}>{this.props.unreadCount}</span>}
             </a>
         );
     }

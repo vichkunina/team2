@@ -51,6 +51,7 @@ worker.subscribe('GetChatList', (error, chats) => {
 
 function initChat(chat) {
     const user = chat.users.find(user => user.id !== store.profile.id);
+    console.log(chat, store.profile.id);
     chat.avatar = user.avatar;
     chat.name = user.login;
 
@@ -70,6 +71,10 @@ worker.subscribe('GetMessages', (error, data) => {
     }
     console.log('store.chatHistories: ');
     console.log(store.chatHistories);
+});
+worker.subscribe('AddContact', (err, chat) => {
+    store.chats = store.chats.concat([initChat(chat)]);
+    store.chatHistories = store.chatHistories.concat([{ chatId: chat.id, messages: [] }]);
 });
 worker.subscribe('NewChat', (err, chat) => {
     store.chats = store.chats.concat([initChat(chat)]);

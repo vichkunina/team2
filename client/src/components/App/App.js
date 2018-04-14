@@ -38,7 +38,7 @@ export default class App extends Component {
         this.props.worker.getProfile();
         this.props.worker.getChatList();
 
-        // this.props.worker.deleteProfile('ab338ced-09ca-458d-8e50-3871a5573022');
+        // this.props.worker.deleteProfile('d32865d1-b6f0-4770-aa36-8541ba2b0cef');
     }
 
     componentWillMount() {
@@ -81,7 +81,7 @@ export default class App extends Component {
             return (
                 <ChatEntry key={chat.id} photoURL={chat.avatar} name={chat.name}
                     lastMessage={lastMessage}
-                    lastMessageDate={new Date()} unreadCount={chat.unreadCount}
+                    lastMessageDate={new Date()}
                     onClick={this.changeChat.bind(this, chat)}/>
             );
         });
