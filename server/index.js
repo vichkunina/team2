@@ -59,13 +59,13 @@ app.use(bodyParser.json());
 
 routes(app);
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || config.get('port');
 
 require('./app/websockets')(httpServer, sessionStore);
 
 httpServer.listen(port, () => {
     console.info(`Server started on ${port}`);
-    console.info(`Open http://localhost:${port}/`);
+    console.info(`Open http://${config.get('host')}/`);
 });
 
 module.exports = app;

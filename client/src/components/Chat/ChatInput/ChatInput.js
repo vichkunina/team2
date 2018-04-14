@@ -22,9 +22,6 @@ export default class ChatInput extends React.Component {
 
     /* eslint-disable no-console */
     submitHandler(event) {
-        console.log('this.props.currentChatHistory: ');
-        console.log(this.props.chatHistories
-            .find(history => history.chatId === this.props.chatId));
         const message = {
             from: this.props.profile.id,
             body: this.state.chatInput,
@@ -32,7 +29,6 @@ export default class ChatInput extends React.Component {
             createdAt: Date.now(),
             editedAt: Date.now()
         };
-        console.log(this.props.chatHistories);
         this.props.chatHistories
             .find(history => history.chatId === this.props.chatId)
             .messages.push(message);

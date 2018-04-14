@@ -36,7 +36,7 @@ module.exports = {
                 test: /worker\.js$/,
                 use: {
                     loader: 'worker-loader',
-                    options: { name: '[name].js' }
+                    options: { inline: true }
                 }
             },
             {
@@ -90,5 +90,8 @@ module.exports = {
         contentBase: path.join(__dirname, 'dist'),
         compress: true,
         port: 9000
+    },
+    node: {
+        fs: 'empty'
     }
 };

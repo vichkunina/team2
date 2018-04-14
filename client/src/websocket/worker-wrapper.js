@@ -4,8 +4,8 @@ import * as Types from '../enum/WSActionType';
 
 
 export class WorkerWrapper {
-    constructor(filename) {
-        this._worker = new Worker(filename);
+    constructor() {
+        this._worker = new Worker();
         this._worker.onmessage = e => this._handleResponse(e.data);
         this._worker.postMessage({
             action: 'auth',
