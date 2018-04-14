@@ -4,6 +4,7 @@
 const PassportMemStoreSessionGetter = require('./classes/PassportMemStoreSessionGetter');
 const olesya = require('./tools/olesya');
 const WebSocketServer = require('./classes/WebSocketServer');
+const SendQueue = require('./classes/SendQueue');
 
 const {
     ChatModel,
@@ -11,6 +12,7 @@ const {
     UserIdLoginModel,
     messageModelFactory
 } = require('./models');
+const sendQueue = new SendQueue();
 
 module.exports = function (app, sessionStore) {
     const sessionGetter = new PassportMemStoreSessionGetter(sessionStore);
@@ -105,7 +107,7 @@ async function SendMessage(uid, chatId, text) {
         body: text
     });
 
-    await message.save();
+    sendQueue.push(chatId, message);
     message.chatId = chatId;
 
     return message;
