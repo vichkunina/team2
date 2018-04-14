@@ -29,7 +29,7 @@ module.exports = function (app, sessionStore) {
                     value: result
                 });
 
-                wsServer.emitByUID(uid, 'NewChat', result);
+                wsServer.emitByUID(userId, 'NewChat', result);
             } catch (error) {
                 wsServer.emitByUID(uid, 'AddContactResult', {
                     success: false,

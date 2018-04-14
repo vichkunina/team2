@@ -38,7 +38,7 @@ export default class App extends Component {
         this.props.worker.getProfile();
         this.props.worker.getChatList();
 
-        // this.props.worker.deleteProfile('babba9c5-366d-4786-9ae4-0ce6eeadaf91');
+        // this.props.worker.deleteProfile('ab338ced-09ca-458d-8e50-3871a5573022');
     }
 
     componentWillMount() {
@@ -70,6 +70,8 @@ export default class App extends Component {
 
     render() {
         const chats = this.props.store.chats.map(chat => {
+            console.log('chat: ');
+            console.log(chat);
             const chatHistory = this.props.store.chatHistories[chat.id];
             let lastMessage = '';
             if (chatHistory && chatHistory.length > 0) {
@@ -112,6 +114,7 @@ export default class App extends Component {
                     sendMessage={this.props.worker.sendMessage.bind(this.props.worker)}
                     chatHistories={this.props.store.chatHistories}
                     profile={this.props.store.profile}
+                    avatar={this.props.store.currentChat.avatar}
                     transitFromChatToContacts={this.transitFromChatToContacts}>
                     {chatHistoryToRender}
                 </Chat>

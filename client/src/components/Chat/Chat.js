@@ -21,7 +21,8 @@ export default class Chat extends Component {
         children: ReactPropTypes.element,
         profile: PropTypes.observableObject,
         transitFromChatToContacts: ReactPropTypes.func.isRequired,
-        name: ReactPropTypes.string
+        name: ReactPropTypes.string,
+        avatar: ReactPropTypes.string,
     };
 
     render() {
@@ -39,7 +40,7 @@ export default class Chat extends Component {
         if (chatHistory) {
             return (
                 <div className={styles.Wrapper}>
-                    <ChatHeader photoURL={'avatar'}
+                    <ChatHeader photoURL={this.props.avatar}
                         name={this.props.name} status={'online'}
                         transitFromChatToContacts={this.props.transitFromChatToContacts}/>
                     <ChatHistory>
