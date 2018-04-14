@@ -4,8 +4,8 @@ const PassportMemStoreSessionGetter = require('./classes/PassportMemStoreSession
 const olesya = require('./tools/olesya');
 const WebSocketServer = require('./classes/WebSocketServer');
 const SendQueue = require('./classes/SendQueue');
-const uuid = require('uuid').v4;
 const { queue } = require('async');
+let LOGINS_CACHE = [];
 
 const {
     ChatModel,
@@ -16,21 +16,36 @@ const {
 const sendQueue = new SendQueue();
 const executeQueues = {};
 
-module.exports = function (app, sessionStore) {
+module.exports = async function (app, sessionStore) {
     const sessionGetter = new PassportMemStoreSessionGetter(sessionStore);
     const wsServer = new WebSocketServer(app, sessionGetter);
+    await updateLoginCache();
+    console.info('Login cache ready!');
+    setInterval(updateLoginCache, 300 * 1000);
 
     wsServer.on('authUserConnected', ({ socket, uid }) => {
         if (!executeQueues[uid]) {
-            executeQueues[uid] = queue(async (task, callback) => {
-                await task();
+            executeQueues[uid] = queue(async ({ action, data }, callback) => {
+                await action(data);
                 callback();
             });
         }
 
-        socket.on('GetMessages', pushAction.bind(null, uid, execute.bind(null, wsServer, uid, GetMessages)));
-        socket.on('GetProfile', pushAction.bind(null, uid, execute.bind(null, wsServer, uid, GetProfile)));
-        socket.on('SearchByLogin', pushAction.bind(null, uid, execute.bind(null, wsServer, uid, SearchByLogin)));
+        socket.on('GetMessages', pushAction.bind(
+            null,
+            uid,
+            execute.bind(null, wsServer, uid, GetMessages)
+        ));
+        socket.on('GetProfile', pushAction.bind(
+            null,
+            uid,
+            execute.bind(null, wsServer, uid, GetProfile)
+        ));
+        socket.on('SearchByLogin', pushAction.bind(
+            null,
+            uid,
+            execute.bind(null, wsServer, uid, SearchByLogin)
+        ));
         socket.on('AddContact', pushAction.bind(null, uid, async (userId) => {
             try {
                 const result = await AddContact(uid, userId);
@@ -49,8 +64,16 @@ module.exports = function (app, sessionStore) {
                 });
             }
         }));
-        socket.on('DeleteProfile', pushAction.bind(null, uid, execute.bind(null, wsServer, uid, DeleteProfile)));
-        socket.on('GetChatList', pushAction.bind(null, uid, execute.bind(null, wsServer, uid, GetChatList)));
+        socket.on('DeleteProfile', pushAction.bind(
+            null,
+            uid,
+            execute.bind(null, wsServer, uid, DeleteProfile)
+        ));
+        socket.on('GetChatList', pushAction.bind(
+            null,
+            uid,
+            execute.bind(null, wsServer, uid, GetChatList)
+        ));
         socket.on('SendMessage', pushAction.bind(null, uid, async ({ chatId, text }) => {
             try {
                 const message = await SendMessage(uid, chatId, text);
@@ -93,13 +116,12 @@ module.exports = function (app, sessionStore) {
     });
 };
 
-function pushAction(uid, action) {
-    executeQueues[uid].push(action);
+function pushAction(uid, action, data) {
+    executeQueues[uid].push({ action, data });
 }
 
 async function execute(wsServer, uid, fn, data) {
     try {
-        console.log(uid, fn.name);
         const result = await fn(uid, data);
 
         wsServer.emitByUID(uid, fn.name + 'Result', {
@@ -162,25 +184,20 @@ async function GetProfile(uid, userId) {
 }
 
 async function SearchByLogin(uid, login) {
-    const me = await UserModel.getById(uid);
-    const foundUsers = [];
-    const allUsersIterator = UserIdLoginModel.getIterator();
-    let userIdAndLogin = await allUsersIterator.next();
-    while (userIdAndLogin) {
-        const match = userIdAndLogin.login.toLowerCase().indexOf(login.toLowerCase()) !== -1;
-        const notHave = me.contacts.indexOf(userIdAndLogin.userId) === -1;
-        if (match && notHave) {
-            try {
-                const user = await userIdAndLogin.getByLink('userId');
-                foundUsers.push(user);
-            } catch (error) {
-                console.error(error.message);
-            }
-        }
-        userIdAndLogin = await allUsersIterator.next();
+    login = login.trim();
+
+    if (!login.length) {
+        throw new Error('Empty request!');
     }
 
-    return foundUsers;
+    const me = await UserModel.getById(uid);
+    const foundUsers = await findLoginInCache(login, me);
+
+    if (foundUsers.length !== 0) {
+        return foundUsers;
+    }
+
+    return findLoginInDB(login, me);
 }
 
 async function AddContact(uid, userId) {
@@ -237,4 +254,63 @@ function getProfileFromUser(user) {
         login: user.login,
         avatar: user.avatar
     };
+}
+
+async function updateLoginCache() {
+    const iterator = UserIdLoginModel.getIterator();
+
+    const newCache = [];
+    let next = await iterator.next();
+    while (next) {
+        try {
+            const user = await next.getByLink('userId');
+            newCache.push(getProfileFromUser(user));
+        } catch (error) {
+            console.error(error.body);
+        } finally {
+            next = await iterator.next();
+        }
+    }
+
+    LOGINS_CACHE = newCache;
+}
+
+async function findLoginInCache(str, me) {
+    const foundUsers = [];
+
+    for (const profile of LOGINS_CACHE) {
+        const match = profile.login.toLowerCase().indexOf(str.toLowerCase()) !== -1;
+        const notHave = me.contacts.indexOf(profile.id) === -1;
+        const notMe = profile.id !== me.id;
+
+        if (match && notHave && notMe) {
+            foundUsers.push(profile);
+        }
+    }
+
+    return foundUsers;
+}
+
+async function findLoginInDB(str, me) {
+    const foundUsers = [];
+
+    const allUsersIterator = UserIdLoginModel.getIterator();
+    let userIdAndLogin = await allUsersIterator.next();
+    while (userIdAndLogin) {
+        const match = userIdAndLogin.login.toLowerCase().indexOf(str.toLowerCase()) !== -1;
+        const notHave = me.contacts.indexOf(userIdAndLogin.userId) === -1;
+        const notMe = userIdAndLogin.userId !== me.id;
+
+        if (match && notHave && notMe) {
+            try {
+                const user = await userIdAndLogin.getByLink('userId');
+                foundUsers.push(user);
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
+        userIdAndLogin = await allUsersIterator.next();
+    }
+
+    return foundUsers;
 }
