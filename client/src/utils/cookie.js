@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports.getCookie = function (name) {
+module.exports.getCookie = function (query) {
     const cookiesObj = document
         .cookie.split(';')
         .map(str => str.trim())
@@ -8,8 +6,8 @@ module.exports.getCookie = function (name) {
             const [name, value] = next.split('=');
             obj[name] = value;
 
-            return obj
+            return obj;
         }, {});
 
-    return decodeURIComponent(cookiesObj[name]);
+    return decodeURIComponent(cookiesObj[query]);
 };

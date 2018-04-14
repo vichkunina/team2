@@ -1,18 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import Store from './components/Store/Store';
 import App from './components/App/App';
-import { getCookie } from './utils/cookie';
-import io from 'socket.io-client';
+import { WorkerWrapper } from './websocket/worker-wrapper';
 
-const s = io('http://localhost:8080', {
-    transports: ["websocket"],
-    query: {token: getCookie('connect.sid').split(':')[1].split('.')[0]}
+const worker = new WorkerWrapper('message-worker.js');
+worker.subscribe('SendMessage', (error, result) => {
+    console.info(result);
+    console.info(error);
 });
-s.on('GetProfileResult', (data) => {
-    console.log(data);
+worker.subscribe('GetProfile', (error, profile) => {
+    console.info(profile);
+    console.info(error);
 });
-s.emit('GetProfile');
+worker.subscribe('GetChatList', (error, chats) => {
+    console.info(chats);
+    console.info(error);
+});
+worker.getProfile();
+worker.getChatList();
+worker.sendMessage({ chatId: 1, text: 'asdasd' });
 
+const store = new Store();
 
-ReactDOM.render(<App/>, document.getElementById('root'));
+ReactDOM.render(<App store={store}/>, document.getElementById('root'));

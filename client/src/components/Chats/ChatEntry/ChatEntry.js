@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './ContactsEntry.css';
+import styles from './ChatEntry.css';
 
 export default class ContactsEntry extends Component {
     constructor(props) {
@@ -14,12 +14,13 @@ export default class ContactsEntry extends Component {
         name: PropTypes.string.isRequired,
         lastMessage: PropTypes.string.isRequired,
         lastMessageDate: PropTypes.instanceOf(Date).isRequired,
-        unreadCount: PropTypes.number.isRequired
+        unreadCount: PropTypes.number.isRequired,
+        onClick: PropTypes.func
     };
 
     render() {
         return (
-            <a className={styles.Wrapper}>
+            <a className={styles.Wrapper} onClick={this.props.onClick}>
                 <img className={styles.Photo} src={this.props.photoURL} />
                 <span className={styles.Name}>
                     {this.props.name}

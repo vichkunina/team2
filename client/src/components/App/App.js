@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'mobx-react';
+import ReactPropTypes from 'prop-types';
 import { observer } from 'mobx-react';
-import Contacts from '../Contacts/Contacts';
-import ContactsEntry from '../Contacts/ContactsEntry/ContactsEntry';
+import Chats from '../Chats/Chats';
 import Profile from '../Profile/Profile';
 import Chat from '../Chat/Chat';
-import ChatHistoryServiceMessage from
-    '../Chat/ChatHistory/ChatHistoryServiceMessage/ChatHistoryServiceMessage';
-import ChatHistoryUserMessage from
-    '../Chat/ChatHistory/ChatHistoryUserMessage/ChatHistoryUserMessage';
 import styles from './App.css';
+import ChatEntry from '../Chats/ChatEntry/ChatEntry';
 
 @observer
 export default class App extends Component {
@@ -22,6 +20,15 @@ export default class App extends Component {
         };
     }
 
+    static propTypes = {
+        store: ReactPropTypes.shape({
+            chats: PropTypes.observableArray,
+            currentChat: PropTypes.observableObject,
+            profile: PropTypes.observableObject
+        }
+        )
+    };
+
     componentWillMount() {
         this.openContacts = this.openContacts.bind(this);
         this.openChat = this.openChat.bind(this);
@@ -31,90 +38,48 @@ export default class App extends Component {
         this.closeChat = this.closeChat.bind(this);
         this.closeProfile = this.closeProfile.bind(this);
 
-        this.transistFromChatToContacts = this.transistFromChatToContacts.bind(this);
-        this.transistFromProfileToChat = this.transistFromProfileToChat.bind(this);
+        this.transitFromChatToContacts = this.transitFromChatToContacts.bind(this);
+        this.transitFromProfileToChat = this.transitFromProfileToChat.bind(this);
     }
 
-    transistFromChatToContacts() {
+    transitFromChatToContacts() {
         this.closeChat();
         this.openContacts();
     }
 
-    transistFromProfileToChat() {
+    transitFromProfileToChat() {
         this.closeProfile();
         this.openChat();
     }
 
+    changeChat(chat) {
+        this.props.store.currentChat = chat;
+    }
+
     render() {
+        const chats = this.props.store.chats.map(chat => (
+            <ChatEntry key={chat.id} photoURL={chat.avatar}
+                name={chat.name} lastMessage={chat.lastMessage}
+                lastMessageDate={new Date()} unreadCount={chat.unreadCount}
+                onClick={this.changeChat.bind(this, chat)}/>
+        ));
+
         return (
             <div className={styles.Wrapper}>
                 { this.state.showContacts &&
-                    <Contacts>
-                        <ContactsEntry photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                            name="Mark" lastMessage="Hello! How are you, my friend?"
-                            lastMessageDate={new Date()} unreadCount={2} />
-                        <ContactsEntry photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                            name="Mark" lastMessage="Hello!"
-                            lastMessageDate={new Date()} unreadCount={12} />
-                        <ContactsEntry photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                            name="Mark" lastMessage="Hello! Hello! Hello! Hello!"
-                            lastMessageDate={new Date()} unreadCount={0} />
-                        <ContactsEntry photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                            name="Mark" lastMessage="Hello!"
-                            lastMessageDate={new Date()} unreadCount={4} />
-                        <ContactsEntry photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                            name="Mark" lastMessage="Hello!"
-                            lastMessageDate={new Date()} unreadCount={345} />
-                        <ContactsEntry photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                            name="Mark" lastMessage="Hello!"
-                            lastMessageDate={new Date()} unreadCount={1} />
-                        <ContactsEntry photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                            name="Mark" lastMessage="Hello!"
-                            lastMessageDate={new Date()} unreadCount={0} />
-                        <ContactsEntry photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                            name="Mark" lastMessage="Hello!"
-                            lastMessageDate={new Date()} unreadCount={2} />
-                        <ContactsEntry photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                            name="Mark" lastMessage="Hello!"
-                            lastMessageDate={new Date()} unreadCount={2} />
-                        <ContactsEntry photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                            name="Mark" lastMessage="Hello!"
-                            lastMessageDate={new Date()} unreadCount={2} />
-                    </Contacts>
+                    <Chats chats={this.props.store.chats}
+                        currentChat={this.props.store.currentChat}
+                        transitFromChatToContacts={ this.transitFromChatToContacts }>
+                        {chats}
+                    </Chats>
                 }
                 { this.state.showChat &&
-                    <Chat photoURL="http://www.baretly.org/uploads/14775998111.jpg"
-                        name="Mark" status="Онлайн"
-                        transistFromChatToContacts={ this.transistFromChatToContacts }>
-                        <ChatHistoryServiceMessage text="12 марта"/>
-                        <ChatHistoryUserMessage fromMe={true} name="Billy" body="Hello!"
-                            date={new Date()}
-                            ogURL="localhost" ogTitle="Hey!"
-                            ogDescription="Hey-hey! Hello! Hello! Hello! Hello! Hello!"
-                            ogImage="123.png" />
-                        <ChatHistoryUserMessage fromMe={false} name="Mark" body="Hello!"
-                            date={new Date()} />
-                        <ChatHistoryUserMessage fromMe={true} name="Billy" body="Hello!"
-                            date={new Date()} />
-                        <ChatHistoryUserMessage fromMe={false} name="Mark" body="Hello!"
-                            date={new Date()} />
-                        <ChatHistoryUserMessage fromMe={true} name="Billy"
-                            body="Hey-hey! Hello! Hello! Hello! Hello! Hello! Hello! Hello"
-                            date={new Date()}
-                            ogURL="localhost" ogTitle="Hey!"
-                            ogImage="123.png" />
-                        <ChatHistoryUserMessage fromMe={true} name="Billy" body="Hello!"
-                            date={new Date()} />
-                        <ChatHistoryUserMessage fromMe={true} name="Billy" body="Hello!"
-                            date={new Date()} />
-                        <ChatHistoryUserMessage fromMe={false} name="Mark" body="Hello!"
-                            date={new Date()} />
-                    </Chat> }
+                    <Chat currentChat={this.props.store.currentChat}
+                        profile={this.props.store.profile}/>
+                }
                 { this.state.showProfile &&
-                    /* eslint-disable-next-line max-len */
-                    <Profile photoURL="https://pbs.twimg.com/profile_images/929933611754708992/ioSgz49P_400x400.jpg"
-                        name="Billy" status="Online" login="billy"
-                        transistFromProfileToChat={ this.transistFromProfileToChat } /> }
+                    <Profile profile={this.props.store.profile}
+                        transistFromProfileToChat={ this.transitFromProfileToChat } /> }
             </div>
         );
     }
@@ -143,3 +108,4 @@ export default class App extends Component {
         this.setState({ showProfile: false });
     }
 }
+
