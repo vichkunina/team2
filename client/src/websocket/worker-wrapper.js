@@ -36,6 +36,10 @@ export class WorkerWrapper {
         this._worker.postMessage({ action: 'DeleteProfile', value: { userId } });
     }
 
+    searchByLogin(login) {
+        this._worker.postMessage({ action: 'SearchByLogin', value: { login } });
+    }
+
     _handleResponse(response) {
         const handlers = this._handlers[response.action];
         if (response.result.success === false) {

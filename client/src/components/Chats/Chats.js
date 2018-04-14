@@ -3,26 +3,34 @@ import { PropTypes } from 'mobx-react';
 import ReactPropTypes from 'prop-types';
 import styles from './Chats.css';
 import { observer } from 'mobx-react';
+import ChatSearchResults from './ChatSearchResults/ChatSearchResults';
 
 @observer
-export default class ContactsSearch extends Component {
+export default class Chats extends Component {
 
     static propTypes = {
         chats: PropTypes.observableArray,
         chatInput: '',
         children: ReactPropTypes.element,
-        addContact: ReactPropTypes.func
+        addContact: ReactPropTypes.func,
+        searchByLogin: ReactPropTypes.func
     };
 
     constructor(props) {
         super(props);
-        this.state = { chats: this.props.chats };
+        this.state = {
+            chats: this.props.chats,
+            searchResults: []
+        };
     }
 
     filteredList(event) {
         const res = this.props.chats.filter(chat => {
             return chat.name.toLowerCase().search(event.target.value) !== -1;
         });
+
+        this.props.searchByLogin(event.target.value);
+
         this.setState({ chatInput: event.target.value });
         this.setState({ chats: res });
     }
@@ -43,6 +51,7 @@ export default class ContactsSearch extends Component {
                             onChange={this.filteredList.bind(this)}/>
                     </form>
                     {this.props.children}
+                    <ChatSearchResults searchResults={this.state.searchResults}/>
                 </div>
             </div>
         );

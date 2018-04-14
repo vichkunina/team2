@@ -40,6 +40,13 @@ export default class App extends Component {
     }
 
     componentWillMount() {
+        this.props.worker.subscribe('SearchByLogin', (error, result) => {
+            console.log('result: ');
+            console.log(result);
+            console.log(error);
+            console.log('found users: ' + result);
+            this.props.store.loginSearch = result;
+        });
         this.props.worker.subscribe('DeleteProfile', (error, result) => {
             console.info(result);
             console.info(error);
@@ -128,6 +135,7 @@ export default class App extends Component {
                 {this.state.showContacts &&
                 <Chats chats={this.props.store.chats}
                     currentChat={this.props.store.currentChat}
+                    searchByLogin={this.props.worker.searchByLogin.bind(this.props.worker)}
                     addContact={this.props.worker.addContact.bind(this.props.worker)}>
                     {chats}
                 </Chats>
