@@ -7,7 +7,7 @@ const methods =
     ['GetMessages', 'GetProfile', 'SearchByLogin', 'AddContact', 'GetChatList',
         'SendMessage', 'DeleteProfile'];
 
-const host = 'https://kilogram-team2.now.sh';
+const host = 'http://localhost:8080';
 // const host = process.env.HOST || 'localhost:8080';
 console.info(host);
 

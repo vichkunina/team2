@@ -1,5 +1,7 @@
+require('dotenv').config();
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
 const vendorLibs = [
     'react',
@@ -83,6 +85,9 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: 'index.html'
+        }),
+        new webpack.DefinePlugin({
+            'process.env.HOST': 'test url'
         })
     ],
 

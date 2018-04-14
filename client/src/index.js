@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom';
 import Store from './components/Store/Store';
 import App from './components/App/App';
 import { WorkerWrapper } from './websocket/worker-wrapper';
-require('dotenv').config();
 
 const worker = new WorkerWrapper();
 const store = new Store();
