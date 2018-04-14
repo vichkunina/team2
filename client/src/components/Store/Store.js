@@ -9,7 +9,7 @@ export default class Store {
     };
 
     @observable profile = {};
-    @observable loginSearch = [];
+    @observable searchResult = [];
     // @observable profile = {
     //     name: 'Doma',
     //     login: 'WBDiamond',

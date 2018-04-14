@@ -24,10 +24,12 @@ export default class App extends Component {
 
     static propTypes = {
         store: ReactPropTypes.shape({
+
             chats: PropTypes.observableArray,
             currentChat: PropTypes.observableObject,
             profile: PropTypes.observableObject,
-            chatHistories: PropTypes.observableArrayOf(PropTypes.observableObject)
+            chatHistories: PropTypes.observableArrayOf(PropTypes.observableObject),
+            searchResult: ReactPropTypes.array
         }),
         worker: ReactPropTypes.object
     };
@@ -44,8 +46,7 @@ export default class App extends Component {
             console.log('result: ');
             console.log(result);
             console.log(error);
-            console.log('found users: ' + result);
-            this.props.store.loginSearch = result;
+            this.props.store.searchResult = result;
         });
         this.props.worker.subscribe('DeleteProfile', (error, result) => {
             console.info(result);
@@ -120,7 +121,6 @@ export default class App extends Component {
     }
 
     render() {
-        console.log('NOW WE RENDER ALL APP');
         const chats = this.props.store.chats.map(chat => {
             const chatHistory = this.props.store.chatHistories[chat.id];
             let lastMessage = '';
@@ -152,6 +152,7 @@ export default class App extends Component {
                 <Chats chats={this.props.store.chats}
                     currentChat={this.props.store.currentChat}
                     searchByLogin={this.props.worker.searchByLogin.bind(this.props.worker)}
+                    searchResult={this.props.store.searchResult}
                     addContact={this.props.worker.addContact.bind(this.props.worker)}>
                     {chats}
                 </Chats>
