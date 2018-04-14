@@ -168,8 +168,8 @@ async function AddContact(uid, userId) {
         users: [uid, userId]
     });
 
-    await chat.addContact(he);
-    await chat.addContact(me);
+    await chat.addUser(he);
+    await chat.addUser(me);
 
     return getChatForEmit(chat, uid);
 }
