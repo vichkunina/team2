@@ -14,7 +14,7 @@ const strategy = new passportGithub.Strategy(
     {
         clientID: process.env.GITHUB_CLIENT_ID,
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
-        callbackURL: `https://${config.get('host')}/login/return`
+        callbackURL: `http://${config.get('host')}/login/return`
     },
     async (accessToken, refreshToken, profile, done) => {
         try {
