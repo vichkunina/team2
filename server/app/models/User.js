@@ -6,11 +6,8 @@ const userScheme = require('../schemes/userScheme');
 const userBaseModel = makeModel(userScheme, 'users');
 
 userBaseModel.prototype.addContact = async function (user) {
-    this.contacts.push(user.id);
-    user.contacts.push(this.id);
-
-    await this.save();
-    await user.save();
+    await this.atomPush('contacts', user.id);
+    await this.atomPush('contacts', this.id);
 };
 
 module.exports = userBaseModel;

@@ -212,6 +212,7 @@ async function AddContact(uid, userId) {
     const chat = new ChatModel({
         dialog: true
     });
+    await chat.save();
 
     await chat.addUser(he);
     await chat.addUser(me);
@@ -238,7 +239,7 @@ async function GetChatList(uid) {
 }
 
 async function getChatForEmit(chat) {
-    const users = await chat.getByLink('users');
+    const users = await (await ChatModel.getById(chat.id)).getByLink('users');
 
     return {
         id: chat.id,
@@ -257,7 +258,9 @@ function getProfileFromUser(user) {
 }
 
 async function updateLoginCache() {
-    const iterator = UserIdLoginModel.getIterator();
+    const iterator = UserIdLoginModel.getIterator({
+        limit: 100
+    });
 
     const newCache = [];
     let next = await iterator.next();
