@@ -3,7 +3,9 @@
 require('dotenv').config();
 const passportGithub = require('passport-github');
 const Github = require('./models/github');
-const User = require('./models/user');
+const User = require('./models/User');
+const UserIdLogin = require('./models/UserIdLogin');
+const GithubAvatar = require('./tools/githubAvatar');
 
 Github.makeLink('uid', User);
 
@@ -29,7 +31,8 @@ const strategy = new passportGithub.Strategy(
                 githubId: profile.id,
                 contacts: [],
                 chats: [],
-                date: Date.now()
+                date: Date.now(),
+                avatar: new GithubAvatar(profile.username, 200).toImgSrc()
             });
 
             const github = new Github({
@@ -37,6 +40,12 @@ const strategy = new passportGithub.Strategy(
                 uid: user.id
             });
 
+            const userIdLogin = new UserIdLogin({
+                login: profile.username,
+                userId: user.id
+            });
+
+            await userIdLogin.save();
             await github.save();
             await user.save();
 

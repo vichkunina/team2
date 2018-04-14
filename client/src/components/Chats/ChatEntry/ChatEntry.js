@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './ContactsEntry.css';
+import styles from './ChatEntry.css';
 
-export default class ContactsEntry extends Component {
+export default class ChatsEntry extends Component {
     constructor(props) {
         super(props);
     }
@@ -14,12 +14,13 @@ export default class ContactsEntry extends Component {
         name: PropTypes.string.isRequired,
         lastMessage: PropTypes.string.isRequired,
         lastMessageDate: PropTypes.instanceOf(Date).isRequired,
-        unreadCount: PropTypes.number.isRequired
+        unreadCount: PropTypes.number.isRequired,
+        onClick: PropTypes.func
     };
 
     render() {
         return (
-            <a className={styles.Wrapper}>
+            <a className={styles.Wrapper} onClick={this.props.onClick}>
                 <img className={styles.Photo} src={this.props.photoURL} />
                 <span className={styles.Name}>
                     {this.props.name}
@@ -37,7 +38,7 @@ export default class ContactsEntry extends Component {
     }
 
     _formatDate(date) {
-        if (Date.now() - date.getTime() < ContactsEntry.dayInterval) {
+        if (Date.now() - date.getTime() < ChatsEntry.dayInterval) {
             return date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
         } else if (Date.now() - date.getTime() < this.weekInterval) {
             return date.toLocaleDateString('ru-RU', { weekday: 'long' });

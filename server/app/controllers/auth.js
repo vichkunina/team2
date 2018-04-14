@@ -1,7 +1,6 @@
 'use strict';
 
 const passport = require('passport');
-// const connectEnsureLogin = require('connect-ensure-login');
 
 module.exports = app => {
     // Главная страница

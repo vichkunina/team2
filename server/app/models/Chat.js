@@ -5,21 +5,14 @@ const chatScheme = require('../schemes/chatScheme');
 
 const chatBaseModel = makeModel(chatScheme, 'chats');
 
-module.exports = class extends chatBaseModel {
-    constructor(obj = {}) {
-        super(obj);
-    }
+chatBaseModel.prototype.addUser = async function (user) {
+    this.users.push(user.id);
 
-    async addUser(user) {
+    user.chats = user.chats ? user.chats : [];
+    user.chats.push(this.id);
 
-        this.users.push(user.id);
-
-        user.chats = user.chats ? user.chats : [];
-        user.chats.push(this.id);
-
-        console.log(`add chat: ${this.id} to user ${user.login}`);
-
-        await this.save();
-        await user.save();
-    }
+    await this.save();
+    await user.save();
 };
+
+module.exports = chatBaseModel;

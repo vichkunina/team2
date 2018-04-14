@@ -1,10 +1,11 @@
 'use strict';
 
 const CryptoJS = require('crypto-js');
-const Identicon = require('identicon.js');
+const Identicon = require('../../node_modules/identicon.js/identicon');
 
 class GithubAvatar {
     constructor(login, size) {
+        /* eslint-disable-next-line new-cap */
         this.hash = CryptoJS.MD5(login).toString();
         this.size = size;
     }
@@ -13,7 +14,7 @@ class GithubAvatar {
         return new Identicon(this.hash, this.size).toString();
     }
 
-    toImgSrc(){
+    toImgSrc() {
         return 'data:image/png;base64,' + this.toBase64();
     }
 }

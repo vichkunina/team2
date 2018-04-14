@@ -5,16 +5,12 @@ const userScheme = require('../schemes/userScheme');
 
 const userBaseModel = makeModel(userScheme, 'users');
 
-module.exports = class extends userBaseModel {
-    constructor(obj = {}) {
-        super(obj);
-    }
+userBaseModel.prototype.addContact = async function (user) {
+    this.contacts.push(user.id);
+    user.contacts.push(this.id);
 
-    async addContact(user) {
-        this.contacts.push(user.id);
-        user.contacts.push(this.id);
-
-        await this.save();
-        await user.save();
-    }
+    await this.save();
+    await user.save();
 };
+
+module.exports = userBaseModel;
