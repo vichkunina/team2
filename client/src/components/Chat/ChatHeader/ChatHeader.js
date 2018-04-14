@@ -12,7 +12,7 @@ export default class ChatHeader extends Component {
         name: PropTypes.string.isRequired,
         status: PropTypes.string,
         transistFromChatToContacts: PropTypes.func.isRequired
-    }
+    };
 
     render() {
         return (
