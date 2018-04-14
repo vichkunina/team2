@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './ChatEntry.css';
 
-export default class ChatsEntry extends Component {
+export default class ChatEntry extends Component {
     constructor(props) {
         super(props);
     }
@@ -14,7 +14,6 @@ export default class ChatsEntry extends Component {
         name: PropTypes.string.isRequired,
         lastMessage: PropTypes.string.isRequired,
         lastMessageDate: PropTypes.instanceOf(Date).isRequired,
-        unreadCount: PropTypes.number.isRequired,
         onClick: PropTypes.func
     };
 
@@ -36,7 +35,7 @@ export default class ChatsEntry extends Component {
     }
 
     _formatDate(date) {
-        if (Date.now() - date.getTime() < ChatsEntry.dayInterval) {
+        if (Date.now() - date.getTime() < ChatEntry.dayInterval) {
             return date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
         } else if (Date.now() - date.getTime() < this.weekInterval) {
             return date.toLocaleDateString('ru-RU', { weekday: 'long' });

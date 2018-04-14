@@ -29,7 +29,7 @@ export default class App extends Component {
             currentChat: PropTypes.observableObject,
             profile: PropTypes.observableObject,
             chatHistories: PropTypes.observableArrayOf(PropTypes.observableObject),
-            searchResult: ReactPropTypes.array
+            searchResult: PropTypes.observableArray
         }),
         worker: ReactPropTypes.object
     };
