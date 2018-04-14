@@ -2,6 +2,7 @@
 'use strict';
 
 const PassportMemStoreSessionGetter = require('./classes/PassportMemStoreSessionGetter');
+const olesya = require('./tools/olesya');
 const WebSocketServer = require('./classes/WebSocketServer');
 
 const {
@@ -57,6 +58,21 @@ module.exports = function (app, sessionStore) {
                 });
             }
         });
+        // socket.on('AskOlesya', async ({ text }) => {
+        //     try {
+        //         const answer = await olesya.ask(text);
+
+        //         wsServer.emitByUID(uid, 'SendMessageResult', {
+        //             success: true,
+        //             value: answer
+        //         });
+        //     } catch (error) {
+        //         wsServer.emitByUID(uid, 'SendMessageResult', {
+        //             success: false,
+        //             error: error.message || error.body
+        //         });
+        //     }
+        // });
     });
 };
 
@@ -142,11 +158,8 @@ async function AddContact(uid, userId) {
         throw new Error('You can\'t add yourself!');
     }
 
-    await UserModel.getById(userId);
-
-    const me = await UserModel.getById(uid);
     const he = await UserModel.getById(userId);
-
+    const me = await UserModel.getById(uid);
     me.addContact(he);
 
     const chat = new ChatModel({
