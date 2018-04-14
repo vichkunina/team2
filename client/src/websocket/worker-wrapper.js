@@ -1,5 +1,7 @@
 import Worker from './message-worker.js';
 import { getCookie } from '../utils/cookie';
+import * as Types from '../enum/WSActionType';
+
 
 export class WorkerWrapper {
     constructor(filename) {
@@ -42,18 +44,19 @@ export class WorkerWrapper {
 
     _handleResponse(response) {
         const handlers = this._handlers[response.action];
-        console.log(response);
-        if (response.result && response.result.success === false) {
-            handlers.forEach(handler => handler(response.result.error, null));
+
+        if (response.type === Types.RESPONSE) {
+            console.info(response)
+            handlers.forEach(handler => handler(null, response.result.value));
 
             return;
         }
-        if (response.action === "NewMessage") {
-            handlers.forEach(handler => handler(null, response.message));
+
+        if (response.type === Types.EMIT) {
+            handlers.forEach(handler => handler(null, response.result));
 
             return;
         }
-        handlers.forEach(handler => handler(null, response.result.value));
     }
 
     subscribe(event, cb) {

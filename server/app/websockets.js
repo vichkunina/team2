@@ -140,11 +140,14 @@ async function GetProfile(uid, userId) {
 }
 
 async function SearchByLogin(uid, login) {
+    const me = await UserModel.getById(uid);
     const foundUsers = [];
     const allUsersIterator = UserIdLoginModel.getIterator();
     let userIdAndLogin = await allUsersIterator.next();
     while (userIdAndLogin) {
-        if (userIdAndLogin.login.toLowerCase().indexOf(login.toLowerCase()) !== -1) {
+        const match = userIdAndLogin.login.toLowerCase().indexOf(login.toLowerCase()) !== -1;
+        const notHave = me.contacts.indexOf(userIdAndLogin.userId) === -1;
+        if (match && notHave) {
             try {
                 const user = await userIdAndLogin.getByLink('userId');
                 foundUsers.push(user);
@@ -163,8 +166,11 @@ async function AddContact(uid, userId) {
         throw new Error('You can\'t add yourself!');
     }
 
-    const he = await UserModel.getById(userId);
     const me = await UserModel.getById(uid);
+    if (me.contacts.indexOf(userId) !== -1) {
+        throw new Error('You have this contact!');
+    }
+    const he = await UserModel.getById(userId);
 
     me.addContact(he);
 

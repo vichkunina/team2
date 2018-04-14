@@ -42,58 +42,6 @@ export default class App extends Component {
     }
 
     componentWillMount() {
-        this.props.worker.subscribe('SearchByLogin', (error, result) => {
-            console.log('result: ');
-            console.log(result);
-            console.log(error);
-            this.props.store.searchResult = result;
-        });
-        this.props.worker.subscribe('DeleteProfile', (error, result) => {
-            console.info(result);
-            console.info(error);
-        });
-        this.props.worker.subscribe('NewMessage', (error, result) => {
-            console.info(error);
-            if (this.props.store.profile.id !== result.from) {
-                this.props.store.chatHistories
-                    .find(history => history.chatId === result.chatId)
-                    .messages.push(result);
-            }
-            console.log(this.props.store.chatHistories);
-        });
-        this.props.worker.subscribe('SendMessage', (error, result) => {
-            console.info('result: ');
-            console.info(result);
-            console.info(error);
-        });
-        this.props.worker.subscribe('GetProfile', (error, profile) => {
-            this.props.store.profile = profile;
-        });
-        this.props.worker.subscribe('GetChatList', (error, chats) => {
-            chats.forEach(chat => {
-                this.props.worker.getMessages({
-                    chatId: chat.id,
-                    offset: 0,
-                    limit: 50
-                });
-            });
-            this.props.store.chats.push(...chats);
-        });
-        this.props.worker.subscribe('GetMessages', (error, data) => {
-            const chatHistory = this.props.store.chatHistories
-                .find(history => history.chatId === data.chatId);
-            if (chatHistory) {
-                chatHistory.messages.push(...data.messages);
-            } else {
-                this.props.store.chatHistories.push({
-                    chatId: data.chatId,
-                    messages: data.messages
-                });
-            }
-            console.log('this.props.store.chatHistories: ');
-            console.log(this.props.store.chatHistories);
-        });
-
         this.openContacts = this.openContacts.bind(this);
         this.openChat = this.openChat.bind(this);
         this.openProfile = this.openProfile.bind(this);
