@@ -1,8 +1,7 @@
 'use strict';
-/* eslint-disable no-useless-escape */
 const findHref = (currentMessage) => {
     let linkData =
-    currentMessage.match(/(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})\/([\w\.-]*)/);
+    currentMessage.match(/(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})\/([\w.-]*)/);
     if (!linkData) {
 
         return 0;

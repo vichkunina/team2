@@ -32,16 +32,25 @@
 }
 
 .Button {
-    text-align: center;
+    text-align: left;
     grid-area: m;
 }
 
 .Button > input {
-    padding: 5px 10px;
-    background: aqua;
-    border: 1px solid red;
-    border-radius: 5px;
+    margin: 0 0 0 16px;
+    padding: 0;
+
+    border: 0;
+    background: transparent;
+
     cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.Wrapper:hover .Button > input {
+    color: #fffffa;
 }
 
 .Wrapper:hover {
