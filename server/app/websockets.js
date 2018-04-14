@@ -58,21 +58,21 @@ module.exports = function (app, sessionStore) {
                 });
             }
         });
-        // socket.on('AskOlesya', async ({ text }) => {
-        //     try {
-        //         const answer = await olesya.ask(text);
+        socket.on('AskOlesya', async (text) => {
+            try {
+                const answer = await olesya.ask(text);
 
-        //         wsServer.emitByUID(uid, 'SendMessageResult', {
-        //             success: true,
-        //             value: answer
-        //         });
-        //     } catch (error) {
-        //         wsServer.emitByUID(uid, 'SendMessageResult', {
-        //             success: false,
-        //             error: error.message || error.body
-        //         });
-        //     }
-        // });
+                wsServer.emitByUID(uid, 'AskOlesyaResult', {
+                    success: true,
+                    value: answer
+                });
+            } catch (error) {
+                wsServer.emitByUID(uid, 'AskOlesyaResult', {
+                    success: false,
+                    error: error.message || error.body
+                });
+            }
+        });
     });
 };
 
