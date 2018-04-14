@@ -28,7 +28,11 @@ module.exports = async function (app, sessionStore) {
     wsServer.on('authUserConnected', ({ socket, uid }) => {
         if (!executeQueues[uid]) {
             executeQueues[uid] = queue(async ({ action, data }, callback) => {
-                await action(data);
+                try {
+                    await action(data);
+                } catch (error) {
+                    console.log(error);
+                }
                 callback();
             });
         }
@@ -51,6 +55,7 @@ module.exports = async function (app, sessionStore) {
         socket.on('AddContact', pushAction.bind(null, uid, async (userId) => {
             try {
                 const result = await addContact(uid, userId);
+                console.log(result);
 
                 result.users.forEach(user => {
                     wsServer.emitByUID(user.id, 'NewChat', result);
