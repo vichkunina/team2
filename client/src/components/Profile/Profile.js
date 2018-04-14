@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import ReactPropTypes from 'prop-types';
 import styles from './Profile.css';
+import { observer } from 'mobx-react';
 
+@observer
 export default class Profile extends Component {
     static propTypes = {
         transitFromProfileToChat: ReactPropTypes.func.isRequired,

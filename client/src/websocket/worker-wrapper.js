@@ -12,8 +12,8 @@ export class WorkerWrapper {
         this._handlers = {};
     }
 
-    getMessages() {
-        this._worker.postMessage({ action: 'GetMessages' });
+    getMessages({ chatId, offset, limit }) {
+        this._worker.postMessage({ action: 'GetMessages', value: { chatId, offset, limit } });
     }
 
     getProfile() {
@@ -32,10 +32,24 @@ export class WorkerWrapper {
         this._worker.postMessage({ action: 'SendMessage', value: { chatId, text } });
     }
 
+    deleteProfile(userId) {
+        this._worker.postMessage({ action: 'DeleteProfile', value: { userId } });
+    }
+
+    searchByLogin(login) {
+        this._worker.postMessage({ action: 'SearchByLogin', value: { login } });
+    }
+
     _handleResponse(response) {
         const handlers = this._handlers[response.action];
-        if (response.result.success === false) {
+        console.log(response);
+        if (response.result && response.result.success === false) {
             handlers.forEach(handler => handler(response.result.error, null));
+
+            return;
+        }
+        if (response.action === "NewMessage") {
+            handlers.forEach(handler => handler(null, response.message));
 
             return;
         }

@@ -1,8 +1,11 @@
 import React from 'react';
 import { PropTypes } from 'mobx-react';
 import styles from './ChatInput.css';
+import ReactPropTypes from 'prop-types';
 import uuid from 'uuid/v4';
+import { observer } from 'mobx-react';
 
+@observer
 export default class ChatInput extends React.Component {
     constructor(props) {
         super(props);
@@ -10,17 +13,30 @@ export default class ChatInput extends React.Component {
     }
 
     static propTypes = {
-        currentChatHistory: PropTypes.observableArray,
+        chatHistories: PropTypes.observableArrayOf(PropTypes.observableObject),
+        addMessage: ReactPropTypes.func,
+        chatId: ReactPropTypes.string,
         profile: PropTypes.observableObject
     };
 
     submitHandler(event) {
-        this.props.currentChatHistory.push({
-            id: uuid(),
+        console.log('this.props.currentChatHistory: ');
+        console.log(this.props.chatHistories
+            .find(history => history.chatId === this.props.chatId));
+        const message = {
+            from: this.props.profile.id,
             body: this.state.chatInput,
-            name: this.props.profile.login,
-            date: new Date(),
-            fromMe: true
+            id: uuid(),
+            createdAt: Date.now(),
+            editedAt: Date.now()
+        };
+        console.log(this.props.chatHistories);
+        this.props.chatHistories
+            .find(history => history.chatId === this.props.chatId)
+            .messages.push(message);
+        this.props.sendMessage({
+            chatId: this.props.chatId,
+            text: message.body
         });
         event.preventDefault();
         this.setState({ chatInput: '' });

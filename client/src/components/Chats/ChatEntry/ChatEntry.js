@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './ChatEntry.css';
 
-export default class ContactsEntry extends Component {
+export default class ChatsEntry extends Component {
     constructor(props) {
         super(props);
     }
@@ -38,7 +38,7 @@ export default class ContactsEntry extends Component {
     }
 
     _formatDate(date) {
-        if (Date.now() - date.getTime() < ContactsEntry.dayInterval) {
+        if (Date.now() - date.getTime() < ChatsEntry.dayInterval) {
             return date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
         } else if (Date.now() - date.getTime() < this.weekInterval) {
             return date.toLocaleDateString('ru-RU', { weekday: 'long' });

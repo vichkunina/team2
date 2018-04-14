@@ -37,6 +37,7 @@ module.exports = function (app, sessionStore) {
                 });
             }
         });
+        socket.on('DeleteProfile', execute.bind(null, wsServer, uid, DeleteProfile));
         socket.on('GetChatList', execute.bind(null, wsServer, uid, GetChatList));
         socket.on('SendMessage', async ({ chatId, text }) => {
             try {
@@ -110,6 +111,10 @@ async function SendMessage(uid, chatId, text) {
     return message;
 }
 
+async function DeleteProfile(uid) {
+    return await UserModel.removeById(uid);
+}
+
 async function GetMessages(uid, { chatId, offset, limit }) {
     const chat = await ChatModel.getById(chatId);
 
@@ -119,10 +124,13 @@ async function GetMessages(uid, { chatId, offset, limit }) {
 
     const MessageModel = messageModelFactory(chatId);
 
-    return MessageModel.getList({
-        offset: offset || 0,
-        limit: limit || 100
-    });
+    return {
+        chatId,
+        messages: await MessageModel.getList({
+            offset: offset || 0,
+            limit: limit || 100
+        })
+    };
 }
 
 async function GetProfile(uid, userId) {
@@ -159,8 +167,8 @@ async function AddContact(uid, userId) {
         dialog: true
     });
 
-    await chat.addContact(he);
-    await chat.addContact(me);
+    await chat.addUser(he);
+    await chat.addUser(me);
 
     return getChatForEmit(chat, uid);
 }
