@@ -18,9 +18,13 @@ worker.subscribe('GetChatList', (error, chats) => {
     console.info(chats);
     console.info(error);
 });
-worker.getProfile();
-worker.getChatList();
-worker.sendMessage({ chatId: 1, text: 'asdasd' });
+worker.subscribe('AddContact', (error, contact) => {
+    console.info(contact);
+    console.info('ac', error);
+});
+// worker.getProfile();
+// worker.getChatList();
+worker.addContact('dced0fed-96fb-4c77-bfd4-83f9955606a7');
 
 const store = new Store();
 
