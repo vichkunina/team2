@@ -41,6 +41,10 @@ app.use(session({
     }
 }));
 
+if (config.get('debug')) {
+    app.use(express.static(config.get('staticPath')));
+}
+
 makePassport(passport);
 app.use(passport.initialize());
 app.use(passport.session());
