@@ -187,7 +187,7 @@ async function GetChatList(uid) {
     return result;
 }
 
-async function getChatForEmit(chat, uid) {
+async function getChatForEmit(chat) {
     const users = await chat.getByLink('users');
 
     return {
@@ -198,7 +198,7 @@ async function getChatForEmit(chat, uid) {
     };
 }
 
-async function getProfileFromUser(user) {
+function getProfileFromUser(user) {
     return {
         id: user.id,
         login: user.login,
