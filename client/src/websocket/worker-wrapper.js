@@ -37,7 +37,7 @@ export class WorkerWrapper {
     }
 
     searchByLogin(login) {
-        this._worker.postMessage({ action: 'SearchByLogin', value: { login } });
+        this._worker.postMessage({ action: 'SearchByLogin', value: login });
     }
 
     _handleResponse(response) {

@@ -25,7 +25,6 @@ export default class Chat extends Component {
     };
 
     render() {
-        console.log('NOW WE RENDER CHAT HISTORY');
         const chatHistory = this.props.chatHistories
             .find(history => history.chatId === this.props.chatId);
         let chatHistoryToRender;
