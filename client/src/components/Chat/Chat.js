@@ -13,8 +13,6 @@ import ChatHistoryUserMessage from
 export default class Chat extends Component {
     constructor(props) {
         super(props);
-
-        this.ChatHistoryRef = React.createRef();
     }
 
     static propTypes = {
@@ -28,13 +26,6 @@ export default class Chat extends Component {
         avatar: ReactPropTypes.string,
         chatId: ReactPropTypes.string
     };
-
-    componentDidUpdate() {
-        if (this.ChatHistoryRef.current) {
-            console.info(this.ChatHistoryRef);
-            this.ChatHistoryRef.scrollTop = this.ChatHistoryRef.scrollHeight;
-        }
-    }
 
     render() {
         const chatHistory = this.props.chatHistories
@@ -53,9 +44,7 @@ export default class Chat extends Component {
                 <ChatHeader photoURL={this.props.avatar}
                     name={this.props.name} status={'online'}
                     transitFromChatToContacts={this.props.transitFromChatToContacts}/>
-                <ChatHistory ref={(el) => {
-                    this.ChatHistoryRef = el;
-                }}>
+                <ChatHistory>
                     {chatHistoryToRender}
                 </ChatHistory>
                 <ChatInput chatHistories={this.props.chatHistories}
