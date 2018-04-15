@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ChatHistoryUserMessageOGAttachment from
@@ -14,18 +15,13 @@ export default class ChatHistoryUserMessage extends Component {
         name: PropTypes.string,
         body: PropTypes.string.isRequired,
         date: PropTypes.instanceOf(Date).isRequired,
-        ogURL: PropTypes.string,
-        ogTitle: PropTypes.string,
-        ogDescription: PropTypes.string,
-        ogImage: PropTypes.string
+        og: PropTypes.object
     };
 
     render() {
-        console.log('body', this.props.body);
         const className =
             `${styles.Wrapper} ${this.props.fromMe ? styles.FromMe : styles.FromSomeone}`;
 
-        console.log(this.props.og);
         return (
             <div className={className}>
                 <span className={styles.Name}>{this.props.name}</span>

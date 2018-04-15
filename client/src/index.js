@@ -94,6 +94,19 @@ worker.subscribe('AddContact', (err, chat) => {
     store.chatHistories = store.chatHistories.concat([{ chatId: chat.id, messages: [] }]);
 });
 
+worker.subscribe('AskOlesya', (err, message) => {
+    const history = store
+        .chatHistories
+        .find(h => h.chatId === 'olesya');
+    history.messages.push(message);
+
+    store.chatHistories = store
+        .chatHistories
+        .filter(h => h.chatId !== 'olesya')
+        .concat([history]);
+});
+
+
 worker.subscribe('NewChat', (err, chat) => {
     store.loadingState = States.LOADED;
     store.chats = store.chats.concat([initChat(chat)]);

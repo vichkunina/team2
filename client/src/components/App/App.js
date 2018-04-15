@@ -1,3 +1,4 @@
+/*eslint-disable */
 import React, { Component } from 'react';
 import { PropTypes } from 'mobx-react';
 import ReactPropTypes from 'prop-types';
@@ -63,7 +64,6 @@ export default class App extends Component {
     }
 
     changeChat(chat) {
-        console.log('CHANGE CHAT', chat);
         this.setState({ currentChat: chat });
     }
 
@@ -86,7 +86,8 @@ export default class App extends Component {
         });
 
         chats.unshift(
-            <ChatEntry key={'olesya'} photoURL={''} name={'Olesya'}
+            <ChatEntry key={'olesya'} photoURL={this.props.store.olesyaChat.avatar}
+                name={'Olesya'}
                 lastMessage={''}
                 lastMessageDate={new Date()}
                 onClick={this.changeChat.bind(this, 'olesya')}/>
@@ -153,6 +154,7 @@ export default class App extends Component {
                         sendMessage={this.props.worker.sendMessage.bind(this.props.worker)}
                         profile={this.props.store.profile}
                         avatar={currentChat.avatar}
+                        askOlesya={this.props.worker.askOlesya.bind(this.props.worker)}
                         transitFromChatToContacts={this.transitFromChatToContacts}>
                         {chatHistoryToRender}
                     </Chat>

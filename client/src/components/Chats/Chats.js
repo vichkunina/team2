@@ -5,7 +5,6 @@ import styles from './Chats.css';
 import { observer } from 'mobx-react';
 import ChatSearchResults from './ChatSearchResults/ChatSearchResults';
 import SearchResult from './ChatSearchResults/SearchResult/SearchResult';
-import ChatEntry from './ChatEntry/ChatEntry';
 
 @observer
 export default class Chats extends Component {

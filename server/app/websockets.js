@@ -99,14 +99,19 @@ module.exports = async function (app, sessionStore) {
         }));
         socket.on('AskOlesya', pushAction.bind(null, uid, async (text) => {
             try {
+                const OlesyMessageModel = messageModelFactory('olesya');
                 const answer = await olesya.ask(text);
 
-                socket('AskOlesyaResult', {
+                const olesyaMessage = new OlesyMessageModel({
+                    body: answer
+                });
+
+                socket.emit('AskOlesyaResult', {
                     success: true,
-                    value: answer
+                    value: olesyaMessage
                 });
             } catch (error) {
-                socket('AskOlesyaResult', {
+                socket.emit('AskOlesyaResult', {
                     success: false,
                     error: error.message || error.body
                 });

@@ -5,7 +5,7 @@ let TOKEN;
 let socket;
 const methods =
     ['GetMessages', 'GetProfile', 'SearchByLogin', 'AddContact', 'GetChatList',
-        'SendMessage', 'DeleteProfile'];
+        'SendMessage', 'DeleteProfile', 'AskOlesya'];
 
 const host = process.env.HOST;
 console.info('host: ' + process.env.HOST);
