@@ -1,4 +1,6 @@
 const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const vendorLibs = [
     'react',
@@ -7,7 +9,13 @@ const vendorLibs = [
     'mobx-react'
 ];
 
+const host = process.env.NODE_ENV === 'production'
+    ? 'https://kilogram-team2.now.sh' : 'http://localhost:8080';
+
+console.info(host);
+
 module.exports = {
+    mode: 'development',
     entry: {
         index: path.join(__dirname, '/src/index.js'),
         vendor: vendorLibs
@@ -31,6 +39,13 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /worker\.js$/,
+                use: {
+                    loader: 'worker-loader',
+                    options: { inline: true }
+                }
+            },
+            {
                 enforce: 'pre',
                 test: /\.js$/,
                 exclude: /node_modules/,
@@ -45,7 +60,47 @@ module.exports = {
                     plugins: ['transform-decorators-legacy',
                         'transform-class-properties']
                 }
+            },
+            {
+                test: /\.css$/,
+                loader: 'style-loader'
+            },
+            {
+                test: /\.css$/,
+                loader: 'css-loader',
+                query: {
+                    modules: true
+                }
+            },
+            {
+                test: /\.(pdf|jpg|png|gif|svg|ico)$/,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            name: '/assets/[name].[ext]'
+                        }
+                    }
+                ]
             }
         ]
+    },
+
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: 'index.html'
+        }),
+        new webpack.DefinePlugin({
+            'process.env.HOST': JSON.stringify(host)
+        })
+    ],
+
+    devServer: {
+        contentBase: path.join(__dirname, 'dist'),
+        compress: true,
+        port: 9000
+    },
+    node: {
+        fs: 'empty'
     }
 };
