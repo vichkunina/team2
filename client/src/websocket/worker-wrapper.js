@@ -39,6 +39,10 @@ export class WorkerWrapper {
         this._worker.postMessage({ action: 'SendMessage', value: { chatId, text } });
     }
 
+    askOlesya({ text }) {
+        this._worker.postMessage({ action: 'AskOlesya', value: text });
+    }
+
     deleteProfile(userId) {
         this._worker.postMessage({ action: 'DeleteProfile', value: { userId } });
     }

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { Component } from 'react';
 import ReactPropTypes from 'prop-types';
 import { PropTypes } from 'mobx-react';
@@ -19,6 +20,7 @@ export default class Chat extends Component {
         chatHistories: PropTypes.observableArrayOf(PropTypes.observableObject),
         addMessage: ReactPropTypes.func,
         sendMessage: ReactPropTypes.func,
+        askOlesya: ReactPropTypes.func,
         children: ReactPropTypes.element,
         profile: PropTypes.observableObject,
         transitFromChatToContacts: ReactPropTypes.func.isRequired,
@@ -33,7 +35,7 @@ export default class Chat extends Component {
         let chatHistoryToRender;
         if (chatHistory) {
             chatHistoryToRender = chatHistory.messages.map(message => (
-                <ChatHistoryUserMessage key={message.id}
+                <ChatHistoryUserMessage key={message.id} og={message.og}
                     fromMe={message.from === this.props.profile.id} name={message.name}
                     body={message.body} date={new Date(message.createdAt) || new Date()}/>
             ));
@@ -48,7 +50,7 @@ export default class Chat extends Component {
                     {chatHistoryToRender}
                 </ChatHistory>
                 <ChatInput chatHistories={this.props.chatHistories}
-                    sendMessage={this.props.sendMessage}
+                    sendMessage={this.props.chatId === 'olesya' ? this.props.askOlesya : this.props.sendMessage}
                     addMessage={this.props.addMessage}
                     chatId={this.props.chatId}
                     profile={this.props.profile}/>

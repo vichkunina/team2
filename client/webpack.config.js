@@ -73,6 +73,10 @@ module.exports = {
                 }
             },
             {
+                test: /\.svg$/,
+                loader: 'svg-inline-loader'
+            },
+            {
                 test: /\.(pdf|jpg|png|gif|svg|ico)$/,
                 use: [
                     {
@@ -98,7 +102,7 @@ module.exports = {
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
         compress: true,
-        port: 9000
+        port: 8080
     },
     node: {
         fs: 'empty'

@@ -15,6 +15,7 @@ export default class Chats extends Component {
         children: ReactPropTypes.array,
         addContact: ReactPropTypes.func,
         searchByLogin: ReactPropTypes.func,
+        chooseOlesya: ReactPropTypes.func,
         searchResult: PropTypes.observableArray
     };
 

@@ -1,4 +1,4 @@
-/* eslint-disable complexity,max-statements */
+/*eslint-disable */
 import React, { Component } from 'react';
 import { PropTypes } from 'mobx-react';
 import ReactPropTypes from 'prop-types';
@@ -68,7 +68,8 @@ export default class App extends Component {
     }
 
     render() {
-        const currentChat = this.props.store.chats.find(chat => chat.id === this.state.currentChat);
+        const currentChat = this.state.currentChat === 'olesya' ? this.props.store.olesyaChat :
+            this.props.store.chats.find(chat => chat.id === this.state.currentChat);
         const chats = this.props.store.chats.map(chat => {
             const chatHistory = this.props.store.chatHistories[chat.id];
             let lastMessage = '';
@@ -83,6 +84,14 @@ export default class App extends Component {
                     onClick={this.changeChat.bind(this, chat.id)}/>
             );
         });
+
+        chats.unshift(
+            <ChatEntry key={'olesya'} photoURL={this.props.store.olesyaChat.avatar}
+                name={'Olesya'}
+                lastMessage={''}
+                lastMessageDate={new Date()}
+                onClick={this.changeChat.bind(this, 'olesya')}/>
+        );
 
         const chatHistory = this.props.store.chatHistories
             .filter(history => history.chatId === this.state.currentChat.id)[0];
@@ -124,7 +133,7 @@ export default class App extends Component {
             <div className={styles.Wrapper}>
                 <div className={styles.LoaderWrap} style={{ display: state ? 'flex' : 'none' }}>
                     <div className={styles.preloader}>
-                        <div className={styles.loader}></div>
+                        <div className={styles.loader}/>
                     </div>
                     <div className={styles.LoaderWraperText}>{message}</div>
                 </div>
@@ -145,6 +154,7 @@ export default class App extends Component {
                         sendMessage={this.props.worker.sendMessage.bind(this.props.worker)}
                         profile={this.props.store.profile}
                         avatar={currentChat.avatar}
+                        askOlesya={this.props.worker.askOlesya.bind(this.props.worker)}
                         transitFromChatToContacts={this.transitFromChatToContacts}>
                         {chatHistoryToRender}
                     </Chat>

@@ -29,9 +29,6 @@ export default class ChatInput extends React.Component {
             createdAt: Date.now(),
             editedAt: Date.now()
         };
-        this.props.chatHistories
-            .find(history => history.chatId === this.props.chatId)
-            .messages.push(message);
         this.props.sendMessage({
             chatId: this.props.chatId,
             text: message.body

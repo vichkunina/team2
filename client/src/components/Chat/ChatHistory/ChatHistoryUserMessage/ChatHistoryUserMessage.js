@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ChatHistoryUserMessageOGAttachment from
@@ -14,10 +15,7 @@ export default class ChatHistoryUserMessage extends Component {
         name: PropTypes.string,
         body: PropTypes.string.isRequired,
         date: PropTypes.instanceOf(Date).isRequired,
-        ogURL: PropTypes.string,
-        ogTitle: PropTypes.string,
-        ogDescription: PropTypes.string,
-        ogImage: PropTypes.string
+        og: PropTypes.object
     };
 
     render() {
@@ -28,10 +26,10 @@ export default class ChatHistoryUserMessage extends Component {
             <div className={className}>
                 <span className={styles.Name}>{this.props.name}</span>
                 <div className={styles.Body} dangerouslySetInnerHTML={{ __html: this.props.body }}/>
-                {this.props.ogTitle &&
+                {this.props.og &&
                     <ChatHistoryUserMessageOGAttachment
-                        url={this.props.ogURL} title={this.props.ogTitle}
-                        description={this.props.ogDescription} image={this.props.ogImage} />}
+                        url={this.props.og.data.requestUrl} title={this.props.og.data.ogTitle}
+                        description={this.props.og.data.ogDescription} image={this.props.og.data.ogImage} />}
                 <time className={styles.Time}>
                     {this._formatDate(this.props.date)}
                 </time>

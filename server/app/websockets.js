@@ -7,6 +7,8 @@ const WebSocketServer = require('./classes/WebSocketServer');
 const SendQueue = require('./classes/SendQueue');
 const { queue } = require('async');
 const { markdownIt } = require('./tools/markdown');
+const { getHrefArray } = require('./tools/href');
+const { openGraph } = require('./controllers/opengraph');
 let LOGINS_CACHE = [];
 
 const {
@@ -97,14 +99,19 @@ module.exports = async function (app, sessionStore) {
         }));
         socket.on('AskOlesya', pushAction.bind(null, uid, async (text) => {
             try {
+                const OlesyMessageModel = messageModelFactory('olesya');
                 const answer = await olesya.ask(text);
 
-                socket('AskOlesyaResult', {
+                const olesyaMessage = new OlesyMessageModel({
+                    body: answer
+                });
+
+                socket.emit('AskOlesyaResult', {
                     success: true,
-                    value: answer
+                    value: olesyaMessage
                 });
             } catch (error) {
-                socket('AskOlesyaResult', {
+                socket.emit('AskOlesyaResult', {
                     success: false,
                     error: error.message || error.body
                 });
@@ -146,6 +153,8 @@ async function sendMessage(uid, chatId, text) {
     }
 
     const MessageModel = messageModelFactory(chatId);
+    const hrefs = getHrefArray(text);
+
     const message = new MessageModel({
         from: uid,
         body: markdownIt(text)
@@ -153,6 +162,15 @@ async function sendMessage(uid, chatId, text) {
 
     sendQueue.push(chatId, message);
     message.chatId = chatId;
+
+    if (hrefs.length) {
+        try {
+            const og = await openGraph(hrefs[0]);
+            message.og = og;
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return message;
 }
