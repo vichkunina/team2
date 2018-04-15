@@ -5,6 +5,7 @@ import styles from './Chats.css';
 import { observer } from 'mobx-react';
 import ChatSearchResults from './ChatSearchResults/ChatSearchResults';
 import SearchResult from './ChatSearchResults/SearchResult/SearchResult';
+import ChatEntry from './ChatEntry/ChatEntry';
 
 @observer
 export default class Chats extends Component {
@@ -15,6 +16,7 @@ export default class Chats extends Component {
         children: ReactPropTypes.array,
         addContact: ReactPropTypes.func,
         searchByLogin: ReactPropTypes.func,
+        chooseOlesya: ReactPropTypes.func,
         searchResult: PropTypes.observableArray
     };
 

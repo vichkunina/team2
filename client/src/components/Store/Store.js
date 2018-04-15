@@ -16,9 +16,12 @@ export default class Store {
 
     @observable chats = [];
 
-    @observable chatHistories = [];
+    @observable olesyaChat = {
+        name: 'Olesya',
 
-    @observable currentChat = {};
+    };
+
+    @observable chatHistories = [];
 
     @action addMessage(chatId, message) {
         this.chatHistories.find(history => history.chatId === chatId).messages.push(message);

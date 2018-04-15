@@ -63,11 +63,13 @@ export default class App extends Component {
     }
 
     changeChat(chat) {
+        console.log('CHANGE CHAT', chat);
         this.setState({ currentChat: chat });
     }
 
     render() {
-        const currentChat = this.props.store.chats.find(chat => chat.id === this.state.currentChat);
+        const currentChat = this.state.currentChat === 'olesya' ? this.props.store.olesyaChat :
+            this.props.store.chats.find(chat => chat.id === this.state.currentChat);
         const chats = this.props.store.chats.map(chat => {
             const chatHistory = this.props.store.chatHistories[chat.id];
             let lastMessage = '';
@@ -83,6 +85,13 @@ export default class App extends Component {
             );
         });
 
+        chats.unshift(
+            <ChatEntry key={'olesya'} photoURL={''} name={'Olesya'}
+                lastMessage={''}
+                lastMessageDate={new Date()}
+                onClick={this.changeChat.bind(this, 'olesya')}/>
+        );
+
         const chatHistory = this.props.store.chatHistories
             .filter(history => history.chatId === this.state.currentChat.id)[0];
 
@@ -96,7 +105,7 @@ export default class App extends Component {
         }
 
         let state;
-        let message = "";
+        let message = '';
         let loadingState = this.props.store.loadingState;
 
         if (loadingState === States.LOADED) {
@@ -105,26 +114,26 @@ export default class App extends Component {
 
         if (loadingState === States.LOAD_CONTACTS) {
             state = true;
-            message = "Загружаем контакты..."
+            message = 'Загружаем контакты...'
         }
 
         if (loadingState === States.LOAD_PROFILE) {
             state = true;
-            message = "Загружаем профиль..."
+            message = 'Загружаем профиль...'
         }
 
         if (loadingState === States.ADD_CONTACT) {
             state = true;
-            message = "Добавляем контакт..."
+            message = 'Добавляем контакт...'
         }
 
         return (
             <div className={styles.Wrapper}>
                 <div className={styles.LoaderWrap} style={{ display: state ? 'flex' : 'none' }}>
                     <div className={styles.preloader}>
-                        <div className={styles.loader}></div>
+                        <div className={styles.loader}/>
                     </div>
-                    <div className={styles.LoaderWraperText}>{ message }</div>
+                    <div className={styles.LoaderWraperText}>{message}</div>
                 </div>
                 {this.state.showContacts &&
                 <Chats chats={this.props.store.chats}

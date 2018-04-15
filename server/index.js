@@ -24,7 +24,7 @@ connect(process.env.DB_URL, process.env.DB_TOKEN);
 setTimeout(2 * 1000);
 
 const corsOptions = {
-    origin: 'http://localhost:9000',
+    origin: 'http://localhost:8080',
     credentials: true
 };
 
