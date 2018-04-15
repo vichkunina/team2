@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ChatHistoryUserMessageOGAttachment from
@@ -21,19 +22,18 @@ export default class ChatHistoryUserMessage extends Component {
     };
 
     render() {
-        console.log('body', this.props.body);
         const className =
             `${styles.Wrapper} ${this.props.fromMe ? styles.FromMe : styles.FromSomeone}`;
 
-        console.log(this.props.og);
         return (
             <div className={className}>
                 <span className={styles.Name}>{this.props.name}</span>
                 <div className={styles.Body} dangerouslySetInnerHTML={{ __html: this.props.body }}/>
                 {this.props.og &&
-                    <ChatHistoryUserMessageOGAttachment
-                        url={this.props.og.data.requestUrl} title={this.props.og.data.ogTitle}
-                        description={this.props.og.data.ogDescription} image={this.props.og.data.ogImage} />}
+                <ChatHistoryUserMessageOGAttachment
+                    url={this.props.og.data.requestUrl} title={this.props.og.data.ogTitle}
+                    description={this.props.og.data.ogDescription}
+                    image={this.props.og.data.ogImage}/>}
                 <time className={styles.Time}>
                     {this._formatDate(this.props.date)}
                 </time>

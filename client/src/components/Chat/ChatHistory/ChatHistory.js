@@ -24,7 +24,9 @@ export default class ChatHistory extends Component {
 
     render() {
         return (
-            <div className={styles.Wrapper} ref={el => { this.divRef = el; }}>
+            <div className={styles.Wrapper} ref={el => {
+                this.divRef = el;
+            }}>
                 <div className={styles.Supporter}></div>
                 {this.props.children}
             </div>
