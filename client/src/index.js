@@ -7,7 +7,6 @@ import App from './components/App/App';
 import { WorkerWrapper } from './websocket/worker-wrapper';
 import * as States from './enum/LoadState';
 
-const worker = new WorkerWrapper();
 const store = new Store();
 const worker = new WorkerWrapper(store);
 
