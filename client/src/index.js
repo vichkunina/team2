@@ -24,15 +24,14 @@ worker.subscribe('NewMessage', (error, result) => {
     if (store.profile.id !== result.from) {
         const history = store
             .chatHistories
-            .find(h => h.chatId === result.chatId)
-            .messages.push(result);
+            .find(h => h.chatId === result.chatId);
+        history.messages.push(result);
 
         store.chatHistories = store
             .chatHistories
             .filter(h => h.chatId !== result.chatId)
             .concat([history]);
     }
-    console.info(store.chatHistories);
 });
 worker.subscribe('SendMessage', (error, result) => {
     console.info('result: ');

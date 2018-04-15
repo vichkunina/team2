@@ -13,6 +13,8 @@ import ChatHistoryUserMessage from
 export default class Chat extends Component {
     constructor(props) {
         super(props);
+
+        this.ChatHistoryRef = React.createRef();
     }
 
     static propTypes = {
@@ -27,6 +29,13 @@ export default class Chat extends Component {
         chatId: ReactPropTypes.string
     };
 
+    componentDidUpdate() {
+        if (this.ChatHistoryRef.current) {
+            console.info(this.ChatHistoryRef);
+            this.ChatHistoryRef.scrollTop = this.ChatHistoryRef.scrollHeight;
+        }
+    }
+
     render() {
         const chatHistory = this.props.chatHistories
             .find(history => history.chatId === this.props.chatId);
@@ -39,27 +48,21 @@ export default class Chat extends Component {
             ));
         }
 
-        if (chatHistory) {
-            return (
-                <div className={styles.Wrapper}>
-                    <ChatHeader photoURL={this.props.avatar}
-                        name={this.props.name} status={'online'}
-                        transitFromChatToContacts={this.props.transitFromChatToContacts}/>
-                    <ChatHistory>
-                        {chatHistoryToRender}
-                    </ChatHistory>
-                    <ChatInput chatHistories={this.props.chatHistories}
-                        sendMessage={this.props.sendMessage}
-                        addMessage={this.props.addMessage}
-                        chatId={this.props.chatId}
-                        profile={this.props.profile}/>
-                </div>
-            );
-        }
-
         return (
             <div className={styles.Wrapper}>
-                <span className={styles.EmptyChat}>Choose chat to start messaging</span>
+                <ChatHeader photoURL={this.props.avatar}
+                    name={this.props.name} status={'online'}
+                    transitFromChatToContacts={this.props.transitFromChatToContacts}/>
+                <ChatHistory ref={(el) => {
+                    this.ChatHistoryRef = el;
+                }}>
+                    {chatHistoryToRender}
+                </ChatHistory>
+                <ChatInput chatHistories={this.props.chatHistories}
+                    sendMessage={this.props.sendMessage}
+                    addMessage={this.props.addMessage}
+                    chatId={this.props.chatId}
+                    profile={this.props.profile}/>
             </div>
         );
     }

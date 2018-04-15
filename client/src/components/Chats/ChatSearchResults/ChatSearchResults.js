@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styles from './ChatSearchResults.css';
 
 export default class ChatSearchResults extends Component {
     constructor(props) {
@@ -12,7 +13,7 @@ export default class ChatSearchResults extends Component {
 
     render() {
         return (
-            <div>
+            <div className={styles.preloader}>
                 {this.props.children}
             </div>
         );
