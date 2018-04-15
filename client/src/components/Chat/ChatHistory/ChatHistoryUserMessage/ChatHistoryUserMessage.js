@@ -21,17 +21,19 @@ export default class ChatHistoryUserMessage extends Component {
     };
 
     render() {
+        console.log('body', this.props.body);
         const className =
             `${styles.Wrapper} ${this.props.fromMe ? styles.FromMe : styles.FromSomeone}`;
 
+        console.log(this.props.og);
         return (
             <div className={className}>
                 <span className={styles.Name}>{this.props.name}</span>
                 <div className={styles.Body} dangerouslySetInnerHTML={{ __html: this.props.body }}/>
-                {this.props.ogTitle &&
+                {this.props.og &&
                     <ChatHistoryUserMessageOGAttachment
-                        url={this.props.ogURL} title={this.props.ogTitle}
-                        description={this.props.ogDescription} image={this.props.ogImage} />}
+                        url={this.props.og.data.requestUrl} title={this.props.og.data.ogTitle}
+                        description={this.props.og.data.ogDescription} image={this.props.og.data.ogImage} />}
                 <time className={styles.Time}>
                     {this._formatDate(this.props.date)}
                 </time>
