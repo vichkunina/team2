@@ -11,7 +11,7 @@ module.exports = app => {
             if (req.isAuthenticated()) {
                 res.render('app', { staticPath: config.get('staticPath') });
             } else {
-                res.send('Not authenticated!');
+                res.redirect(`${config.get('host')}/login`);
             }
         }
     );

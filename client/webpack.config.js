@@ -1,7 +1,6 @@
-require('dotenv').config();
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const vendorLibs = [
     'react',
@@ -10,8 +9,13 @@ const vendorLibs = [
     'mobx-react'
 ];
 
+const host = process.env.NODE_ENV === 'production'
+    ? 'https://kilogram-team2.now.sh' : 'http://localhost:8080';
+
+console.info(host);
+
 module.exports = {
-    mode: process.env.NODE_ENV,
+    mode: 'development',
     entry: {
         index: path.join(__dirname, '/src/index.js'),
         vendor: vendorLibs
@@ -87,7 +91,7 @@ module.exports = {
             template: 'index.html'
         }),
         new webpack.DefinePlugin({
-            'process.env.HOST': 'test url'
+            'process.env.HOST': JSON.stringify(host)
         })
     ],
 

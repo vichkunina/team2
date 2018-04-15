@@ -1,11 +1,13 @@
 import Worker from './message-worker.js';
 import { getCookie } from '../utils/cookie';
 import * as Types from '../enum/WSActionType';
+import * as States from '../enum/LoadState';
 
 
 export class WorkerWrapper {
-    constructor() {
+    constructor(store) {
         this._worker = new Worker();
+        this._store = store;
         this._worker.onmessage = e => this._handleResponse(e.data);
         this._worker.postMessage({
             action: 'auth',
@@ -19,14 +21,17 @@ export class WorkerWrapper {
     }
 
     getProfile() {
+        this._store.loadingState = States.LOAD_PROFILE;
         this._worker.postMessage({ action: 'GetProfile' });
     }
 
     getChatList() {
+        this._store.loadingState = States.LOAD_CONTACTS;
         this._worker.postMessage({ action: 'GetChatList' });
     }
 
     addContact(userId) {
+        this._store.loadingState = States.ADD_CONTACT;
         this._worker.postMessage({ action: 'AddContact', value: userId });
     }
 
@@ -39,6 +44,7 @@ export class WorkerWrapper {
     }
 
     searchByLogin(login) {
+        this._store.loadingState = States.SEARCH_CONTACTS;
         this._worker.postMessage({ action: 'SearchByLogin', value: login });
     }
 

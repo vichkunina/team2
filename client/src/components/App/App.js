@@ -7,6 +7,7 @@ import Profile from '../Profile/Profile';
 import Chat from '../Chat/Chat';
 import styles from './App.css';
 import ChatEntry from '../Chats/ChatEntry/ChatEntry';
+import * as States from '../../enum/LoadState';
 import ChatHistoryUserMessage from
     '../Chat/ChatHistory/ChatHistoryUserMessage/ChatHistoryUserMessage';
 
@@ -36,7 +37,6 @@ export default class App extends Component {
 
     componentDidMount() {
         this.props.worker.getProfile();
-        this.props.worker.getChatList();
     }
 
     componentWillMount() {
@@ -68,7 +68,6 @@ export default class App extends Component {
 
     render() {
         const currentChat = this.props.store.chats.find(chat => chat.id === this.state.currentChat);
-        console.log()
         const chats = this.props.store.chats.map(chat => {
             const chatHistory = this.props.store.chatHistories[chat.id];
             let lastMessage = '';
@@ -96,8 +95,37 @@ export default class App extends Component {
             ));
         }
 
+        let state;
+        let message = "";
+        let loadingState = this.props.store.loadingState;
+
+        if (loadingState === States.LOADED) {
+            state = false;
+        }
+
+        if (loadingState === States.LOAD_CONTACTS) {
+            state = true;
+            message = "Загружаем контакты..."
+        }
+
+        if (loadingState === States.LOAD_PROFILE) {
+            state = true;
+            message = "Загружаем профиль..."
+        }
+
+        if (loadingState === States.ADD_CONTACT) {
+            state = true;
+            message = "Добавляем контакт..."
+        }
+
         return (
             <div className={styles.Wrapper}>
+                <div className={styles.LoaderWrap} style={{ display: state ? 'flex' : 'none' }}>
+                    <div className={styles.preloader}>
+                        <div className={styles.loader}></div>
+                    </div>
+                    <div className={styles.LoaderWraperText}>{ message }</div>
+                </div>
                 {this.state.showContacts &&
                 <Chats chats={this.props.store.chats}
                     currentChat={currentChat}
@@ -107,8 +135,8 @@ export default class App extends Component {
                     {chats}
                 </Chats>
                 }
-                {currentChat ?
-                    <Chat name={currentChat.name}
+                {currentChat
+                    ? <Chat name={currentChat.name}
                         chatId={currentChat.id}
                         chatHistories={this.props.store.chatHistories}
                         addMessage={this.props.store.addMessage.bind(this.props.store)}
@@ -117,8 +145,8 @@ export default class App extends Component {
                         avatar={currentChat.avatar}
                         transitFromChatToContacts={this.transitFromChatToContacts}>
                         {chatHistoryToRender}
-                    </Chat> :
-                    <div className={styles.Wrapper}>
+                    </Chat>
+                    : <div className={styles.StubWrapper}>
                         <span className={styles.EmptyChat}>Choose chat to start messaging</span>
                     </div>
                 }

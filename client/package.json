@@ -44,9 +44,9 @@
     "test": "eslint .",
     "lint:fix": "eslint . --fix",
     "start:dev": "cross-env NODE_ENV=development webpack-dev-server",
-    "build:prod": "webpack --mode production",
+    "build:prod": "webpack",
     "build:dev": "webpack --mode development --watch",
-    "deploy": "npm run build && surge -p ./dist -d kilogram-team2.surge.sh"
+    "deploy": "cross-env NODE_ENV=production npm run build && surge -p ./dist -d kilogram-team2.surge.sh"
   },
   "author": "",
   "license": "ISC"
