@@ -31,7 +31,7 @@ module.exports = async function (app, sessionStore) {
                 try {
                     await action(data);
                 } catch (error) {
-                    console.log(error);
+                    console.error(error);
                 }
                 callback();
             });
@@ -55,7 +55,6 @@ module.exports = async function (app, sessionStore) {
         socket.on('AddContact', pushAction.bind(null, uid, async (userId) => {
             try {
                 const result = await addContact(uid, userId);
-                console.log(result);
 
                 result.users.forEach(user => {
                     wsServer.emitByUID(user.id, 'NewChat', result);

@@ -7,15 +7,13 @@ const methods =
     ['GetMessages', 'GetProfile', 'SearchByLogin', 'AddContact', 'GetChatList',
         'SendMessage', 'DeleteProfile'];
 
-const host = 'http://localhost:8080';
-// const host = process.env.HOST || 'localhost:8080';
-console.info(host);
+const host = process.env.HOST;
+console.info('host: ' + process.env.HOST);
 
 function initSocket() {
     socket = io(host, {
         transports: ['websocket'],
-        query: { token: TOKEN },
-        secure: true
+        query: { token: TOKEN }
     });
 
     socket.on('NewMessage', message => {

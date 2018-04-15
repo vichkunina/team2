@@ -69,7 +69,7 @@ require('./app/websockets')(httpServer, sessionStore);
 
 httpServer.listen(port, () => {
     console.info(`Server started on ${port}`);
-    console.info(`Open http://${config.get('host')}/`);
+    console.info(`Open ${config.get('host')}/`);
 });
 
 module.exports = app;

@@ -106,8 +106,8 @@ export default class App extends Component {
                     {chats}
                 </Chats>
                 }
-                {currentChat ?
-                    <Chat name={currentChat.name}
+                {currentChat
+                    ? <Chat name={currentChat.name}
                         chatId={currentChat.id}
                         chatHistories={this.props.store.chatHistories}
                         addMessage={this.props.store.addMessage.bind(this.props.store)}
@@ -116,8 +116,8 @@ export default class App extends Component {
                         avatar={currentChat.avatar}
                         transitFromChatToContacts={this.transitFromChatToContacts}>
                         {chatHistoryToRender}
-                    </Chat> :
-                    <div className={styles.StubWrapper}>
+                    </Chat>
+                    : <div className={styles.StubWrapper}>
                         <span className={styles.EmptyChat}>Choose chat to start messaging</span>
                     </div>
                 }
