@@ -1,6 +1,5 @@
 'use strict';
 
-require('dotenv').config();
 const config = require('config');
 const passportGithub = require('passport-github');
 const Github = require('./models/Github');
@@ -14,7 +13,7 @@ const strategy = new passportGithub.Strategy(
     {
         clientID: process.env.GITHUB_CLIENT_ID,
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
-        callbackURL: `http://${config.get('host')}/login/return`
+        callbackURL: `${config.get('host')}/login/return`
     },
     async (accessToken, refreshToken, profile, done) => {
         try {
