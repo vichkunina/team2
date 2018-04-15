@@ -2,6 +2,20 @@ body {
     margin: 0;
 }
 
+.StubWrapper {
+    flex-grow: 2;
+
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: stretch;
+
+    justify-content: center;
+    min-width: 300px;
+
+    overflow-y: auto;
+}
+
+
 .Wrapper {
     display: flex;
     flex-flow: row nowrap;
@@ -59,4 +73,8 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #1e1e248f; 
+}
+
+.EmptyChat {
+    align-self: center;
 }

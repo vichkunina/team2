@@ -68,7 +68,6 @@ export default class App extends Component {
 
     render() {
         const currentChat = this.props.store.chats.find(chat => chat.id === this.state.currentChat);
-        console.log()
         const chats = this.props.store.chats.map(chat => {
             const chatHistory = this.props.store.chatHistories[chat.id];
             let lastMessage = '';
@@ -118,7 +117,7 @@ export default class App extends Component {
                         transitFromChatToContacts={this.transitFromChatToContacts}>
                         {chatHistoryToRender}
                     </Chat> :
-                    <div className={styles.Wrapper}>
+                    <div className={styles.StubWrapper}>
                         <span className={styles.EmptyChat}>Choose chat to start messaging</span>
                     </div>
                 }
