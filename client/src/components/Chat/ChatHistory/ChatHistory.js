@@ -5,6 +5,8 @@ import styles from './ChatHistory.css';
 export default class ChatHistory extends Component {
     constructor(props) {
         super(props);
+
+        this.divRef = null;
     }
 
     static propTypes = {
@@ -12,11 +14,17 @@ export default class ChatHistory extends Component {
             PropTypes.arrayOf(PropTypes.element),
             PropTypes.element
         ])
+    };
+
+    componentDidUpdate() {
+        if (this.divRef) {
+            this.divRef.scrollTop = this.divRef.scrollHeight;
+        }
     }
 
     render() {
         return (
-            <div className={styles.Wrapper}>
+            <div className={styles.Wrapper} ref={el => { this.divRef = el; }}>
                 <div className={styles.Supporter}></div>
                 {this.props.children}
             </div>

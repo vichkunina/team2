@@ -106,6 +106,7 @@ export default class App extends Component {
 
         let state;
         let message = '';
+        // eslint-disable-next-line react/prop-types
         let loadingState = this.props.store.loadingState;
 
         if (loadingState === States.LOADED) {
@@ -114,17 +115,17 @@ export default class App extends Component {
 
         if (loadingState === States.LOAD_CONTACTS) {
             state = true;
-            message = 'Загружаем контакты...'
+            message = 'Загружаем контакты...';
         }
 
         if (loadingState === States.LOAD_PROFILE) {
             state = true;
-            message = 'Загружаем профиль...'
+            message = 'Загружаем профиль...';
         }
 
         if (loadingState === States.ADD_CONTACT) {
             state = true;
-            message = 'Добавляем контакт...'
+            message = 'Добавляем контакт...';
         }
 
         return (

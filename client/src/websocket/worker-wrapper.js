@@ -3,11 +3,11 @@ import { getCookie } from '../utils/cookie';
 import * as Types from '../enum/WSActionType';
 import * as States from '../enum/LoadState';
 
-
 export class WorkerWrapper {
     constructor(store) {
         this._worker = new Worker();
         this._store = store;
+
         this._worker.onmessage = e => this._handleResponse(e.data);
         this._worker.postMessage({
             action: 'auth',

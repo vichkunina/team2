@@ -22,18 +22,16 @@ worker.subscribe('DeleteProfile', (error, result) => {
     console.info(error);
 });
 worker.subscribe('NewMessage', (error, result) => {
-    console.info(error, result);
-    if (store.profile.id !== result.from) {
-        const history = store
-            .chatHistories
-            .find(h => h.chatId === result.chatId);
-        history.messages.push(result);
+    console.info('new message', error, result);
+    const history = store
+        .chatHistories
+        .find(h => h.chatId === result.chatId);
+    history.messages.push(result);
 
-        store.chatHistories = store
-            .chatHistories
-            .filter(h => h.chatId !== result.chatId)
-            .concat([history]);
-    }
+    store.chatHistories = store
+        .chatHistories
+        .filter(h => h.chatId !== result.chatId)
+        .concat([history]);
 });
 worker.subscribe('SendMessage', (error, result) => {
     console.info('result: ');
