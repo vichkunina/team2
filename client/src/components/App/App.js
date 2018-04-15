@@ -1,3 +1,4 @@
+/* eslint-disable complexity,max-statements */
 import React, { Component } from 'react';
 import { PropTypes } from 'mobx-react';
 import ReactPropTypes from 'prop-types';
@@ -7,6 +8,7 @@ import Profile from '../Profile/Profile';
 import Chat from '../Chat/Chat';
 import styles from './App.css';
 import ChatEntry from '../Chats/ChatEntry/ChatEntry';
+import * as States from '../../enum/LoadState';
 import ChatHistoryUserMessage from
     '../Chat/ChatHistory/ChatHistoryUserMessage/ChatHistoryUserMessage';
 
@@ -36,7 +38,6 @@ export default class App extends Component {
 
     componentDidMount() {
         this.props.worker.getProfile();
-        this.props.worker.getChatList();
     }
 
     componentWillMount() {
@@ -95,8 +96,38 @@ export default class App extends Component {
             ));
         }
 
+        let state;
+        let message = '';
+        // eslint-disable-next-line react/prop-types
+        let loadingState = this.props.store.loadingState;
+
+        if (loadingState === States.LOADED) {
+            state = false;
+        }
+
+        if (loadingState === States.LOAD_CONTACTS) {
+            state = true;
+            message = 'Загружаем контакты...';
+        }
+
+        if (loadingState === States.LOAD_PROFILE) {
+            state = true;
+            message = 'Загружаем профиль...';
+        }
+
+        if (loadingState === States.ADD_CONTACT) {
+            state = true;
+            message = 'Добавляем контакт...';
+        }
+
         return (
             <div className={styles.Wrapper}>
+                <div className={styles.LoaderWrap} style={{ display: state ? 'flex' : 'none' }}>
+                    <div className={styles.preloader}>
+                        <div className={styles.loader}></div>
+                    </div>
+                    <div className={styles.LoaderWraperText}>{message}</div>
+                </div>
                 {this.state.showContacts &&
                 <Chats chats={this.props.store.chats}
                     currentChat={currentChat}

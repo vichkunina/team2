@@ -5,11 +5,13 @@ import ReactDOM from 'react-dom';
 import Store from './components/Store/Store';
 import App from './components/App/App';
 import { WorkerWrapper } from './websocket/worker-wrapper';
+import * as States from './enum/LoadState';
 
-const worker = new WorkerWrapper();
 const store = new Store();
+const worker = new WorkerWrapper(store);
 
 worker.subscribe('SearchByLogin', (error, result) => {
+    store.loadingState = States.LOADED;
     console.info('result: ');
     console.info(result);
     console.info(error);
@@ -39,8 +41,10 @@ worker.subscribe('SendMessage', (error, result) => {
     console.info(error);
 });
 worker.subscribe('GetProfile', (error, profile) => {
+    store.loadingState = States.LOAD_CONTACTS;
     console.info('err', error, profile);
     store.profile = profile;
+    worker.getChatList();
 });
 worker.subscribe('GetChatList', (error, chats) => {
     chats.forEach(chat => {
@@ -51,7 +55,7 @@ worker.subscribe('GetChatList', (error, chats) => {
         });
     });
     store.chats = store.chats.concat(chats.map(initChat));
-
+    store.loadingState = States.LOADED;
     console.info('chats: ', chats);
 });
 
@@ -93,6 +97,7 @@ worker.subscribe('AddContact', (err, chat) => {
 });
 
 worker.subscribe('NewChat', (err, chat) => {
+    store.loadingState = States.LOADED;
     store.chats = store.chats.concat([initChat(chat)]);
     store.chatHistories = store.chatHistories.concat([{ chatId: chat.id, messages: [] }]);
 });

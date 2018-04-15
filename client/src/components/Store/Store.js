@@ -1,4 +1,5 @@
 import { observable, action } from 'mobx';
+import * as States from '../../enum/LoadState';
 
 export default class Store {
 
@@ -7,6 +8,8 @@ export default class Store {
         showChat: true,
         showProfile: true
     };
+
+    @observable loadingState = States.LOADED;
 
     @observable profile = {};
     @observable searchResult = [];
