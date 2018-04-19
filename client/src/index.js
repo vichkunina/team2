@@ -2,8 +2,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Store from './components/Store/Store';
-import App from './components/App/App';
+import App from './components/App';
+import Store from './store/Store';
 import { WorkerWrapper } from './websocket/worker-wrapper';
 import * as States from './enum/LoadState';
 
