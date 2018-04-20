@@ -6,7 +6,7 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const config = require('config');
 const express = require('express');
-const { connect, setTimeout } = require('hruhru');
+const mongoose = require('mongoose');
 const morgan = require('morgan');
 const path = require('path');
 const cors = require('cors');
@@ -20,8 +20,20 @@ const app = express();
 const httpServer = createServer(app);
 const sessionStore = new session.MemoryStore();
 
-connect(process.env.DB_URL, process.env.DB_TOKEN);
-setTimeout(2 * 1000);
+let timeout = 3000;
+
+function connect() {
+    mongoose.connect(process.env.DB_URL, { connectTimeoutMS: timeout }).then(
+        () => console.info('Connected to database'),
+        (e) => {
+            console.error(e);
+            timeout += 2000;
+            console.info(`Attempt to connect with ${timeout} ms`);
+            connect();
+        });
+}
+
+connect();
 
 const corsOptions = {
     origin: 'http://localhost:8080',
