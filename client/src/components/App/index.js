@@ -25,7 +25,6 @@ export default class App extends Component {
 
         const chatList = chatListState.chatsToDisplay.map(chat => (
             <ChatItem key={chat._id}
-                current={chat._id === chatState.currentChat._id}
                 photoURL={chat.avatar}
                 name={chat.name}
                 lastMessage={chat.lastMessage.body}
@@ -34,9 +33,8 @@ export default class App extends Component {
         ));
 
         const chatHistory = chatState.currentChatHistory.map(message => (
-            <UserMessage key={message._id || message.tempId}
+            <UserMessage key={message._id}
                 fromMe={message.from === dataStore.profile._id}
-                isSent={Boolean(message._id)}
                 name={message.name}
                 body={message.body}
                 createdAt={message.createdAt}
