@@ -29,6 +29,14 @@ export default class ChatInput extends React.Component {
         console.log('Some useful info for future', this.state.selectedFile);
     }
 
+    fileChangedHandler = (event) => {
+        this.setState({ selectedFile: event.target.files[0] });
+    }
+
+    uploadHandler = () => {
+        console.log('Some useful info for future', this.state.selectedFile);
+    }
+
     textChangeHandler(event) {
         this.setState({ chatInput: event.target.value });
     }
@@ -63,32 +71,32 @@ export default class ChatInput extends React.Component {
 
     render() {
         return (
-            <article className={styles.SendBar}>
-                <form id="send-message-form" className={styles.Wrapper}
-                    onSubmit={this.submitHandler.bind(this)}>
-                    <input type="text" className={styles.Input}
-                        value={this.state.chatInput}
-                        placeholder=" Write a message..."
-                        onChange={this.textChangeHandler.bind(this)}
-                        autoFocus />
-                    <button type="button" className={`${styles.EmojiButton} ${styles.Button}`}>
-                        <i className="material-icons">tag_faces</i>
-                    </button>
-                    <div className = {`${styles.AddButton} ${styles.Button}`}>
-                        <label>
-                            <input type="file" onChange={this.onPreviewChange}
-                                accept="image/*" multiple className={styles.Upload} />
-                            <i className="material-icons">add</i>
-                        </label>
-                    </div>
-                    <button form="send-message-form" type="submit"
-                        className={`${styles.SendButton} ${styles.Button}`}>
-                        <i onClick={this.uploadHandler.bind(this)}
-                            className="material-icons">send</i>
-                    </button>
-                </form>
-                {this.renderPreview()}
-            </article>
+            <form id="send-message-form" className={styles.Wrapper}
+                onSubmit={this.submitHandler.bind(this)}>
+                <button type="button" className={`${styles.ImageButton} ${styles.Button}`}>
+                    <i className="material-icons">image</i>
+                </button>
+                <input type="text" className={styles.Input}
+                    value={this.state.chatInput}
+                    placeholder=" Write a message..."
+                    onChange={this.textChangeHandler.bind(this)}
+                    autoFocus />
+                <button type="button" className={`${styles.EmojiButton} ${styles.Button}`}>
+                    <i className="material-icons">tag_faces</i>
+                </button>
+                <div className = {`${styles.AddButton} ${styles.Button}`}>
+                    <label>
+                        <input type="file" onChange={this.fileChangedHandler.bind(this)}
+                            accept="image/*" multiple className={styles.Upload} />
+                        <i className="material-icons">add</i>
+                    </label>
+                </div>
+                <button form="send-message-form" type="submit"
+                    className={`${styles.SendButton} ${styles.Button}`}>
+                    <i onClick={this.uploadHandler.bind(this)}
+                        className="material-icons">send</i>
+                </button>
+            </form>
         );
     }
 }
