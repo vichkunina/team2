@@ -31,7 +31,7 @@
     display: block;
 
     text-align: right;
-    
+
     color: #aaa;
 }
 
@@ -52,6 +52,20 @@
 .FromMe .Body code {
     color: #489c8d;
 }
+
+.ImageWrapper
+{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.Img
+{
+    height: 150px;
+    object-fit: contain;
+    margin: 3px;
+}
+
 
 /* Desktop */
 @media screen and (min-width: 426px) {

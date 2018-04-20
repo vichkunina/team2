@@ -9,6 +9,8 @@ const { queue } = require('async');
 const parseMarkdown = require('./tools/parse-markdown');
 const getUrls = require('./tools/get-urls');
 const opengraph = require('./tools/opengraph');
+const cloudinary = require('./tools/cloudinary');
+const ss = require('socket.io-stream');
 
 const {
     ChatModel,
@@ -49,6 +51,15 @@ module.exports = async function (app, sessionStore) {
             uid,
             execute.bind(null, socket, uid, SearchByLogin)
         ));
+        ss(socket).on('UploadImage', (stream) => {
+            const cloud = cloudinary.createCloudStream((res, arr) => {
+                wsServer.emitByUID(uid, 'UploadImageResult', {
+                    success: true,
+                    value: res.url
+                })
+            });
+            stream.pipe(cloud);
+        });
         socket.on('AddContact', pushAction.bind(null, uid, async (userId) => {
             try {
                 const result = await addContact(uid, userId);
@@ -74,9 +85,9 @@ module.exports = async function (app, sessionStore) {
             uid,
             execute.bind(null, socket, uid, GetChatList)
         ));
-        socket.on('SendMessage', pushAction.bind(null, uid, async ({ chatId, text, tempId }) => {
+        socket.on('SendMessage', pushAction.bind(null, uid, async ({ chatId, text, tempId, attachments }) => {
             try {
-                const message = await sendMessage(uid, chatId, text);
+                const message = await sendMessage(uid, chatId, text, attachments);
                 const chat = await ChatModel.findById(chatId).exec();
 
                 wsServer.emitByUID(uid, 'SendMessageResult', {
@@ -139,7 +150,7 @@ async function execute(socket, uid, fn, data) {
     }
 }
 
-async function sendMessage(uid, chatId, text) {
+async function sendMessage(uid, chatId, text, attachments) {
     const chat = await ChatModel.findById(chatId);
 
     if (chat.users.indexOf(uid) === -1) {
@@ -151,7 +162,8 @@ async function sendMessage(uid, chatId, text) {
     const message = new MessageModel({
         chatId: chatId,
         from: uid,
-        body: parseMarkdown(text)
+        body: parseMarkdown(text),
+        attachments
     });
 
     sendQueue.push(chatId, message);
