@@ -2,10 +2,26 @@
 
 const config = require('config');
 const passportGithub = require('passport-github');
-const User = require('./models/User');
-const GithubAvatar = require('./tools/githubAvatar');
+const User = require('../models/User');
+const GithubAvatar = require('./github-avatar');
 
-const strategy = new passportGithub.Strategy(
+module.exports.setSerializers = passport => {
+    passport.serializeUser((user, done) => {
+        done(null, user.id);
+    });
+
+    passport.deserializeUser(async (id, done) => {
+        try {
+            const user = await User.findById(id).exec();
+
+            done(null, user);
+        } catch (error) {
+            done(error);
+        }
+    });
+};
+
+module.exports.strategy = new passportGithub.Strategy(
     {
         clientID: process.env.GITHUB_CLIENT_ID,
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
@@ -38,5 +54,3 @@ const strategy = new passportGithub.Strategy(
         }
     }
 );
-
-module.exports = { strategy };

@@ -12,8 +12,7 @@ const path = require('path');
 const cors = require('cors');
 const { createServer } = require('http');
 
-const makePassport = require('./app/passport');
-const { strategy } = require('./app/authStrategy');
+const { setSerializers, strategy } = require('./app/tools/auth');
 const routes = require('./app/routes');
 
 const app = express();
@@ -42,7 +41,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-passport.use(strategy);
 app.use(session({
     store: sessionStore,
     secret: process.env.EXPRESS_SESSION_SECRET,
@@ -57,7 +55,9 @@ if (config.get('debug')) {
     app.use(express.static(config.get('staticPath')));
 }
 
-makePassport(passport);
+passport.use(strategy);
+setSerializers(passport);
+
 app.use(passport.initialize());
 app.use(passport.session());
 

@@ -1,4 +1,4 @@
-import Worker from './message-worker.js';
+import Worker from './message-worker';
 import { getCookie } from '../utils/cookie';
 import * as Types from '../enum/WSActionType';
 import * as States from '../enum/LoadState';

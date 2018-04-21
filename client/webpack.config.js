@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const vendorLibs = [
     'react',
@@ -90,6 +91,9 @@ module.exports = {
     },
 
     plugins: [
+        new HtmlWebpackPlugin({
+            template: 'index.html'
+        }),
         new webpack.DefinePlugin({
             'process.env.HOST': JSON.stringify(host)
         })
@@ -98,8 +102,9 @@ module.exports = {
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
         compress: true,
-        port: 9000
+        port: 8080
     },
+
     node: {
         fs: 'empty'
     }

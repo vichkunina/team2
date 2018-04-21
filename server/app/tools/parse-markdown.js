@@ -3,5 +3,5 @@
 const pagedown = require('pagedown');
 const saneConv = pagedown.getSanitizingConverter();
 
-exports.markdownIt = (message) => saneConv.makeHtml(message);
+module.exports = message => saneConv.makeHtml(message);
 

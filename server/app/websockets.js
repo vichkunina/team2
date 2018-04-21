@@ -5,9 +5,9 @@ const olesya = require('./tools/olesya');
 const WebSocketServer = require('./classes/WebSocketServer');
 const SendQueue = require('./classes/SendQueue');
 const { queue } = require('async');
-const { markdownIt } = require('./tools/markdown');
-const { getHrefArray } = require('./tools/href');
-const { openGraph } = require('./controllers/opengraph');
+const parseMarkdown = require('./tools/parse-markdown');
+const getUrls = require('./tools/get-urls');
+const opengraph = require('./tools/opengraph');
 let LOGINS_CACHE = [];
 
 const {
@@ -147,19 +147,19 @@ async function sendMessage(uid, chatId, text) {
         throw new Error('Not your chat!');
     }
 
-    const hrefs = getHrefArray(text);
+    const urls = getUrls(text);
 
     const message = new MessageModel({
         chatId: chatId,
         from: uid,
-        body: markdownIt(text)
+        body: parseMarkdown(text)
     });
 
     sendQueue.push(chatId, message);
 
-    if (hrefs.length) {
+    if (urls) {
         try {
-            const og = await openGraph(hrefs[0]);
+            const og = await opengraph(urls[0]);
             message.og = og;
         } catch (error) {
             console.error(error);
