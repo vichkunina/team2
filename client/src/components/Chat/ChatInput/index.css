@@ -48,3 +48,28 @@
     display: none
 }
 
+.PreviewImg
+{
+    width: 100px;
+    height: 100px;
+    margin: 0 5px;
+}
+
+.Img
+{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.SendBar
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.PreviewImgList
+{
+    display: flex;
+    margin: 5px 15.5px;
+}
