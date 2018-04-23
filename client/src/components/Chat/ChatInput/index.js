@@ -3,7 +3,7 @@ import React from 'react';
 import { PropTypes } from 'mobx-react';
 import { observer, inject } from 'mobx-react';
 import styles from './index.css';
-import FilePreview from 'react-preview-file';
+import Preview from '../ChatPreview/index';
 
 @inject('chatInputState') @observer
 export default class ChatInput extends React.Component {
@@ -29,44 +29,12 @@ export default class ChatInput extends React.Component {
         console.log('Some useful info for future', this.state.selectedFile);
     }
 
-    // fileChangedHandler = (event) => {
-    //     this.setState({ selectedFile: event.target.files[0] });
-    // }
-
     uploadHandler = () => {
         console.log('Some useful info for future', this.state.selectedFile);
     }
 
     textChangeHandler(event) {
         this.setState({ chatInput: event.target.value });
-    }
-
-    onPreviewChange = event => {
-        const { currentTarget: { files } } = event;
-        this.setState({ files });
-    }
-
-    renderPreview() {
-        const { files } = this.state;
-        if (!files) {
-            return;
-        }
-
-        const keys = Object.keys(files);
-
-        return (
-            <section className={styles.PreviewImgList}>
-                {keys.map(key =>
-                    <FilePreview key={key} file={files[key]}>
-                        {(preview) =>
-                            <div className={styles.PreviewImg}>
-                                <img className={styles.Img} src={preview}/>
-                            </div>
-                        }
-                    </FilePreview>
-                )}
-            </section>
-        );
     }
 
     render() {
@@ -82,20 +50,13 @@ export default class ChatInput extends React.Component {
                     <button type="button" className={`${styles.EmojiButton} ${styles.Button}`}>
                         <i className="material-icons">tag_faces</i>
                     </button>
-                    <div className = {`${styles.AddButton} ${styles.Button}`}>
-                        <label>
-                            <input type="file" onChange={this.onPreviewChange}
-                                accept="image/*" multiple className={styles.Upload} />
-                            <i className="material-icons">add</i>
-                        </label>
-                    </div>
                     <button form="send-message-form" type="submit"
                         className={`${styles.SendButton} ${styles.Button}`}>
                         <i onClick={this.uploadHandler.bind(this)}
                             className="material-icons">send</i>
                     </button>
+                    <Preview />
                 </form>
-                {this.renderPreview()}
             </article>
         );
     }
