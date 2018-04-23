@@ -33,10 +33,6 @@ export default class ChatInput extends React.Component {
         console.log('Some useful info for future', this.state.selectedFile);
     }
 
-    textChangeHandler(event) {
-        this.setState({ chatInput: event.target.value });
-    }
-
     render() {
         return (
             <article className={styles.SendBar}>
