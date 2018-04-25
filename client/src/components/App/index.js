@@ -5,6 +5,8 @@ import ChatList from '../ChatList';
 import Profile from '../Profile';
 import Chat from '../Chat';
 import ServiceMessage from '../Chat/ChatHistory/ServiceMessage';
+import ChatItem from '../ChatList/ChatItem';
+import UserMessage from '../Chat/ChatHistory/UserMessage';
 import styles from './index.css';
 import ChatItem from '../ChatList/ChatItem/index';
 import UserMessage from '../Chat/ChatHistory/UserMessage/index';
@@ -16,33 +18,47 @@ export default class App extends Component {
     }
 
     static propTypes = {
-        rootStore: ReactPropTypes.object
+        store: ReactPropTypes.shape({
+            chats: PropTypes.observableArray,
+            profile: PropTypes.observableObject,
+            chatHistories: PropTypes.observableArrayOf(PropTypes.observableObject),
+            searchResult: PropTypes.observableArray,
+            loaderState: ReactPropTypes.object
+        }),
+        worker: ReactPropTypes.object
     };
 
     render() {
-        const { dataStore, state } = this.props.rootStore;
-        const { chatState, chatListState, chatInputState } = state;
+        const currentChat = this.props.store.chats
+            .find(chat => chat._id === this.state.currentChat);
+        const chats = this.props.store.chats.map(chat => {
+            const chatHistory = this.props.store.chatHistories[chat._id];
+            let lastMessage = '';
+            if (chatHistory && chatHistory.length > 0) {
+                lastMessage = chatHistory[chatHistory.length - 1].body;
+            }
 
-        const chatList = chatListState.chatsToDisplay.map(chat => (
-            <ChatItem key={chat._id}
-                current={chat._id === chatState.currentChat._id}
-                photoURL={chat.avatar}
-                name={chat.name}
-                lastMessage={chat.lastMessage.body}
-                lastMessageDate={chat.lastMessage.createdAt}
-                onClick={chatState.selectChat.bind(chatState, chat)}/>
-        ));
+            return (
+                <ChatItem key={chat._id} photoURL={chat.avatar} name={chat.name}
+                    lastMessage={lastMessage}
+                    lastMessageDate={new Date()}
+                    onClick={this.changeChat.bind(this, chat._id)}/>
+            );
+        });
 
-        const chatHistory = chatState.currentChatHistory.map(message => (
-            <UserMessage key={message._id}
-                fromMe={message.from === dataStore.profile._id}
-                name={message.name}
-                body={message.body}
-                createdAt={message.createdAt}
-                og={message.og}/>
-        ));
+        const chatHistory = this.props.store.chatHistories
+            .filter(history => history.chatId === this.state.currentChat._id)[0];
 
-        const { loaderState, message } = state.loaderState;
+        let chatHistoryToRender;
+        if (chatHistory) {
+            chatHistoryToRender = chatHistory.map(message => (
+                <UserMessage key={message._id}
+                    fromMe={message.from === this.props.store.profile._id} name={message.name}
+                    body={message.body} date={message.date || new Date()}/>
+            ));
+        }
+
+        let { state, message } = this.props.store.loaderState;
 
         return (
             <Provider chatInputState={chatInputState}
@@ -72,6 +88,32 @@ export default class App extends Component {
                     {state.mainView.showProfile &&
                     <Profile profile={dataStore.profile}/>}
                 </div>
+                {this.state.showContacts &&
+                <ChatList chats={this.props.store.chats}
+                    currentChat={currentChat}
+                    searchByLogin={this.props.worker.searchByLogin.bind(this.props.worker)}
+                    searchResult={this.props.store.searchResult}
+                    addContact={this.props.worker.addContact.bind(this.props.worker)}>
+                    {chats}
+                </ChatList>
+                }
+                {currentChat
+                    ? <Chat name={currentChat.name}
+                        chatId={currentChat._id}
+                        chatHistories={this.props.store.chatHistories}
+                        sendMessage={this.props.worker.sendMessage.bind(this.props.worker)}
+                        profile={this.props.store.profile}
+                        avatar={currentChat.avatar}
+                        transitFromChatToContacts={this.transitFromChatToContacts}>
+                        {chatHistoryToRender}
+                    </Chat>
+                    : <div className={styles.StubWrapper}>
+                        <ServiceMessage text="Please select a chat to start messaging"/>
+                    </div>
+                }
+                {this.state.showProfile &&
+                <Profile profile={this.props.store.profile}
+                    closeProfile={this.closeProfile}/>}
             </Provider>
         );
     }

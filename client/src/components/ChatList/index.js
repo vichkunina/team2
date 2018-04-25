@@ -9,8 +9,12 @@ import styles from './index.css';
 export default class ChatList extends Component {
 
     static propTypes = {
-        chatListState: PropTypes.observableObject,
-        children: ReactPropTypes.array
+        chats: PropTypes.observableArray,
+        chatInput: ReactPropTypes.string,
+        children: ReactPropTypes.array,
+        addContact: ReactPropTypes.func,
+        searchByLogin: ReactPropTypes.func,
+        searchResult: PropTypes.observableArray
     };
 
     constructor(props) {

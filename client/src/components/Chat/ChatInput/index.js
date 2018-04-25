@@ -13,7 +13,10 @@ export default class ChatInput extends React.Component {
             selectedFile: null };
     }
     static propTypes = {
-        chatInputState: PropTypes.observableObject
+        chatHistories: PropTypes.observableArrayOf(PropTypes.observableObject),
+        sendMessage: ReactPropTypes.func,
+        chatId: ReactPropTypes.string,
+        profile: PropTypes.observableObject
     };
 
     submitHandler(event) {

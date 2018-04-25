@@ -13,6 +13,11 @@ export default class Chat extends Component {
     }
 
     static propTypes = {
+        chatHistories: PropTypes.observableArrayOf(PropTypes.observableObject),
+        sendMessage: ReactPropTypes.func,
+        children: ReactPropTypes.element,
+        profile: PropTypes.observableObject,
+        transitFromChatToContacts: ReactPropTypes.func.isRequired,
         name: ReactPropTypes.string,
         avatar: ReactPropTypes.string,
         children: ReactPropTypes.array
@@ -27,7 +32,10 @@ export default class Chat extends Component {
                 <ChatHistory>
                     {this.props.children}
                 </ChatHistory>
-                <ChatInput/>
+                <ChatInput chatHistories={this.props.chatHistories}
+                    sendMessage={this.props.sendMessage}
+                    chatId={this.props.chatId}
+                    profile={this.props.profile}/>
             </div>
         );
     }
