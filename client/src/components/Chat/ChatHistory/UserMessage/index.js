@@ -13,7 +13,7 @@ export default class UserMessage extends Component {
         fromMe: PropTypes.bool.isRequired,
         name: PropTypes.string,
         body: PropTypes.string.isRequired,
-        createdAt: PropTypes.string,
+        date: PropTypes.string,
         og: PropTypes.object
     };
 
@@ -30,9 +30,7 @@ export default class UserMessage extends Component {
                         url={this.props.og.data.requestUrl}
                         title={this.props.og.data.ogTitle}
                         description={this.props.og.data.ogDescription}
-                        image={this.props.og.data.ogImage}
-                    />
-                }
+                        image={this.props.og.data.ogImage.url} />}
                 <time className={styles.Time}>
                     {this._formatDate(this.props.createdAt)}
                 </time>
@@ -40,13 +38,12 @@ export default class UserMessage extends Component {
         );
     }
 
-    _formatDate(createdAt) {
-        if (!createdAt) {
-            return;
+    _formatDate(date) {
+        if (!date) {
+            return '';
         }
+        date = new Date(date);
 
-        createdAt = new Date(createdAt);
-
-        return createdAt.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+        return date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
     }
 }

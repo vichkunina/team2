@@ -33,7 +33,7 @@ export default class ChatItem extends Component {
                     {this.props.name}
                 </span>
                 <span className={styles.LastMessage}
-                    dangerouslySetInnerHTML={{ __html: this.props.lastMessage }} />
+                    dangerouslySetInnerHTML={{ __html: this.props.lastMessage }}/>
                 <span className={styles.LastMessageDate}>
                     {this._formatDate(this.props.lastMessageDate)}
                 </span>
@@ -41,17 +41,16 @@ export default class ChatItem extends Component {
         );
     }
 
-    _formatDate(createdAt) {
-        if (!createdAt) {
+    _formatDate(date) {
+        if (!date) {
             return;
         }
+        date = new Date(date);
 
-        createdAt = new Date(createdAt);
-
-        if (Date.now() - createdAt.getTime() < ChatItem.dayInterval) {
-            return createdAt.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-        } else if (Date.now() - createdAt.getTime() < this.weekInterval) {
-            return createdAt.toLocaleDateString('ru-RU', { weekday: 'long' });
+        if (Date.now() - date.getTime() < ChatItem.dayInterval) {
+            return date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+        } else if (Date.now() - date.getTime() < this.weekInterval) {
+            return date.toLocaleDateString('ru-RU', { weekday: 'long' });
         }
 
         return createdAt.toLocaleDateString('ru-RU');

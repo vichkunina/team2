@@ -1,4 +1,3 @@
-/* eslint-disable no-invalid-this */
 import { observable, computed, action } from 'mobx';
 import * as States from '../enum/LoadState';
 import ChatInputState from './states/ChatInputState';
@@ -7,7 +6,8 @@ import ChatListState from './states/ChatListState';
 
 export default class UIStore {
 
-    constructor(rootStore) {
+    constructor(rootStore, webWorker) {
+        this.webWorker = webWorker;
         this.rootStore = rootStore;
         this.chatState = new ChatState(this.rootStore.dataStore);
         this.chatListState = new ChatListState(this.rootStore.dataStore);

@@ -5,6 +5,7 @@ import ChatHeader from './ChatHeader';
 import ChatHistory from './ChatHistory';
 import ChatInput from './ChatInput';
 import styles from './index.css';
+import UserMessage from './ChatHistory/UserMessage/index';
 
 @observer
 export default class Chat extends Component {
@@ -13,29 +14,31 @@ export default class Chat extends Component {
     }
 
     static propTypes = {
-        chatHistories: PropTypes.observableArrayOf(PropTypes.observableObject),
-        sendMessage: ReactPropTypes.func,
-        children: ReactPropTypes.element,
-        profile: PropTypes.observableObject,
-        transitFromChatToContacts: ReactPropTypes.func.isRequired,
         name: ReactPropTypes.string,
         avatar: ReactPropTypes.string,
-        children: ReactPropTypes.array
+        children: ReactPropTypes.array,
+        profileId: ReactPropTypes.string,
+        chatHistory: ReactPropTypes.object
     };
 
     render() {
+        const chatHistory = this.props.chatHistory.map(message => (
+            <UserMessage key={message._id}
+                fromMe={message.from === this.props.profileId}
+                name={message.name}
+                body={message.body}
+                date={message.createdAt}/>
+        ));
+
         return (
             <div className={styles.Wrapper}>
                 <ChatHeader avatar={this.props.avatar}
                     name={this.props.name}
                     status={'online'}/>
                 <ChatHistory>
-                    {this.props.children}
+                    {chatHistory}
                 </ChatHistory>
-                <ChatInput chatHistories={this.props.chatHistories}
-                    sendMessage={this.props.sendMessage}
-                    chatId={this.props.chatId}
-                    profile={this.props.profile}/>
+                <ChatInput/>
             </div>
         );
     }

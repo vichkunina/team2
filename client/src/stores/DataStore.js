@@ -23,7 +23,7 @@ export default class DataStore {
         if (chatHistory) {
             chatHistory.push(...messages);
         } else {
-            this.chatHistories.set(chatId, messages);
+            this.dataStore.chatHistories.set(chatId, messages)
         }
     };
 
@@ -89,10 +89,6 @@ function initChat(chat) {
         return;
     }
     const user = chat.users.find(entry => entry._id !== this.profile._id);
-
-    if (!user) {
-        return;
-    }
 
     chat.avatar = user.avatar;
     chat.name = user.login;
