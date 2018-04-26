@@ -1,3 +1,4 @@
+/* eslint-disable no-invalid-this */
 import { observable, computed, action } from 'mobx';
 import * as States from '../enum/LoadState';
 import ChatInputState from './states/ChatInputState';
