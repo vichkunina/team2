@@ -23,7 +23,7 @@ export default class DataStore {
         if (chatHistory) {
             chatHistory.push(...messages);
         } else {
-            this.dataStore.chatHistories.set(chatId, messages);
+            this.chatHistories.set(chatId, messages);
         }
     };
 

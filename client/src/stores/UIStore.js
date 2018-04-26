@@ -7,8 +7,7 @@ import ChatListState from './states/ChatListState';
 
 export default class UIStore {
 
-    constructor(rootStore, webWorker) {
-        this.webWorker = webWorker;
+    constructor(rootStore) {
         this.rootStore = rootStore;
         this.chatState = new ChatState(this.rootStore.dataStore);
         this.chatListState = new ChatListState(this.rootStore.dataStore);
