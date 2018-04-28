@@ -5,7 +5,6 @@ import ChatHeader from './ChatHeader';
 import ChatHistory from './ChatHistory';
 import ChatInput from './ChatInput';
 import styles from './index.css';
-import UserMessage from './ChatHistory/UserMessage/index';
 
 @observer
 export default class Chat extends Component {
@@ -16,27 +15,17 @@ export default class Chat extends Component {
     static propTypes = {
         name: ReactPropTypes.string,
         avatar: ReactPropTypes.string,
-        children: ReactPropTypes.array,
-        profileId: ReactPropTypes.string,
-        chatHistory: ReactPropTypes.object
+        children: ReactPropTypes.array
     };
 
     render() {
-        const chatHistory = this.props.chatHistory.map(message => (
-            <UserMessage key={message._id}
-                fromMe={message.from === this.props.profileId}
-                name={message.name}
-                body={message.body}
-                date={message.createdAt}/>
-        ));
-
         return (
             <div className={styles.Wrapper}>
                 <ChatHeader avatar={this.props.avatar}
                     name={this.props.name}
                     status={'online'}/>
                 <ChatHistory>
-                    {chatHistory}
+                    {this.props.children}
                 </ChatHistory>
                 <ChatInput/>
             </div>

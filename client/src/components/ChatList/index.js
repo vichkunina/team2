@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'mobx-react';
+import ReactPropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
 import Contact from '../Contact';
 import styles from './index.css';
-import ChatItem from './ChatItem/index';
 
-@inject('chatListState', 'chatState') @observer
+@inject('chatListState') @observer
 export default class ChatList extends Component {
 
     static propTypes = {
         chatListState: PropTypes.observableObject,
-        chatState: PropTypes.observableObject
+        children: ReactPropTypes.array
     };
 
     constructor(props) {
@@ -22,16 +22,7 @@ export default class ChatList extends Component {
     }
 
     render() {
-        const { chatListState, chatState } = this.props;
-
-        const chatList = chatListState.chatsToDisplay.map(chat => (
-            <ChatItem key={chat._id}
-                photoURL={chat.avatar}
-                name={chat.name}
-                lastMessage={chat.lastMessage.body}
-                lastMessageDate={chat.lastMessage.createdAt}
-                onClick={chatState.selectChat.bind(chatState, chat)}/>
-        ));
+        const { chatListState } = this.props;
 
         const searchResults = chatListState.searchResultsToDisplay.map(chat =>
             <Contact
@@ -51,7 +42,7 @@ export default class ChatList extends Component {
                             value={chatListState.chatInput}
                             onChange={this.changeHandler.bind(this)}/>
                     </form>
-                    {chatList}
+                    {this.props.children}
                     {searchResults.length !== 0 &&
                     <div className={styles.GlobalSearchSeparator}>
                         <span className={styles.GlobalSearchHeader}>

@@ -13,7 +13,7 @@ export default class UserMessage extends Component {
         fromMe: PropTypes.bool.isRequired,
         name: PropTypes.string,
         body: PropTypes.string.isRequired,
-        date: PropTypes.string,
+        createdAt: PropTypes.string,
         og: PropTypes.object
     };
 
@@ -38,12 +38,13 @@ export default class UserMessage extends Component {
         );
     }
 
-    _formatDate(date) {
-        if (!date) {
-            return '';
+    _formatDate(createdAt) {
+        if (!createdAt) {
+            return;
         }
-        date = new Date(date);
 
-        return date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+        createdAt = new Date(createdAt);
+
+        return createdAt.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
     }
 }

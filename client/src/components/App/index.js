@@ -22,6 +22,24 @@ export default class App extends Component {
     render() {
         const { dataStore, state } = this.props.rootStore;
         const { chatState, chatListState, chatInputState } = state;
+
+        const chatList = chatListState.chatsToDisplay.map(chat => (
+            <ChatItem key={chat._id}
+                photoURL={chat.avatar}
+                name={chat.name}
+                lastMessage={chat.lastMessage.body}
+                lastMessageDate={chat.lastMessage.createdAt}
+                onClick={chatState.selectChat.bind(chatState, chat)}/>
+        ));
+
+        const chatHistory = chatState.currentChatHistory.map(message => (
+            <UserMessage key={message._id}
+                fromMe={message.from === dataStore.profile._id}
+                name={message.name}
+                body={message.body}
+                createdAt={message.createdAt}/>
+        ));
+
         const { loaderState, message } = state.loaderState;
 
         return (
@@ -37,12 +55,13 @@ export default class App extends Component {
                         <div className={styles.LoaderText}>{message}</div>
                     </div>
                     {state.mainView.showContacts &&
-                    <ChatList/>}
+                    <ChatList>
+                        {chatList}
+                    </ChatList>}
                     {chatState.currentChat.name
                         ? <Chat name={chatState.currentChat.name}
-                            avatar={chatState.currentChat.avatar}
-                            chatHistory={chatState.currentChatHistory}
-                            profileId={dataStore.profile._id}>
+                            avatar={chatState.currentChat.avatar}>
+                            {chatHistory}
                         </Chat>
                         : <div className={styles.StubWrapper}>
                             <ServiceMessage text="Please select a chat to start messaging"/>

@@ -30,12 +30,6 @@ export default class ChatHistory extends Component {
         }
     }
 
-    componentDidMount() {
-        if (this.divRef) {
-            this.divRef.scrollTop = this.divRef.scrollHeight;
-        }
-    }
-
     render() {
         return (
             <div className={styles.Wrapper} ref={el => {

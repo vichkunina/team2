@@ -41,16 +41,17 @@ export default class ChatItem extends Component {
         );
     }
 
-    _formatDate(date) {
-        if (!date) {
+    _formatDate(createdAt) {
+        if (!createdAt) {
             return;
         }
-        date = new Date(date);
 
-        if (Date.now() - date.getTime() < ChatItem.dayInterval) {
-            return date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-        } else if (Date.now() - date.getTime() < this.weekInterval) {
-            return date.toLocaleDateString('ru-RU', { weekday: 'long' });
+        createdAt = new Date(createdAt);
+
+        if (Date.now() - createdAt.getTime() < ChatItem.dayInterval) {
+            return createdAt.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+        } else if (Date.now() - createdAt.getTime() < this.weekInterval) {
+            return createdAt.toLocaleDateString('ru-RU', { weekday: 'long' });
         }
 
         return createdAt.toLocaleDateString('ru-RU');
