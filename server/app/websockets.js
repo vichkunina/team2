@@ -166,6 +166,8 @@ async function sendMessage(uid, chatId, text) {
         }
     }
 
+    await message.save();
+
     return message;
 }
 

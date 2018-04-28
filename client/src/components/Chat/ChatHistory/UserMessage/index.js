@@ -25,11 +25,16 @@ export default class UserMessage extends Component {
         return (
             <div className={className}>
                 <span className={styles.Name}>{this.props.name}</span>
-                <div className={styles.Body} dangerouslySetInnerHTML={{ __html: this.props.body }}/>
-                {this.props.og &&
+                <div className={styles.Body} dangerouslySetInnerHTML={{ __html: this.props.body }} />
+                {
+                    this.props.og &&
                     <OGAttachment
-                        url={this.props.og.data.requestUrl} title={this.props.og.data.ogTitle}
-                        description={this.props.og.data.ogDescription} image={this.props.og.data.ogImage.url} />}
+                        url={this.props.og.data.requestUrl}
+                        title={this.props.og.data.ogTitle}
+                        description={this.props.og.data.ogDescription}
+                        image={this.props.og.data.ogImage}
+                    />
+                }
                 <time className={styles.Time}>
                     {this._formatDate(this.props.date)}
                 </time>
