@@ -4,30 +4,10 @@
     flex-wrap: wrap;
 }
 
-.Wrapper :nth-child(1)
-{
-    order: 1;
-}
-
-.Wrapper :nth-child(2)
-{
-    order: 2;
-}
-
-.Wrapper :nth-child(3)
-{
-    order: 4;
-}
-
-.Wrapper :nth-child(4)
-{
-    order: 3;
-}
-
 .Input
 {
-    padding: 15.5px 16px 16.5px;
-    width: calc(100% - 3 * (2% + 16px));
+    padding: 15.5px 10px 16.5px;
+    width: calc(100% - 3 * (2% + 18px));
 
     font-size: 14px;
 

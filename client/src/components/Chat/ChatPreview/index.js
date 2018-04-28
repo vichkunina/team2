@@ -60,14 +60,14 @@ export default class Preview extends React.Component {
 
         return (
             <React.Fragment>
-                <div className = {`${styles.AddButton} ${styles.Button}`}>
+                {this.renderPreview()}
+                <div className = {`${styles.ImageButton} ${styles.Button}`}>
                     <label>
                         <input type="file" onChange={this.onPreviewChange}
                             accept="image/*" multiple className={styles.Upload} />
-                        <i className="material-icons">add</i>
+                        <i className="material-icons">image</i>
                     </label>
                 </div>
-                {this.renderPreview()}
             </ React.Fragment>
         );
     }

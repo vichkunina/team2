@@ -25,24 +25,24 @@ export default class ChatInput extends React.Component {
 
     render() {
         return (
-            <form id="send-message-form" className={styles.Wrapper}
-                onSubmit={this.submitHandler.bind(this)}>
-                <button type="button" className={`${styles.ImageButton} ${styles.Button}`}>
-                    <i className="material-icons">image</i>
-                </button>
-                <input type="text" className={styles.Input}
-                    value={this.props.chatInputState.chatInput}
-                    placeholder=" Write a message..."
-                    onChange={this.changeHandler.bind(this)}
-                    autoFocus/>
-                <button type="button" className={`${styles.EmojiButton} ${styles.Button}`}>
-                    <i className="material-icons">tag_faces</i>
-                </button>
-                <button form="send-message-form" type="submit"
-                    className={`${styles.SendButton} ${styles.Button}`}>
-                    <i className="material-icons">send</i>
-                </button>
-            </form>
+            <article className={styles.SendBar}>
+                <form id="send-message-form" className={styles.Wrapper}
+                    onSubmit={this.submitHandler.bind(this)}>
+                    <Preview />
+                    <input type="text" className={styles.Input}
+                        value={this.props.chatInputState.chatInput}
+                        placeholder=" Write a message..."
+                        onChange={this.changeHandler.bind(this)}
+                        autoFocus/>
+                    <button type="button" className={`${styles.EmojiButton} ${styles.Button}`}>
+                        <i className="material-icons">tag_faces</i>
+                    </button>
+                    <button form="send-message-form" type="submit"
+                        className={`${styles.SendButton} ${styles.Button}`}>
+                        <i className="material-icons">send</i>
+                    </button>
+                </form>
+            </article>
         );
     }
 }
