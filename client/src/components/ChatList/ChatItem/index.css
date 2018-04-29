@@ -32,8 +32,6 @@
 
     margin: 0 0 0 16px;
 
-    color: #aaa;
-
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -58,16 +56,10 @@
 }
 
 .Wrapper:hover {
-    background: #03a9f4;
+    background: #e2e5e7;
     cursor: pointer;
-}
-
-.Wrapper:hover,
-.Wrapper:hover > .LastMessage {
-    color: #fffffa;
 }
 
 .Wrapper:hover > .UnreadCount {
     background-color:#fffffa;
-    color: #03a9f4;
 }

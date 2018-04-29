@@ -25,6 +25,7 @@ export default class App extends Component {
 
         const chatList = chatListState.chatsToDisplay.map(chat => (
             <ChatItem key={chat._id}
+                current={chat._id === chatState.currentChat._id}
                 photoURL={chat.avatar}
                 name={chat.name}
                 lastMessage={chat.lastMessage.body}

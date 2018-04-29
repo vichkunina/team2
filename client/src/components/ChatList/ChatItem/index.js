@@ -11,6 +11,7 @@ export default class ChatItem extends Component {
     static dayInterval = 1000 * 60 * 60 * 24;
     static weekInterval = 1000 * 60 * 60 * 24 * 7;
     static propTypes = {
+        current: PropTypes.bool.isRequired,
         photoURL: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         lastMessage: PropTypes.string,
@@ -18,15 +19,21 @@ export default class ChatItem extends Component {
         onClick: PropTypes.func.isRequired
     };
 
+    static currentStyle = {
+        backgroundColor: '#03a9f4',
+        color: '#fffffa'
+    }
+
     render() {
         return (
-            <a className={styles.Wrapper} onClick={this.props.onClick}>
+            <a style={this.props.current ? ChatItem.currentStyle : {}}
+                className={styles.Wrapper} onClick={this.props.onClick}>
                 <Avatar src={this.props.photoURL} size={52} />
                 <span className={styles.Name}>
                     {this.props.name}
                 </span>
                 <span className={styles.LastMessage}
-                    dangerouslySetInnerHTML={{ __html: this.props.lastMessage }}/>
+                    dangerouslySetInnerHTML={{ __html: this.props.lastMessage }} />
                 <span className={styles.LastMessageDate}>
                     {this._formatDate(this.props.lastMessageDate)}
                 </span>
