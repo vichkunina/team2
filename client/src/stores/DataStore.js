@@ -57,6 +57,10 @@ export default class DataStore {
         this.webWorker.sendMessage(message);
     };
 
+    @action uploadImages = (images) => {
+        this.webWorker.uploadImage(images);
+    };
+
     @action searchByLogin = (userId) => {
         this.loadingState = States.SEARCH_CONTACTS;
         this.webWorker.searchByLogin(userId);

@@ -2,6 +2,7 @@
 
 const PassportMemStoreSessionGetter = require('./classes/PassportMemStoreSessionGetter');
 const olesya = require('./tools/olesya');
+const coudinary = require('./tools/cloudinary');
 const WebSocketServer = require('./classes/WebSocketServer');
 const SendQueue = require('./classes/SendQueue');
 const { queue } = require('async');
@@ -77,9 +78,9 @@ module.exports = async function (app, sessionStore) {
             uid,
             execute.bind(null, socket, uid, GetChatList)
         ));
-        socket.on('SendMessage', pushAction.bind(null, uid, async ({ chatId, text }) => {
+        socket.on('SendMessage', pushAction.bind(null, uid, async ({ chatId, text, attachments }) => {
             try {
-                const message = await sendMessage(uid, chatId, text);
+                const message = await sendMessage(uid, chatId, text, attachments);
                 const chat = await ChatModel.findById(chatId).exec();
 
                 wsServer.emitByUID(uid, 'SendMessageResult', {
@@ -96,6 +97,20 @@ module.exports = async function (app, sessionStore) {
                 });
             }
         }));
+
+        socket.on('UploadImages', pushAction.bind(null, uid, async (images) => {
+            try {
+                images.forEach(image => {
+                    const cloudResult = cloudinary.saveImage(image);
+                    cloudinary.createUrl(cloudResult.public_id);
+                })
+
+            } catch (error) {
+
+            }
+
+        }));
+
         socket.on('AskOlesya', pushAction.bind(null, uid, async (text) => {
             try {
                 const answer = await olesya.ask(text);
@@ -140,7 +155,7 @@ async function execute(socket, uid, fn, data) {
     }
 }
 
-async function sendMessage(uid, chatId, text) {
+async function sendMessage(uid, chatId, text, attachments) {
     const chat = await ChatModel.findById(chatId).exec();
 
     if (chat.users.indexOf(uid) === -1) {
@@ -150,10 +165,10 @@ async function sendMessage(uid, chatId, text) {
     const urls = getUrls(text);
 
     const message = new MessageModel({
-        chatId: chatId,
+        chatId,
         from: uid,
         body: parseMarkdown(text),
-        createdAt: Date.now()
+        attachments
     });
 
     sendQueue.push(chatId, message);

@@ -5,7 +5,7 @@ import { observer, inject } from 'mobx-react';
 import styles from './index.css';
 import Preview from '../ChatPreview/index';
 
-@inject('chatInputState') @observer
+@inject('chatInputState', 'chatPreviewState') @observer
 export default class ChatInput extends React.Component {
     constructor(props) {
         super(props);
@@ -28,7 +28,7 @@ export default class ChatInput extends React.Component {
             <article className={styles.SendBar}>
                 <form id="send-message-form" className={styles.Wrapper}
                     onSubmit={this.submitHandler.bind(this)}>
-                    <Preview />
+                    <Preview chatPreviewState={this.props.chatPreviewState}/>
                     <input type="text" className={styles.Input}
                         value={this.props.chatInputState.chatInput}
                         placeholder=" Write a message..."

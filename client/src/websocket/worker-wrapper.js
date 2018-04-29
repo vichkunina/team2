@@ -30,8 +30,12 @@ export class WorkerWrapper {
         this._worker.postMessage({ action: 'AddContact', value: userId });
     }
 
-    sendMessage({ chatId, text }) {
-        this._worker.postMessage({ action: 'SendMessage', value: { chatId, text } });
+    sendMessage({ chatId, text, attachments }) {
+        this._worker.postMessage({ action: 'SendMessage', value: { chatId, text, attachments } });
+    }
+
+    uploadImages(images) {
+        this._worker.postMessage({ action: 'UploadImages', value: images });
     }
 
     deleteProfile(userId) {

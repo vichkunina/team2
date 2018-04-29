@@ -3,9 +3,10 @@ import { observable, action } from 'mobx';
 
 export default class ChatInputState {
 
-    constructor(state, dataStore) {
+    constructor(state, dataStore, chatPreviewState) {
         this.state = state;
         this.dataStore = dataStore;
+        this.chatPreviewState = chatPreviewState;
     }
 
     @observable chatInput = '';
@@ -20,8 +21,11 @@ export default class ChatInputState {
         }
         this.dataStore.sendMessage({
             chatId: this.state.chatState.currentChat._id,
-            text: this.chatInput
+            text: this.chatInput,
+            attachments: this.chatPreviewState.chatAttachments
         });
+
         this.chatInput = '';
+        this.chatPreviewState.chatAttachments = [];
     };
 }
