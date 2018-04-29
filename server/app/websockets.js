@@ -152,7 +152,8 @@ async function sendMessage(uid, chatId, text) {
     const message = new MessageModel({
         chatId: chatId,
         from: uid,
-        body: parseMarkdown(text)
+        body: parseMarkdown(text),
+        createdAt: Date.now()
     });
 
     sendQueue.push(chatId, message);

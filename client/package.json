@@ -45,6 +45,7 @@
   "scripts": {
     "test": "eslint .",
     "lint:fix": "eslint . --fix",
+    "start": "npm run build:dev",
     "start:dev": "cross-env NODE_ENV=development webpack-dev-server",
     "build:prod": "webpack",
     "build:dev": "webpack --mode development --watch",
