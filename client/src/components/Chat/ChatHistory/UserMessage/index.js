@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import OGAttachment from
@@ -14,7 +13,7 @@ export default class UserMessage extends Component {
         fromMe: PropTypes.bool.isRequired,
         name: PropTypes.string,
         body: PropTypes.string.isRequired,
-        date: PropTypes.instanceOf(Date).isRequired,
+        createdAt: PropTypes.string,
         og: PropTypes.object
     };
 
@@ -25,9 +24,8 @@ export default class UserMessage extends Component {
         return (
             <div className={className}>
                 <span className={styles.Name}>{this.props.name}</span>
-                <div className={styles.Body} dangerouslySetInnerHTML={{ __html: this.props.body }} />
-                {
-                    this.props.og &&
+                <div className={styles.Body} dangerouslySetInnerHTML={{ __html: this.props.body }}/>
+                {this.props.og &&
                     <OGAttachment
                         url={this.props.og.data.requestUrl}
                         title={this.props.og.data.ogTitle}
@@ -36,13 +34,19 @@ export default class UserMessage extends Component {
                     />
                 }
                 <time className={styles.Time}>
-                    {this._formatDate(this.props.date)}
+                    {this._formatDate(this.props.createdAt)}
                 </time>
             </div>
         );
     }
 
-    _formatDate(date) {
-        return date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+    _formatDate(createdAt) {
+        if (!createdAt) {
+            return;
+        }
+
+        createdAt = new Date(createdAt);
+
+        return createdAt.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
     }
 }

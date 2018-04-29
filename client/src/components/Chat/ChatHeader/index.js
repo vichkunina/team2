@@ -12,8 +12,8 @@ export default class ChatHeader extends Component {
     defaultStyleOverride = {
         width: '420px',
         padding: '0',
-        'border-radius': '4px'
-    }
+        'borderRadius': '4px'
+    };
 
     static propTypes = {
         avatar: PropTypes.string.isRequired,

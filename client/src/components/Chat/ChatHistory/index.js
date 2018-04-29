@@ -17,6 +17,14 @@ export default class ChatHistory extends Component {
     };
 
     componentDidUpdate() {
+        this.scrollDown();
+    }
+
+    componentDidMount() {
+        this.scrollDown();
+    }
+
+    scrollDown() {
         if (this.divRef) {
             this.divRef.scrollTop = this.divRef.scrollHeight;
         }

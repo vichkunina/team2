@@ -1,12 +1,10 @@
 import Worker from './message-worker';
 import { getCookie } from '../utils/cookie';
 import * as Types from '../enum/WSActionType';
-import * as States from '../enum/LoadState';
 
 export class WorkerWrapper {
-    constructor(store) {
+    constructor() {
         this._worker = new Worker();
-        this._store = store;
 
         this._worker.onmessage = e => this._handleResponse(e.data);
         this._worker.postMessage({
@@ -21,17 +19,14 @@ export class WorkerWrapper {
     }
 
     getProfile() {
-        this._store.loadingState = States.LOAD_PROFILE;
         this._worker.postMessage({ action: 'GetProfile' });
     }
 
     getChatList() {
-        this._store.loadingState = States.LOAD_CONTACTS;
         this._worker.postMessage({ action: 'GetChatList' });
     }
 
     addContact(userId) {
-        this._store.loadingState = States.ADD_CONTACT;
         this._worker.postMessage({ action: 'AddContact', value: userId });
     }
 
@@ -39,16 +34,11 @@ export class WorkerWrapper {
         this._worker.postMessage({ action: 'SendMessage', value: { chatId, text } });
     }
 
-    askOlesya({ text }) {
-        this._worker.postMessage({ action: 'AskOlesya', value: text });
-    }
-
     deleteProfile(userId) {
         this._worker.postMessage({ action: 'DeleteProfile', value: { userId } });
     }
 
     searchByLogin(login) {
-        this._store.loadingState = States.SEARCH_CONTACTS;
         this._worker.postMessage({ action: 'SearchByLogin', value: login });
     }
 

@@ -3,7 +3,7 @@ import * as Types from '../enum/WSActionType';
 
 const METHODS =
     ['GetMessages', 'GetProfile', 'SearchByLogin', 'AddContact', 'GetChatList',
-        'SendMessage', 'DeleteProfile', 'AskOlesya'];
+        'SendMessage', 'DeleteProfile'];
 
 let TOKEN;
 let socket;
@@ -23,7 +23,6 @@ function init() {
 
     for (const method of METHODS) {
         socket.on(`${method}Result`, result => {
-            console.info(result);
             postMessage({ action: method, result, type: Types.RESPONSE });
         });
     }

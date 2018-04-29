@@ -9,10 +9,10 @@ export default class Contact extends Component {
     }
 
     static propTypes = {
-        onClick: PropTypes.func,
         avatar: PropTypes.string.isRequired,
         login: PropTypes.string.isRequired,
-        withCheckbox: PropTypes.bool.isRequired
+        withCheckbox: PropTypes.bool.isRequired,
+        onClick: PropTypes.func.isRequired
     };
 
     render() {
