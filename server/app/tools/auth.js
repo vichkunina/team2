@@ -3,7 +3,39 @@
 const config = require('config');
 const passportGithub = require('passport-github');
 const User = require('../models/User');
+const Chat = require('../models/Chat');
 const GithubAvatar = require('./github-avatar');
+
+async function createUser(profile) {
+    const user = new User({
+        login: profile.username,
+        name: profile.displayName,
+        githubId: profile.id,
+        contacts: [],
+        chats: [],
+        avatar: new GithubAvatar(profile.username, 200).toImgSrc()
+    });
+
+    await user.save();
+    await user.addContact('OlesyaUserId');
+
+    return user;
+}
+
+async function createChatWithOlesya(user) {
+    const olesyaChat = new Chat({
+        name: 'Olesya',
+        dialog: true,
+        users: []
+    });
+
+    await olesyaChat.save();
+
+    await olesyaChat.addUser(user._id);
+    await olesyaChat.addUser('OlesyaUserId');
+
+    return olesyaChat;
+}
 
 module.exports.setSerializers = passport => {
     passport.serializeUser((user, done) => {
@@ -38,17 +70,15 @@ module.exports.strategy = new passportGithub.Strategy(
         } catch (error) {
             console.info(error.message);
 
-            const user = new User({
-                login: profile.username,
-                name: profile.displayName,
-                githubId: profile.id,
-                contacts: [],
-                chats: [],
-                date: Date.now(),
-                avatar: new GithubAvatar(profile.username, 200).toImgSrc()
-            });
+            const user = createUser(profile);
 
-            await user.save();
+            const olesyaChat = createChatWithOlesya(user);
+
+            const olesya = await User.findById('OlesyaUserId').exec();
+            await olesya.addContact(user._id);
+            await olesya.addChat(olesyaChat._id);
+
+            await user.addChat(olesyaChat._id);
 
             done(null, user);
         }
