@@ -58,7 +58,7 @@ export default class DataStore {
     };
 
     @action uploadImages = (images) => {
-        this.webWorker.uploadImage(images);
+        this.webWorker.uploadImages(images);
     };
 
     @action searchByLogin = (userId) => {

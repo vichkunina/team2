@@ -1,4 +1,5 @@
 /* eslint-disable no-invalid-this*/
+/* eslint-disable react/prop-types*/
 import React from 'react';
 import { PropTypes } from 'mobx-react';
 import { observer, inject } from 'mobx-react';

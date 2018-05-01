@@ -1,7 +1,7 @@
 /* eslint-disable no-invalid-this*/
 import FilePreview from 'react-preview-file';
 import React from 'react';
-import { observer, inject } from 'mobx-react';
+import { observer } from 'mobx-react';
 import styles from './index.css';
 import { PropTypes } from 'mobx-react';
 
@@ -36,7 +36,8 @@ export default class Preview extends React.Component {
                                 <img className={styles.Img} src={preview}/>
                                 <button type="button" key={index} className={`${styles.CloseButton}
                                     ${styles.Button}`}
-                                onClick={this.props.chatPreviewState.remove.bind(this.props.chatPreviewState, index)}>
+                                onClick={this.props.chatPreviewState
+                                    .remove.bind(this.props.chatPreviewState, index)}>
                                     <i className="material-icons">close</i>
                                 </button>
                             </div>

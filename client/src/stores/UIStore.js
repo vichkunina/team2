@@ -13,7 +13,8 @@ export default class UIStore {
         this.chatState = new ChatState(this.rootStore.dataStore);
         this.chatListState = new ChatListState(this.rootStore.dataStore);
         this.chatPreviewState = new ChatPreviewState(this.rootStore.dataStore);
-        this.chatInputState = new ChatInputState(this, this.rootStore.dataStore, this.chatPreviewState);
+        this.chatInputState =
+            new ChatInputState(this, this.rootStore.dataStore, this.chatPreviewState);
     }
 
     @observable mainView = {

@@ -8,12 +8,14 @@ const config = {
 
 cloudinary.config(config);
 
-exports.saveImage = (file) => {
-    cloudinary
+exports.createCloudStream = () => {
+    return stream = cloudinary
         .uploader
-        .upload(file, function(error, result) {
-            console.log(result);
-        })
+        .upload_stream(
+            function(error, result){
+                console.log(result)
+            }
+        );
 }
 
 exports.createUrl = (public_id) => {

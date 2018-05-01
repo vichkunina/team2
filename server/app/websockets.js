@@ -2,13 +2,14 @@
 
 const PassportMemStoreSessionGetter = require('./classes/PassportMemStoreSessionGetter');
 const olesya = require('./tools/olesya');
-const coudinary = require('./tools/cloudinary');
+const cloudinary = require('./tools/cloudinary');
 const WebSocketServer = require('./classes/WebSocketServer');
 const SendQueue = require('./classes/SendQueue');
 const { queue } = require('async');
 const parseMarkdown = require('./tools/parse-markdown');
 const getUrls = require('./tools/get-urls');
 const opengraph = require('./tools/opengraph');
+const ss = require('socket.io-stream');
 let LOGINS_CACHE = [];
 
 const {
@@ -98,18 +99,11 @@ module.exports = async function (app, sessionStore) {
             }
         }));
 
-        socket.on('UploadImages', pushAction.bind(null, uid, async (images) => {
-            try {
-                images.forEach(image => {
-                    const cloudResult = cloudinary.saveImage(image);
-                    cloudinary.createUrl(cloudResult.public_id);
-                })
-
-            } catch (error) {
-
-            }
-
-        }));
+        ss(socket).on('upload-file', (stream, data) => {
+            console.log(data.name);
+            const cloud = cloudinary.createCloudStream();
+            stream.pipe(cloud);
+        });
 
         socket.on('AskOlesya', pushAction.bind(null, uid, async (text) => {
             try {
@@ -168,7 +162,7 @@ async function sendMessage(uid, chatId, text, attachments) {
         chatId,
         from: uid,
         body: parseMarkdown(text),
-        attachments
+        attachments: ['no attachments']
     });
 
     sendQueue.push(chatId, message);

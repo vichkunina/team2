@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '../../Contact/Avatar';
 import styles from './index.css';
-import Popup from 'reactjs-popup';
 
 export default class ChatHeader extends Component {
     constructor(props) {

@@ -15,7 +15,7 @@ export default class ChatPreviewState {
 
     @action remove = (index) => {
         this.chatAttachments.splice(index, 1);
-    }
+    };
 
     @action addAttachments = (urls) => {
         this.chatAttachments.push(...urls);

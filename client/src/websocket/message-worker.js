@@ -1,5 +1,7 @@
 import io from 'socket.io-client';
+import ss from 'socket.io-stream';
 import * as Types from '../enum/WSActionType';
+
 
 const METHODS =
     ['GetMessages', 'GetProfile', 'SearchByLogin', 'AddContact', 'GetChatList',
@@ -33,6 +35,16 @@ onmessage = e => {
     if (action === 'auth' && !TOKEN) {
         TOKEN = e.data.token;
         init();
+
+        return;
+    }
+
+    if (action === 'UploadImages') {
+        Object.values(e.data.value).forEach(file => {
+            const stream = ss.createStream();
+            ss(socket).emit('upload-file', stream, { name: file.name }, file);
+            ss.createBlobReadStream(file).pipe(stream);
+        });
 
         return;
     }
