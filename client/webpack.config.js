@@ -102,7 +102,8 @@ module.exports = {
 
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'index.html'
+            template: 'app.html',
+            filename: 'app.html'
         }),
         new webpack.DefinePlugin({
             'process.env.HOST': JSON.stringify(host)

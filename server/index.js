@@ -53,9 +53,7 @@ app.use(session({
     }
 }));
 
-if (config.get('debug')) {
-    app.use(express.static(config.get('staticPath')));
-}
+app.use(express.static(config.get('staticPath')));
 
 passport.use(strategy);
 setSerializers(passport);
