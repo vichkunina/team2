@@ -1,6 +1,7 @@
 /* eslint-disable no-invalid-this */
 import { observable, action } from 'mobx';
 import * as States from '../enum/LoadState';
+import { v4 as uuid } from 'uuid';
 
 export default class DataStore {
 
@@ -8,6 +9,8 @@ export default class DataStore {
         this.webWorker = webWorker;
         this.rootStore = rootStore;
         this.loadProfile();
+
+        this._messagesForSend = {};
     }
 
     @observable loadingState = States.LOADED;
@@ -21,7 +24,7 @@ export default class DataStore {
     @action setChatHistory = (chatId, messages) => {
         const chatHistory = this.chatHistories.get(chatId);
         if (chatHistory) {
-            chatHistory.push(...messages);
+            chatHistory.unshift(...messages);
         } else {
             this.chatHistories.set(chatId, messages);
         }
@@ -53,8 +56,32 @@ export default class DataStore {
         this.webWorker.addContact(userId);
     };
 
-    @action sendMessage = (message) => {
-        this.webWorker.sendMessage(message);
+    @action sendMessage = ({ text, chatId }) => {
+        const tempId = uuid();
+        const messageForStore = {
+            body: text,
+            from: this.profile._id,
+            createdAt: Date.now(),
+            chatId,
+            tempId
+        };
+        this.chatHistories.get(chatId).push(messageForStore);
+        this._setSendMessageTimeout(messageForStore);
+        this._dumpMessagesForSend();
+    };
+
+    @action messageDidSent = (message) => {
+        clearTimeout(this._messagesForSend[message.tempId].timeout);
+        delete this._messagesForSend[message.tempId];
+        this._dumpMessagesForSend();
+
+        const index = this.chatHistories
+            .get(message.chatId)
+            .findIndex(msg => msg.tempId === message.tempId);
+
+        if (index !== -1) {
+            this.chatHistories.get(message.chatId)[index] = message;
+        }
     };
 
     @action searchByLogin = (userId) => {
@@ -80,6 +107,45 @@ export default class DataStore {
         }
 
         return chatHistory[chatHistory.length - 1];
+    }
+
+    restoreMessagesForSend() {
+        const messages = JSON.parse(localStorage.getItem('messagesForSend'));
+
+        if (messages) {
+            messages.forEach(message => {
+                this._setSendMessageTimeout(message);
+
+                if (!this.chatHistories.has(message.chatId)) {
+                    this.chatHistories.set(message.chatId, []);
+                }
+
+                this.chatHistories.get(message.chatId).push(message);
+            });
+        }
+    }
+
+    _setSendMessageTimeout(messageData) {
+        this.webWorker.sendMessage({
+            text: messageData.body,
+            chatId: messageData.chatId,
+            tempId: messageData.tempId
+        });
+
+        this._messagesForSend[messageData.tempId] = {
+            messageData,
+            timeout: setTimeout(() => {
+                this._setSendMessageTimeout(messageData);
+            }, 5 * 1000)
+        };
+    }
+
+    _dumpMessagesForSend() {
+        const data = Object
+            .keys(this._messagesForSend)
+            .map(key => this._messagesForSend[key].messageData);
+
+        localStorage.setItem('messagesForSend', JSON.stringify(data));
     }
 
 }

@@ -29,7 +29,8 @@ function initWorker(webWorker, dataStore, state) {
         }
     });
 
-    webWorker.subscribe('SendMessage', (error) => {
+    webWorker.subscribe('SendMessage', (error, result) => {
+        dataStore.messageDidSent(result);
         if (error) {
             console.info(error);
         }
@@ -72,6 +73,7 @@ function initWorker(webWorker, dataStore, state) {
         });
         dataStore.addChats(chats);
         dataStore.setLoadingState(States.LOADED);
+        dataStore.restoreMessagesForSend();
     });
 
     webWorker.subscribe('GetMessages', (error, data) => {
@@ -105,5 +107,4 @@ function initWorker(webWorker, dataStore, state) {
         dataStore.setLoadingState(States.LOADED);
         dataStore.addChats([chat]);
     });
-
 }

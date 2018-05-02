@@ -30,8 +30,8 @@ export class WorkerWrapper {
         this._worker.postMessage({ action: 'AddContact', value: userId });
     }
 
-    sendMessage({ chatId, text }) {
-        this._worker.postMessage({ action: 'SendMessage', value: { chatId, text } });
+    sendMessage({ chatId, text, tempId }) {
+        this._worker.postMessage({ action: 'SendMessage', value: { chatId, text, tempId } });
     }
 
     deleteProfile(userId) {
@@ -60,6 +60,7 @@ export class WorkerWrapper {
         if (!this._handlers[event]) {
             this._handlers[event] = [];
         }
+
         this._handlers[event].push(cb);
 
         return () => {

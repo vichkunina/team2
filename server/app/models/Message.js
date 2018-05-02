@@ -7,7 +7,7 @@ const messageSchema = new mongoose.Schema({
     chatId: { type: mongoose.Schema.ObjectId, ref: 'Chat' },
     body: String,
     og: mongoose.Schema.Types.Mixed,
-    createdAt: { type: Date, default: Date.now() }
+    createdAt: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Message', messageSchema);

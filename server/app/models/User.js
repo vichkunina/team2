@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     name: String,
     avatar: String,
     githubId: String,
-    createdAt: { type: Date, default: Date.now() },
+    createdAt: { type: Date, default: Date.now },
     chats: [{ type: mongoose.Schema.ObjectId, ref: 'Chat' }],
     contacts: [{ type: mongoose.Schema.ObjectId, ref: 'User' }]
 });

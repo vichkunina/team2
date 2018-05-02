@@ -9,7 +9,6 @@ const { queue } = require('async');
 const parseMarkdown = require('./tools/parse-markdown');
 const getUrls = require('./tools/get-urls');
 const opengraph = require('./tools/opengraph');
-let LOGINS_CACHE = [];
 
 const {
     ChatModel,
@@ -22,9 +21,6 @@ const executeQueues = {};
 module.exports = async function (app, sessionStore) {
     const sessionGetter = new PassportMemStoreSessionGetter(sessionStore);
     const wsServer = new WebSocketServer(app, sessionGetter);
-    await updateLoginCache();
-    console.info('Login cache ready!');
-    setInterval(updateLoginCache, 300 * 1000);
 
     wsServer.on('authUserConnected', ({ socket, uid }) => {
         if (!executeQueues[uid]) {
@@ -78,18 +74,23 @@ module.exports = async function (app, sessionStore) {
             uid,
             execute.bind(null, socket, uid, GetChatList)
         ));
-        socket.on('SendMessage', pushAction.bind(null, uid, async ({ chatId, text }) => {
+        socket.on('SendMessage', pushAction.bind(null, uid, async ({ chatId, text, tempId }) => {
             try {
                 const message = await sendMessage(uid, chatId, text);
                 const chat = await ChatModel.findById(chatId).exec();
 
                 wsServer.emitByUID(uid, 'SendMessageResult', {
                     success: true,
-                    value: message
+                    value: Object.assign(message.toObject(), {
+                        tempId
+                    })
                 });
-                chat.users.forEach(userId => {
-                    wsServer.emitByUID(userId, 'NewMessage', message);
-                });
+                chat
+                    .users
+                    .filter(userId => userId.toString() !== uid)
+                    .forEach(userId => {
+                        wsServer.emitByUID(userId, 'NewMessage', message);
+                    });
 
                 await emmitOlesyaMessage(chat, text);
             } catch (error) {
@@ -139,7 +140,7 @@ async function execute(socket, uid, fn, data) {
 }
 
 async function sendMessage(uid, chatId, text) {
-    const chat = await ChatModel.findById(chatId).exec();
+    const chat = await ChatModel.findById(chatId);
 
     if (chat.users.indexOf(uid) === -1) {
         throw new Error('Not your chat!');
@@ -150,8 +151,7 @@ async function sendMessage(uid, chatId, text) {
     const message = new MessageModel({
         chatId: chatId,
         from: uid,
-        body: parseMarkdown(text),
-        createdAt: Date.now()
+        body: parseMarkdown(text)
     });
 
     sendQueue.push(chatId, message);
@@ -175,7 +175,7 @@ async function DeleteProfile(uid) {
 }
 
 async function GetMessages(uid, { chatId, offset, limit }) {
-    const chat = await ChatModel.findById(chatId).exec();
+    const chat = await ChatModel.findById(chatId);
 
     if (chat.users.indexOf(uid) === -1) {
         throw new Error('Not your chat!');
@@ -185,6 +185,7 @@ async function GetMessages(uid, { chatId, offset, limit }) {
         chatId,
         messages: await MessageModel
             .find({ chatId: chatId })
+            .sort({ createdAt: 1 })
             .skip(offset || 0)
             .limit(limit || 0)
             .exec()
@@ -192,7 +193,7 @@ async function GetMessages(uid, { chatId, offset, limit }) {
 }
 
 async function GetProfile(uid, userId) {
-    const user = await UserModel.findById(userId || uid).exec();
+    const user = await UserModel.findById(userId || uid);
 
     return getProfileFromUser(user);
 }
@@ -204,14 +205,12 @@ async function SearchByLogin(uid, login) {
         throw new Error('Empty request!');
     }
 
-    const me = await UserModel.findById(uid).exec();
-    const foundUsers = await findLoginInCache(login, me);
+    const me = await UserModel.findById(uid);
+    let foundUsers = await UserModel.find({ login: new RegExp(login, 'i') });
 
-    if (foundUsers.length !== 0) {
-        return foundUsers;
-    }
+    foundUsers = foundUsers.filter(user => me.contacts.indexOf(user._id) === -1);
 
-    return findLoginInDB(login, me);
+    return foundUsers.map(getProfileFromUser);
 }
 
 async function addContact(uid, userId) {
@@ -219,7 +218,7 @@ async function addContact(uid, userId) {
         throw new Error('You can\'t add yourself!');
     }
 
-    const me = await UserModel.findById(uid).exec();
+    const me = await UserModel.findById(uid);
     if (me.contacts.indexOf(userId) !== -1) {
         throw new Error('You have this contact!');
     }
@@ -282,61 +281,4 @@ function getProfileFromUser(user) {
         login: user.login,
         avatar: user.avatar
     };
-}
-
-async function updateLoginCache() {
-    const iterator = UserModel.find({}).cursor();
-
-    const newCache = [];
-    let user = await iterator.next();
-    while (user) {
-        try {
-            newCache.push(getProfileFromUser(user));
-        } catch (error) {
-            console.error(error.body);
-        } finally {
-            user = await iterator.next();
-        }
-    }
-
-    LOGINS_CACHE = newCache;
-}
-
-async function findLoginInCache(str, me) {
-    const foundUsers = [];
-
-    for (const profile of LOGINS_CACHE) {
-        const match = profile.login.toLowerCase().indexOf(str.toLowerCase()) !== -1;
-        const notHave = me.contacts.indexOf(profile._id) === -1;
-        const notMe = profile._id !== me._id;
-
-        if (match && notHave && notMe) {
-            foundUsers.push(profile);
-        }
-    }
-
-    return foundUsers;
-}
-
-async function findLoginInDB(str, me) {
-    const foundUsers = [];
-
-    const usersIterator = UserModel.find({}).cursor();
-    let user = await usersIterator.next();
-    while (user) {
-        const match = user.login.toLowerCase().indexOf(str.toLowerCase()) !== -1;
-        const notHave = me.contacts.indexOf(user._id) === -1;
-        const notMe = user._id !== me._id;
-
-        if (match && notHave && notMe) {
-            try {
-                foundUsers.push(user);
-            } catch (error) {
-                console.error(error.message);
-            }
-        }
-        user = await usersIterator.next();
-    }
-
-    return foundUsers;
 }

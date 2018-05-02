@@ -7,7 +7,7 @@ const chatSchema = new mongoose.Schema({
     name: String,
     dialog: Boolean,
     users: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
-    createdAt: { type: Date, default: Date.now() }
+    createdAt: { type: Date, default: Date.now }
 });
 
 chatSchema.methods.addUser = function (personId) {

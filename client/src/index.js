@@ -14,4 +14,5 @@ ReactDOM.render(
     <Provider rootStore={rootStore}>
         <App worker={worker}/>
     </Provider>,
-    document.getElementById('root'));
+    document.getElementById('root')
+);

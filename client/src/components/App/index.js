@@ -34,8 +34,9 @@ export default class App extends Component {
         ));
 
         const chatHistory = chatState.currentChatHistory.map(message => (
-            <UserMessage key={message._id}
+            <UserMessage key={message._id || message.tempId}
                 fromMe={message.from === dataStore.profile._id}
+                isSent={Boolean(message._id)}
                 name={message.name}
                 body={message.body}
                 createdAt={message.createdAt}

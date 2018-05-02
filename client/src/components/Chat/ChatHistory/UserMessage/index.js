@@ -11,6 +11,7 @@ export default class UserMessage extends Component {
 
     static propTypes = {
         fromMe: PropTypes.bool.isRequired,
+        isSent: PropTypes.bool,
         name: PropTypes.string,
         body: PropTypes.string.isRequired,
         createdAt: PropTypes.string,
@@ -35,6 +36,12 @@ export default class UserMessage extends Component {
                 }
                 <time className={styles.Time}>
                     {this._formatDate(this.props.createdAt)}
+
+                    {(this.props.fromMe && !this.props.isSent) &&
+                        <span style={{ marginLeft: '10px' }}>
+                            <i className="material-icons">schedule</i>
+                        </span>
+                    }
                 </time>
             </div>
         );
