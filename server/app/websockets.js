@@ -183,12 +183,13 @@ async function GetMessages(uid, { chatId, offset, limit }) {
 
     return {
         chatId,
-        messages: await MessageModel
+        messages: (await MessageModel
             .find({ chatId: chatId })
-            .sort({ createdAt: 1 })
+            .sort({ createdAt: -1 })
             .skip(offset || 0)
             .limit(limit || 0)
-            .exec()
+            .exec())
+            .reverse()
     };
 }
 
