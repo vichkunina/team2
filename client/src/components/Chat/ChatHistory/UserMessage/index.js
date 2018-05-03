@@ -28,7 +28,7 @@ export default class UserMessage extends Component {
                 <div className={styles.Body} dangerouslySetInnerHTML={{ __html: this.props.body }}/>
                 {this.props.og &&
                     <OGAttachment
-                        url={this.props.og.data.requestUrl}
+                        url={this.props.og.requestUrl}
                         title={this.props.og.data.ogTitle}
                         description={this.props.og.data.ogDescription}
                         image={this.props.og.data.ogImage}
