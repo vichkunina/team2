@@ -41,12 +41,12 @@ export default class Preview extends React.Component {
                         {
                             (close) => (
                                 <div className={styles.PopupContainer}>
-                                    <span className={styles.PopupUserInfo}>
+                                    <span className={styles.ErrorMessage}>
                                         {this.props.chatPreviewState.error}
-                                    </span>
                                     { <span className={styles.PopupClose} onClick={close}>
                                         ❌
                                     </span>}
+                                    </span>
                                 </div>
                             )
                         }
