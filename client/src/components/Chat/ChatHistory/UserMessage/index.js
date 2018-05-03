@@ -32,7 +32,7 @@ export default class UserMessage extends Component {
                         url={this.props.og.requestUrl}
                         title={this.props.og.data.ogTitle}
                         description={this.props.og.data.ogDescription}
-                        image={this.props.og.data.ogImage.url} />}
+                        image={this.props.og.data.ogImage} />}
                 <time className={styles.Time}>
                     {this._formatDate(this.props.createdAt)}
 
