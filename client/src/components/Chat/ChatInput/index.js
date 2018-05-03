@@ -56,8 +56,7 @@ export default class ChatInput extends React.Component {
                                 }}
                                 autoFocus/>
                             <button type="button" className={`${styles.EmojiButton} ${styles.Button}`}
-                                onClick={this.emojiButtonClick.bind(this)} />
-                            <button type="button" className={`${styles.EmojiButton} ${styles.Button}`}>
+                                onClick={this.emojiButtonClick.bind(this)}>
                                 <i className="material-icons">tag_faces</i>
                             </button>
                             <button form="send-message-form" type="submit"
