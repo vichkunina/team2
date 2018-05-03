@@ -14,9 +14,9 @@ export default class UserMessage extends Component {
         isSent: PropTypes.bool,
         name: PropTypes.string,
         body: PropTypes.string.isRequired,
-        createdAt: PropTypes.number,
+        createdAt: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         og: PropTypes.object,
-        attachments: PropTypes.array
+        attachments: PropTypes.object
     };
 
     render() {
@@ -42,12 +42,12 @@ export default class UserMessage extends Component {
                         </span>
                     }
                 </time>
-                {this.props.attachments ?
-                <div className={styles.ImageWrapper}>
-                    {this.props.attachments.map((attachment, index) => (
-                        <img key={index} src={attachment} className={styles.Img}/>
-                    ))}
-                </div>
+                {this.props.attachments
+                    ? <div className={styles.ImageWrapper}>
+                        {this.props.attachments.map((attachment, index) => (
+                            <img key={index} src={attachment} className={styles.Img}/>
+                        ))}
+                    </div>
                     : null}
             </div>
         );

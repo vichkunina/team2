@@ -52,11 +52,11 @@ module.exports = async function (app, sessionStore) {
             execute.bind(null, socket, uid, SearchByLogin)
         ));
         ss(socket).on('UploadImage', (stream) => {
-            const cloud = cloudinary.createCloudStream((res, arr) => {
+            const cloud = cloudinary.createCloudStream(res => {
                 wsServer.emitByUID(uid, 'UploadImageResult', {
                     success: true,
                     value: res.url
-                })
+                });
             });
             stream.pipe(cloud);
         });
@@ -85,32 +85,33 @@ module.exports = async function (app, sessionStore) {
             uid,
             execute.bind(null, socket, uid, GetChatList)
         ));
-        socket.on('SendMessage', pushAction.bind(null, uid, async ({ chatId, text, tempId, attachments }) => {
-            try {
-                const message = await sendMessage(uid, chatId, text, attachments);
-                const chat = await ChatModel.findById(chatId).exec();
+        socket.on('SendMessage', pushAction
+            .bind(null, uid, async ({ chatId, text, tempId, attachments }) => {
+                try {
+                    const message = await sendMessage(uid, chatId, text, attachments);
+                    const chat = await ChatModel.findById(chatId).exec();
 
-                wsServer.emitByUID(uid, 'SendMessageResult', {
-                    success: true,
-                    value: Object.assign(message.toObject(), {
-                        tempId
-                    })
-                });
-                chat
-                    .users
-                    .filter(userId => userId.toString() !== uid)
-                    .forEach(userId => {
-                        wsServer.emitByUID(userId, 'NewMessage', message);
+                    wsServer.emitByUID(uid, 'SendMessageResult', {
+                        success: true,
+                        value: Object.assign(message.toObject(), {
+                            tempId
+                        })
                     });
+                    chat
+                        .users
+                        .filter(userId => userId.toString() !== uid)
+                        .forEach(userId => {
+                            wsServer.emitByUID(userId, 'NewMessage', message);
+                        });
 
-                await emmitOlesyaMessage(chat, text);
-            } catch (error) {
-                wsServer.emitByUID(uid, 'SendMessageResult', {
-                    success: false,
-                    error: error.message || error.body
-                });
-            }
-        }));
+                    await emmitOlesyaMessage(chat, text);
+                } catch (error) {
+                    wsServer.emitByUID(uid, 'SendMessageResult', {
+                        success: false,
+                        error: error.message || error.body
+                    });
+                }
+            }));
         socket.on('disconnect', () => {
             if (wsServer.getUserConnectionsCount(uid) === 0) {
                 delete executeQueues[uid];

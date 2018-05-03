@@ -22,8 +22,13 @@ export default class ChatInputState {
     };
 
     @action submit = () => {
-        if ((!this.chatInput && this.previewState.attachments.length <= 0)
-                || this.previewState.uploadQueue.length > 0) {
+        if (!this.chatInput && this.previewState.attachments.length <= 0) {
+            return;
+        }
+
+        if (this.previewState.uploadQueue.length > 0) {
+            this.previewState.error = 'Wait until all files are loaded';
+
             return;
         }
         this.dataStore.sendMessage({

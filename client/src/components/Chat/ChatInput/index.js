@@ -43,28 +43,28 @@ export default class ChatInput extends React.Component {
                         onMouseLeave={this.props.chatInputState.toggleEmojiList
                             .bind(this.props.chatInputState)}/>
                     : null}
-                    <article className={styles.SendBar}>
-                        <form id="send-message-form" className={styles.Wrapper}
-                            onSubmit={this.submitHandler.bind(this)}>
-                            <Preview chatPreviewState={this.props.chatPreviewState}/>
-                            <input type="text" className={styles.Input}
-                                value={this.props.chatInputState.chatInput}
-                                placeholder=" Write a message..."
-                                onChange={this.changeHandler.bind(this)}
-                                ref={(input) => {
-                                    this.chatInput = input;
-                                }}
-                                autoFocus/>
-                            <button type="button" className={`${styles.EmojiButton} ${styles.Button}`}
-                                onClick={this.emojiButtonClick.bind(this)}>
-                                <i className="material-icons">tag_faces</i>
-                            </button>
-                            <button form="send-message-form" type="submit"
-                                className={`${styles.SendButton} ${styles.Button}`}>
-                                <i className="material-icons">send</i>
-                            </button>
-                        </form>
-                    </article>
+                <article className={styles.SendBar}>
+                    <form id="send-message-form" className={styles.Wrapper}
+                        onSubmit={this.submitHandler.bind(this)}>
+                        <Preview chatPreviewState={this.props.chatPreviewState}/>
+                        <input type="text" className={styles.Input}
+                            value={this.props.chatInputState.chatInput}
+                            placeholder=" Write a message..."
+                            onChange={this.changeHandler.bind(this)}
+                            ref={(input) => {
+                                this.chatInput = input;
+                            }}
+                            autoFocus/>
+                        <button type="button" className={`${styles.EmojiButton} ${styles.Button}`}
+                            onClick={this.emojiButtonClick.bind(this)}>
+                            <i className="material-icons">tag_faces</i>
+                        </button>
+                        <button form="send-message-form" type="submit"
+                            className={`${styles.SendButton} ${styles.Button}`}>
+                            <i className="material-icons">send</i>
+                        </button>
+                    </form>
+                </article>
             </div>
         );
     }

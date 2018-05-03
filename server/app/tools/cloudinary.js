@@ -1,3 +1,5 @@
+'use strict';
+/* eslint-disable camelcase*/
 const cloudinary = require('cloudinary');
 
 const config = {
@@ -9,7 +11,7 @@ const config = {
 cloudinary.config(config);
 
 exports.createCloudStream = (cb) => {
-    return stream = cloudinary
+    return cloudinary
         .uploader
         .upload_stream(cb);
-}
+};

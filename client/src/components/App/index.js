@@ -21,10 +21,11 @@ export default class App extends Component {
 
     render() {
         const { dataStore, state } = this.props.rootStore;
-        const { chatState, chatListState, chatInputState, chatPreviewState  } = state;
+        const { chatState, chatListState, chatInputState, chatPreviewState } = state;
 
         const chatList = chatListState.chatsToDisplay.map(chat => (
             <ChatItem key={chat._id}
+                current={chat._id === chatState.currentChat._id}
                 photoURL={chat.avatar}
                 name={chat.name}
                 lastMessage={chat.lastMessage.body}
@@ -39,7 +40,8 @@ export default class App extends Component {
                 name={message.name}
                 body={message.body}
                 createdAt={message.createdAt}
-                attachments={message.attachments}/>
+                attachments={message.attachments}
+                og={message.og}/>
         ));
 
         const { loaderState, message } = state.loaderState;

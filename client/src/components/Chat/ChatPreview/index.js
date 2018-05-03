@@ -3,6 +3,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import styles from './index.css';
 import { PropTypes } from 'mobx-react';
+import Popup from 'reactjs-popup';
 
 
 @observer
@@ -28,9 +29,33 @@ export default class Preview extends React.Component {
 
         return (
             <section className={styles.PreviewImgList}>
+                {this.props.chatPreviewState.error &&
+                    <Popup
+                        open={true}
+                        modal
+                        closeOnEscape
+                        contentStyle={this.defaultStyleOverride}
+                        closeOnDocumentClick
+                        onClose={this.props.chatPreviewState.clearError
+                            .bind(this.props.chatPreviewState)}>
+                        {
+                            (close) => (
+                                <div className={styles.PopupContainer}>
+                                    <span className={styles.PopupUserInfo}>
+                                        {this.props.chatPreviewState.error}
+                                    </span>
+                                    { <span className={styles.PopupClose} onClick={close}>
+                                        ❌
+                                    </span>}
+                                </div>
+                            )
+                        }
+                    </Popup>}
                 {attachments.map((url, index) =>
                     <div key={index} className={styles.PreviewImg}>
-                        <img className={styles.Img} src={url}/>
+                        {url === 'loading'
+                            ? <div className={styles.Loader}/>
+                            : <img className={styles.Img} src={url}/>}
                         <button type="button" key={index} className={`${styles.CloseButton}
                             ${styles.Button}`}
                         onClick={this.props.chatPreviewState
