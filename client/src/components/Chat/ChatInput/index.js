@@ -5,7 +5,7 @@ import { PropTypes } from 'mobx-react';
 import { observer, inject } from 'mobx-react';
 import styles from './index.css';
 import ChatEmojiPicker from '../ChatEmojiPicker';
-import Preview from '../ChatPreview/index';
+import Preview from '../ChatPreview';
 
 @inject('chatInputState', 'chatPreviewState') @observer
 export default class ChatInput extends React.Component {

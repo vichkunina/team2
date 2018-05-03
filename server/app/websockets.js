@@ -53,7 +53,7 @@ module.exports = async function (app, sessionStore) {
         ));
         ss(socket).on('UploadImage', (stream) => {
             const cloud = cloudinary.createCloudStream(res => {
-                wsServer.emitByUID(uid, 'UploadImageResult', {
+                socket.emit('UploadImageResult', {
                     success: true,
                     value: res.url
                 });

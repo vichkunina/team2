@@ -63,9 +63,8 @@
 {
     height: 150px;
     object-fit: contain;
-    margin: 3px;
+    margin: 0 -4px;
 }
-
 
 /* Desktop */
 @media screen and (min-width: 426px) {
@@ -80,3 +79,4 @@
         max-width: 250px;
     }
 }
+
