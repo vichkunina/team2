@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ReactPropTypes from 'prop-types';
-import { observer } from 'mobx-react';
 import ChatHeader from './ChatHeader';
 import ChatHistory from './ChatHistory';
 import ChatInput from './ChatInput';
