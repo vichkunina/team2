@@ -19,6 +19,7 @@ export default class Preview extends React.Component {
 
     changeHandler(event) {
         this.props.chatPreviewState.change(event.currentTarget.files);
+        event.currentTarget.value = '';
     }
 
     renderPreview() {
@@ -41,12 +42,12 @@ export default class Preview extends React.Component {
                         {
                             (close) => (
                                 <div className={styles.PopupContainer}>
-                                    <span className={styles.PopupUserInfo}>
+                                    <span className={styles.ErrorMessage}>
                                         {this.props.chatPreviewState.error}
+                                        { <span className={styles.PopupClose} onClick={close}>
+                                            ❌
+                                        </span>}
                                     </span>
-                                    { <span className={styles.PopupClose} onClick={close}>
-                                        ❌
-                                    </span>}
                                 </div>
                             )
                         }
