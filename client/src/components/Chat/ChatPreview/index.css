@@ -55,7 +55,7 @@
 {
     position: absolute;
     grid-area: 1 / 1 / 2 / 2;
-    /* margin-left: 76px; */
+    /* margin-right: 100%; */
     margin-top: 3px;
     color: white;
     transform: scale(.9);
@@ -110,5 +110,3 @@
     font-size: 22px;
     cursor: pointer;
 }
-
-

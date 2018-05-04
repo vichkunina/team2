@@ -24,7 +24,6 @@ export default class ChatInput extends React.Component {
     }
 
     changeHandler(event) {
-        event.preventDefault();
         this.props.chatInputState.change(event.target.value);
     }
 
