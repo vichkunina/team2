@@ -10,7 +10,7 @@ export default class ChatHistory extends Component {
         super(props);
 
         this.divRef = null;
-    }s
+    }
 
     static propTypes = {
         chatPreviewState: PropTypes.object,

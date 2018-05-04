@@ -17,14 +17,6 @@ export default class Preview extends React.Component {
         chatPreviewState: PropTypes.observableObject
     };
 
-    onDrop = (accepted) => {
-        const files = {};
-        accepted.forEach((el, index) => {
-            files[index] = el;
-        });
-        this.props.chatPreviewState.change(files);
-    };
-
     changeHandler(event) {
         this.props.chatPreviewState.change(event.currentTarget.files);
         event.currentTarget.value = '';
