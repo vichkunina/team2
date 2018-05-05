@@ -54,16 +54,16 @@ export default class ChatHistory extends Component {
     render() {
         return (
             <div
-                onDragOver={this.onDragStart.bind(this.onDragStart)}
-                onDrop={this.onDrop.bind(this.onDrop)}
-                onDragLeave={this.onDragLeave.bind(this.onDragLeave)}
+                onDragOver={this.onDragStart.bind(this)}
+                onDrop={this.onDrop.bind(this)}
+                onDragLeave={this.onDragLeave.bind(this)}
                 className={this.props.chatPreviewState.isDropping
                     ? styles.Dropzone : styles.Wrapper}
                 ref={el => {
                     this.divRef = el;
                 }}>
-                <div className={styles.Supporter}/>
-                {this.props.children}
+                <div className={styles.Supporter} />
+                {this.props.children }
             </div>
         );
     }
