@@ -3,11 +3,13 @@
     flex-flow: row nowrap;
     align-items: center;
     width: 100%;
-    padding: 12px 16px;
+    padding: 13px 16px;
     background: #fffffa;
     box-shadow: 0 0 12px #00000034;
     box-sizing: border-box;
     cursor: pointer;
+    border: thin dashed transparent;
+
 }
 
 .Info {
