@@ -6,6 +6,7 @@ import ChatState from './states/ChatState';
 import ChatListState from './states/ChatListState';
 import ChatPreviewState from './states/ChatPreviewState';
 import ReactionSelectorState from './states/ReactionSelectorState';
+import ChatCreateState from './states/ChatCreateState';
 
 export default class UIStore {
 
@@ -13,6 +14,7 @@ export default class UIStore {
         this.rootStore = rootStore;
         this.chatState = new ChatState(this.rootStore.dataStore);
         this.chatListState = new ChatListState(this.rootStore.dataStore);
+        this.chatCreateState = new ChatCreateState(this.rootStore.dataStore);
         this.chatPreviewState = new ChatPreviewState(this.rootStore.dataStore);
         this.chatInputState =
             new ChatInputState(this, this.rootStore.dataStore, this.chatPreviewState);
@@ -48,23 +50,28 @@ function getLoaderState(loadingState) {
     let loaderState;
     let message = '';
 
-    if (loadingState === States.LOADED) {
-        loaderState = false;
-    }
-
-    if (loadingState === States.LOAD_CONTACTS) {
-        loaderState = true;
-        message = 'Loading contacts';
-    }
-
-    if (loadingState === States.LOAD_PROFILE) {
-        loaderState = true;
-        message = 'Loading profile';
-    }
-
-    if (loadingState === States.ADD_CONTACT) {
-        loaderState = true;
-        message = 'Adding contact';
+    switch (loadingState) {
+        case States.LOADED:
+            loaderState = false;
+            break;
+        case States.LOAD_CONTACTS:
+            loaderState = true;
+            message = 'Loading contacts';
+            break;
+        case States.LOAD_PROFILE:
+            loaderState = true;
+            message = 'Loading profile';
+            break;
+        case States.ADD_CONTACT:
+            loaderState = true;
+            message = 'Adding contact';
+            break;
+        case States.ADD_CHAT:
+            loaderState = true;
+            message = 'Creating chat';
+            break;
+        default:
+            break;
     }
 
     return { loaderState, message };

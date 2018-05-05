@@ -19,6 +19,10 @@ userSchema.methods.addContact = async function (otherId) {
 };
 
 userSchema.methods.addChat = function (chatId) {
+    chatId = mongoose.Types.ObjectId(chatId);
+    if (this.chats.find(oldChatId => oldChatId.toString() === chatId.toString())) {
+        return;
+    }
     this.chats.push(chatId);
 
     return this.save();

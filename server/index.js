@@ -76,7 +76,9 @@ routes(app);
 
 const port = process.env.PORT || config.get('port');
 
-require('./app/websockets')(httpServer, sessionStore);
+const { wSocketHandler } = require('./app/websockets');
+
+wSocketHandler(httpServer, sessionStore);
 
 httpServer.listen(port, () => {
     console.info(`Server started on ${port}`);

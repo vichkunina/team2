@@ -19,6 +19,8 @@ export default class DataStore {
 
     @observable chatList = [];
 
+    @observable contactList = [];
+
     @observable chatHistories = new Map();
 
     @action setChatHistory = (chatId, messages) => {
@@ -144,6 +146,36 @@ export default class DataStore {
         this.webWorker.getProfile();
     };
 
+    @action getContactList = () => {
+        this.loadingState = States.LOAD_CONTACTS;
+        this.webWorker.getContactList();
+    };
+
+    @action setContacts = (contacts) => {
+        this.contactList = contacts;
+    };
+
+    @action createChat = (userIds) => {
+        this.loadingState = States.ADD_CHAT;
+        this.webWorker.createChat(userIds);
+    };
+
+    @action setChatName = (listIndex, chatName) => {
+        this.chatList[listIndex].name = chatName;
+    };
+
+    @action userJoined = (chat) => {
+        const index = this.chatList.findIndex(listChat => listChat._id === chat._id);
+        this.setChatName(index, chat.name);
+        const message = {
+            _id: uuid(),
+            text: `${chat.users[chat.users.length - 1].login} joined the chat`,
+            chatId: chat._id,
+            isService: true
+        };
+        this.addMessage(message);
+    };
+
     getLastChatMessage(chat) {
         const chatHistory = this.chatHistories.get(chat._id);
 
@@ -201,7 +233,19 @@ function initChat(chat) {
         return;
     }
 
+    if (!chat.dialog) {
+        return chat;
+    }
+
     const user = chat.users.find(entry => entry._id !== this.profile._id);
+
+    if (!user) {
+        console.info('empty chat');
+        chat.name = 'Empty';
+        chat.avatar = chat.users[0].avatar;
+
+        return chat;
+    }
 
     chat.avatar = user.avatar;
     chat.name = user.login;
