@@ -1,3 +1,5 @@
+/* eslint-disable max-statements */
+/* eslint-disable max-nested-callbacks */
 'use strict';
 
 const { readFileSync } = require('fs');
@@ -62,6 +64,23 @@ module.exports = async function (app, sessionStore) {
         ss(socket).on('UploadImage', (stream) => {
             const cloud = cloudinary.createCloudStream(res => {
                 socket.emit('UploadImageResult', {
+                    success: true,
+                    value: res.url
+                });
+            });
+            stream.pipe(cloud);
+        });
+        ss(socket).on('UploadAvatar', (stream) => {
+            const cloud = cloudinary.createCloudStream(async res => {
+                try {
+                    await UserModel.update({ _id: uid }, { $set: { avatar: res.url } }).exec();
+                } catch (err) {
+                    socket.emit('UploadAvatarResult', {
+                        success: false,
+                        value: err
+                    });
+                }
+                socket.emit('UploadAvatarResult', {
                     success: true,
                     value: res.url
                 });
@@ -209,8 +228,11 @@ module.exports = async function (app, sessionStore) {
                 delete executeQueues[uid];
             }
         });
-    });
-};
+    }
+    )
+    ;
+}
+;
 
 function pushAction(uid, action, data) {
     executeQueues[uid].push({ action, data });

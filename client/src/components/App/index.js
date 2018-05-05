@@ -61,6 +61,7 @@ export default class App extends Component {
 
         return (
             <Provider chatInputState={chatInputState}
+                state={state}
                 chatListState={chatListState}
                 chatPreviewState={chatPreviewState}
                 chatState={chatState}
@@ -84,12 +85,14 @@ export default class App extends Component {
                             inviteLink={chatState.currentChat.inviteLink}>
                             {chatHistory}
                         </Chat>
-                        : <div className={styles.StubWrapper}>
+                        : <div className={styles.StubWrapper}
+                            onClick={state.closeProfile.bind(state)}>
                             <ServiceMessage text="Please select a chat to start messaging"/>
-                        </div>
-                    }
+                        </div>}
                     {state.mainView.showProfile &&
-                    <Profile profile={dataStore.profile}/>}
+                    <Profile
+                        closeProfile={state.closeProfile.bind(state)}
+                        profile={dataStore.profile}/>}
                 </div>
             </Provider>
         );

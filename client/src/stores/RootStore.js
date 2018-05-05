@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+/* eslint-disable max-statements */
 import DataStore from './DataStore';
 import UIStore from './UIStore';
 import * as States from '../enum/LoadState';
@@ -6,7 +7,7 @@ import * as States from '../enum/LoadState';
 export default class RootStore {
     constructor(webWorker) {
         this.dataStore = new DataStore(this, webWorker);
-        this.state = new UIStore(this, webWorker);
+        this.state = new UIStore(this.dataStore, webWorker);
         initWorker(webWorker, this.dataStore, this.state);
     }
 }
@@ -61,6 +62,14 @@ function initWorker(webWorker, dataStore, state) {
         }
 
         state.addAttachment(result);
+    });
+
+    webWorker.subscribe('UploadAvatar', (error, result) => {
+        if (error) {
+            console.info(error);
+        }
+
+        dataStore.setAvatar(result);
     });
 
     webWorker.subscribe('NewMessage', (error, result) => {

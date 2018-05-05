@@ -9,7 +9,7 @@ import styles from './index.css';
 import { inject } from 'mobx-react';
 import { PropTypes as MobxPropsTypes } from 'mobx-react';
 
-@inject('reactionSelectorState') @observer
+@inject('reactionSelectorState', 'state') @observer
 export default class Chat extends Component {
     constructor(props) {
         super(props);
@@ -17,7 +17,7 @@ export default class Chat extends Component {
 
     static propTypes = {
         reactionSelectorState: MobxPropsTypes.observableObject,
-
+        state: MobxPropsTypes.observableObject,
         name: ReactPropTypes.string,
         avatar: ReactPropTypes.string,
         children: ReactPropTypes.array,
@@ -35,7 +35,8 @@ export default class Chat extends Component {
         };
 
         return (
-            <div className={styles.Wrapper}>
+            <div className={styles.Wrapper}
+                onClick={this.props.state.closeProfile.bind(this.props.state)}>
                 {this.props.reactionSelectorState.show &&
                 <div className={styles.EmojiPicker} style={emojiPickerStyle}>
                     <EmojiPicker

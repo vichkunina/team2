@@ -132,6 +132,14 @@ export default class DataStore {
         this.webWorker.searchByLogin(userId);
     };
 
+    @action setAvatar = (avatar) => {
+        this.profile.avatar = avatar;
+    };
+
+    @action uploadAvatar = (avatar) => {
+        this.webWorker.uploadAvatar(avatar);
+    };
+
     @action uploadImage = (image) => {
         this.webWorker.uploadImage(image);
     };

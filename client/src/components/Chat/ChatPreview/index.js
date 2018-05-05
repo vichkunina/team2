@@ -77,7 +77,7 @@ export default class Preview extends React.Component {
                 <div className = {`${styles.ImageButton} ${styles.Button}`}>
                     <label>
                         <input type="file" onChange={this.changeHandler}
-                            accept="image/*" multiple className={styles.Upload} />
+                            accept="image/*" multiple className={styles.Upload}/>
                         <i className="material-icons">image</i>
                     </label>
                 </div>

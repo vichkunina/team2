@@ -1,5 +1,5 @@
 /* eslint-disable no-invalid-this */
-import { observable, computed, action } from 'mobx';
+import { observable, computed, action, autorun } from 'mobx';
 import * as States from '../enum/LoadState';
 import ChatInputState from './states/ChatInputState';
 import ChatState from './states/ChatState';
@@ -10,16 +10,24 @@ import ChatCreateState from './states/ChatCreateState';
 
 export default class UIStore {
 
-    constructor(rootStore) {
-        this.rootStore = rootStore;
-        this.chatState = new ChatState(this.rootStore.dataStore);
-        this.chatListState = new ChatListState(this.rootStore.dataStore);
-        this.chatCreateState = new ChatCreateState(this.rootStore.dataStore);
-        this.chatPreviewState = new ChatPreviewState(this.rootStore.dataStore);
+    constructor(dataStore) {
+        this.dataStore = dataStore;
+        this.chatState = new ChatState(this.dataStore);
+        this.chatListState = new ChatListState(this.dataStore);
+        this.chatCreateState = new ChatCreateState(this.dataStore);
+        this.chatPreviewState = new ChatPreviewState(this.dataStore);
         this.chatInputState =
-            new ChatInputState(this, this.rootStore.dataStore, this.chatPreviewState);
-        this.reactionSelectorState = new ReactionSelectorState(this.rootStore.dataStore);
+            new ChatInputState(this, this.dataStore, this.chatPreviewState);
+        this.reactionSelectorState = new ReactionSelectorState(this.dataStore);
+
+        autorun(() => {
+            if (this.dataStore.profile.avatar) {
+                this.loadAvatar = false;
+            }
+        });
     }
+
+    @observable loadAvatar = false;
 
     @observable mainView = {
         showContacts: true,
@@ -29,8 +37,30 @@ export default class UIStore {
 
     @computed
     get loaderState() {
-        return getLoaderState(this.rootStore.dataStore.loadingState);
+        return getLoaderState(this.dataStore.loadingState);
     }
+
+    @computed
+    get profile() {
+        return this.dataStore.profile;
+    }
+
+    @action uploadAvatar = (file) => {
+        this.loadAvatar = true;
+        this.dataStore.uploadAvatar(file);
+    };
+
+    @action toggleProfile = () => {
+        this.mainView.showProfile = !this.mainView.showProfile;
+    };
+
+    @action showProfile = () => {
+        this.mainView.showProfile = true;
+    };
+
+    @action closeProfile = () => {
+        this.mainView.showProfile = false;
+    };
 
     @action addAttachment = (attachment) => {
         this.chatPreviewState.addAttachment(attachment);
@@ -39,7 +69,7 @@ export default class UIStore {
     @action setSearchResults = (searchResults) => {
         if (searchResults) {
             this.chatListState.searchResults = searchResults
-                .filter(chat => chat.login !== this.rootStore.dataStore.profile.login);
+                .filter(chat => chat.login !== this.dataStore.profile.login);
         } else {
             this.chatListState.searchResults = [];
         }

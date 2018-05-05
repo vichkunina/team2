@@ -26,6 +26,10 @@ export class WorkerWrapper {
         this._worker.postMessage({ action: 'GetChatList' });
     }
 
+    uploadAvatar(avatar) {
+        this._worker.postMessage({ action: 'UploadAvatar', value: avatar });
+    }
+
     addContact(userId) {
         this._worker.postMessage({ action: 'AddContact', value: userId });
     }

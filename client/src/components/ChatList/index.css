@@ -15,29 +15,33 @@
 
 .Wrappers {
     border: none;
-
+    display: flex;
+    flex-wrap: wrap;
     padding: 16px 0;
 }
 
 .TopRow {
     display: flex;
+    width: 100%;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+.Profile {
+    margin-left: 10px;
+    align-self: center;
 }
 
 .SearchForm {
-    padding: 0 16px;
-    width: 75%;
+    width: 170px;
+    align-self: center;
 }
 
 .SearchInput {
-    margin: 0 0 16px;
     padding: 6px 16px;
-
     width: 100%;
-
     font-size: 14px;
-
     background: #ddd;
-
     border: 1px solid #ddd;
     border-radius: 2px;
     box-sizing: border-box;
@@ -71,16 +75,14 @@
 
 .Button {
     display: flex;
-
-    margin: auto 16px 16px 0;
     padding: 0;
-
     color: #757575;
     text-decoration: none;
     user-select: none;
     background: transparent;
     outline: none;
     border: 0;
+    align-self: center;
 }
 
 .CreateChatBtn:active {
