@@ -10,8 +10,11 @@ const { queue } = require('async');
 const parseMarkdown = require('./tools/parse-markdown');
 const getUrls = require('./tools/get-urls');
 const opengraph = require('./tools/opengraph');
+const GithubAvatar = require('./tools/github-avatar');
 const cloudinary = require('./tools/cloudinary');
 const ss = require('socket.io-stream');
+const config = require('config');
+const { URL } = require('url');
 
 const {
     ChatModel,
@@ -74,7 +77,7 @@ module.exports = async function (app, sessionStore) {
                 });
             } catch (error) {
                 console.error(error);
-                socket.emitByUID(uid, 'AddContactResult', {
+                wsServer.emitByUID(uid, 'AddContactResult', {
                     success: false,
                     error: error.message || error.body
                 });
@@ -138,7 +141,12 @@ module.exports = async function (app, sessionStore) {
                             wsServer.emitByUID(userId, 'NewMessage', message);
                         });
 
-                    await emmitOlesyaMessage(chat, text);
+                    if (chat.containsUser('OlesyaUserId')) {
+                        const answer = await getOlesyaMessage(chat, text);
+                        chat.users.forEach(userId => {
+                            wsServer.emitByUID(userId, 'NewMessage', answer);
+                        });
+                    }
                 } catch (error) {
                     wsServer.emitByUID(uid, 'SendMessageResult', {
                         success: false,
@@ -146,23 +154,62 @@ module.exports = async function (app, sessionStore) {
                     });
                 }
             }));
+        socket.on('CreateChat', pushAction.bind(null, uid, async userIds => {
+            try {
+                const allUserIds = userIds.concat([uid]);
+                const result = await createChat(allUserIds);
+
+                socket.emit('CreateChatResult', {
+                    success: true,
+                    value: result
+                });
+
+                for (const userId of allUserIds) {
+                    wsServer.emitByUID(userId, 'NewChat', result);
+                }
+            } catch (error) {
+                console.error(error);
+                socket.emit('CreateChatResult', {
+                    success: false,
+                    error: error.message || error.body
+                });
+            }
+        }));
+
+        socket.on('RevokeLink', pushAction.bind(
+            null,
+            uid,
+            async chatId => {
+                try {
+                    const chat = await revokeLink(chatId);
+
+                    socket.emit('RevokeLinkResult', {
+                        success: true,
+                        value: chat.inviteLink
+                    });
+
+                    for (const userId of chat.users) {
+                        wsServer.emitByUID(userId, 'NewInviteLink', chat);
+                    }
+                } catch (error) {
+                    socket.emit('RevokeLinkResult', {
+                        success: false,
+                        error: error.message || error.body
+                    });
+                }
+            }));
+
+        socket.on('GetContactList', pushAction.bind(
+            null,
+            uid,
+            execute.bind(null, socket, uid, GetContactList)));
+
         socket.on('disconnect', () => {
             if (wsServer.getUserConnectionsCount(uid) === 0) {
                 delete executeQueues[uid];
             }
         });
     });
-
-    async function emmitOlesyaMessage(chat, text) {
-        if (chat.containsUser('OlesyaUserId')) {
-            const answer = await olesya.ask(text);
-            const olesyaMessage =
-                await sendMessage(mongoose.Types.ObjectId('OlesyaUserId'), chat._id, answer);
-            chat.users.forEach(userId => {
-                wsServer.emitByUID(userId, 'NewMessage', olesyaMessage);
-            });
-        }
-    }
 };
 
 function pushAction(uid, action, data) {
@@ -172,7 +219,7 @@ function pushAction(uid, action, data) {
 async function execute(socket, uid, fn, data) {
     try {
         const result = await fn(uid, data);
-
+        console.info(`Emitting ${fn.name}`);
         socket.emit(fn.name + 'Result', {
             success: true,
             value: result
@@ -183,6 +230,12 @@ async function execute(socket, uid, fn, data) {
             error: error.message || error.body
         });
     }
+}
+
+async function getOlesyaMessage(chat, text) {
+    const answer = await olesya.ask(text);
+
+    return await sendMessage(mongoose.Types.ObjectId('OlesyaUserId'), chat._id, answer);
 }
 
 async function addReaction(uid, messageId, code) {
@@ -213,6 +266,7 @@ async function addReaction(uid, messageId, code) {
 
 async function sendMessage(uid, chatId, text, attachments) {
     const chat = await ChatModel.findById(chatId);
+    const user = await UserModel.findById(uid);
 
     if (chat.users.indexOf(uid) === -1) {
         throw new Error('Not your chat!');
@@ -223,6 +277,7 @@ async function sendMessage(uid, chatId, text, attachments) {
     const message = new MessageModel({
         chatId: chatId,
         from: uid,
+        fromLogin: user.login,
         body: parseMarkdown(text),
         attachments
     });
@@ -328,7 +383,7 @@ async function GetChatList(uid) {
 
             result.push(emitChat);
         } catch (error) {
-            console.error(`Can't find chat ${chat._id}`);
+            console.error(`Can't find chat ${chat._id} ${error}`);
         }
     }
 
@@ -345,7 +400,9 @@ async function getChatForEmit(chat) {
         _id: chat._id,
         name: chat.name,
         dialog: chat.dialog,
-        users: newChat.users.map(getProfileFromUser)
+        avatar: chat.avatar,
+        users: newChat.users.map(getProfileFromUser),
+        inviteLink: new URL(`join/${chat.inviteLink}`, config.get('host'))
     };
 }
 
@@ -376,4 +433,49 @@ function getAddReactionObject(uid, code, message) {
     }
 
     return executeObj;
+}
+
+async function GetContactList(uid) {
+    const me = await UserModel
+        .findById(uid)
+        .populate('contacts')
+        .exec();
+
+    return me.contacts.map(getProfileFromUser);
+}
+
+async function createChat(allUserIds) {
+    const users = await UserModel.find({ _id: { $in: allUserIds } });
+    const chatName = users.map(user => user.login).join(', ');
+    let chat = new ChatModel({
+        name: chatName,
+        dialog: false,
+        users: allUserIds
+    });
+
+    await chat.save();
+
+    const randomstring = require('randomstring');
+
+    await chat.update({
+        $set: {
+            inviteLink: randomstring.generate(),
+            avatar: new GithubAvatar(chat._id.toString(), 200).toImgSrc()
+        }
+    }).exec();
+
+    chat = await ChatModel.findById(chat._id);
+
+    for (const user of users) {
+        await user.addChat(chat._id);
+    }
+
+    return await getChatForEmit(chat);
+}
+
+async function revokeLink(chatId) {
+    const chat = await ChatModel.findById(chatId).exec();
+    await chat.generateInviteLink();
+
+    return chat;
 }

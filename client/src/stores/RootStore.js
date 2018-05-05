@@ -123,4 +123,30 @@ function initWorker(webWorker, dataStore, state) {
         dataStore.setLoadingState(States.LOADED);
         dataStore.addChats([chat]);
     });
+
+    webWorker.subscribe('CreateChat', (error, chat) => {
+        if (error) {
+            console.error(`CreateChat error: ${error}`);
+        }
+
+        console.info(`CreateChat: ${chat}`);
+    });
+
+    webWorker.subscribe('GetContactList', (error, contacts) => {
+        if (error) {
+            console.error(`GetContactList error: ${error}`);
+        }
+
+        dataStore.setLoadingState(States.LOADED);
+        dataStore.setContacts(contacts);
+    });
+
+    webWorker.subscribe('NewChatUser', (error, chat) => {
+        if (error) {
+            console.error(`New chat user error: ${error}`);
+        }
+        console.info('New chat user');
+        dataStore.userJoined(chat);
+    });
+
 }

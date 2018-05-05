@@ -26,7 +26,8 @@ export default class App extends Component {
             chatListState,
             chatInputState,
             chatPreviewState,
-            reactionSelectorState
+            reactionSelectorState,
+            chatCreateState
         } = state;
 
         const chatList = chatListState.chatsToDisplay.map(chat => (
@@ -39,19 +40,22 @@ export default class App extends Component {
                 onClick={chatState.selectChat.bind(chatState, chat)}/>
         ));
 
-        const chatHistory = chatState.currentChatHistory.map(message => (
-            <UserMessage
-                key={message._id || message.tempId}
-                id={message._id}
-                fromMe={message.from === dataStore.profile._id}
-                isSent={Boolean(message._id)}
-                name={message.name}
-                body={message.body}
-                createdAt={message.createdAt}
-                attachments={message.attachments}
-                reactions={message.reactions || {}}
-                og={message.og}/>
-        ));
+        const chatHistory = chatState.currentChatHistory.map(message => message.isService
+            ? <ServiceMessage key={message._id} text={message.text}/>
+            : (
+                <UserMessage
+                    key={message._id || message.tempId}
+                    id={message._id}
+                    fromMe={message.from === dataStore.profile._id}
+                    isSent={Boolean(message._id)}
+                    name={(!chatState.currentChat.dialog &&
+                        message.from !== dataStore.profile._id) ? message.fromLogin : ''}
+                    body={message.body}
+                    createdAt={message.createdAt}
+                    attachments={message.attachments}
+                    reactions={message.reactions || {}}
+                    og={message.og}/>
+            ));
 
         const { loaderState, message } = state.loaderState;
 
@@ -60,7 +64,8 @@ export default class App extends Component {
                 chatListState={chatListState}
                 chatPreviewState={chatPreviewState}
                 chatState={chatState}
-                reactionSelectorState={reactionSelectorState}>
+                reactionSelectorState={reactionSelectorState}
+                chatCreateState={chatCreateState}>
                 <div className={styles.Wrapper}>
                     <div className={styles.LoadingScreen}
                         style={{ display: loaderState ? 'flex' : 'none' }}>
@@ -75,7 +80,8 @@ export default class App extends Component {
                     </ChatList>}
                     {chatState.currentChat.name
                         ? <Chat name={chatState.currentChat.name}
-                            avatar={chatState.currentChat.avatar}>
+                            avatar={chatState.currentChat.avatar}
+                            inviteLink={chatState.currentChat.inviteLink}>
                             {chatHistory}
                         </Chat>
                         : <div className={styles.StubWrapper}>

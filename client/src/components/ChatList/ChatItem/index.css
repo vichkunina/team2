@@ -2,8 +2,7 @@
     display: grid;
     grid-template-columns: min-content auto min-content;
     grid-template-rows: 1fr 1fr;
-    grid-template-areas: 'a n d'
-                         'a m c';
+    grid-template-areas: 'a n d' 'a m c';
 
     align-items: center;
 
@@ -49,7 +48,7 @@
 
     padding: 1px 6.5px 1px 6.5px;
 
-    background-color:#03a9f4;
+    background-color: #03a9f4;
     color: #fffffa;
 
     border-radius: 28px;
@@ -61,7 +60,7 @@
 }
 
 .Wrapper:hover > .UnreadCount {
-    background-color:#fffffa;
+    background-color: #fffffa;
 }
 
 .LastMessage p {

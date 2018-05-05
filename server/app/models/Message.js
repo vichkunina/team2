@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 
 const messageSchema = new mongoose.Schema({
     from: { type: mongoose.Schema.ObjectId, ref: 'User' },
+    fromLogin: { type: String },
     chatId: { type: mongoose.Schema.ObjectId, ref: 'Chat' },
     body: String,
     og: mongoose.Schema.Types.Mixed,

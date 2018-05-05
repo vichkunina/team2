@@ -4,7 +4,8 @@ import ss from 'socket.io-stream';
 
 const METHODS =
     ['GetMessages', 'GetProfile', 'SearchByLogin', 'AddContact', 'GetChatList',
-        'SendMessage', 'SendReaction', 'DeleteProfile', 'UploadImage'];
+        'SendMessage', 'SendReaction', 'DeleteProfile', 'UploadImage', 'CreateChat',
+        'RevokeLink', 'GetContactList'];
 
 let TOKEN;
 let socket;
@@ -19,7 +20,15 @@ function init() {
         postMessage({ action: 'NewMessage', result: message, type: Types.EMIT });
     });
     socket.on('NewChat', chat => {
+        console.info(`Received newChat: ${chat}`);
         postMessage({ action: 'NewChat', result: chat, type: Types.EMIT });
+    });
+    socket.on('NewInviteLink', chat => {
+        postMessage({ action: 'NewInviteLink', result: chat, type: Types.EMIT });
+    });
+    socket.on('NewChatUser', chat => {
+        console.info('[w] Received NewChatUser: ', chat);
+        postMessage({ action: 'NewChatUser', result: chat, type: Types.EMIT });
     });
 
     socket.on('NewReaction', reaction => {
@@ -28,6 +37,7 @@ function init() {
 
     for (const method of METHODS) {
         socket.on(`${method}Result`, result => {
+            console.info(`Received ${method}: ${result}`);
             postMessage({ action: method, result, type: Types.RESPONSE });
         });
     }
