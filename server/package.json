@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "fix": "eslint . --fix",
+    "lint:fix": "eslint . --fix",
     "lint": "eslint .",
     "test": "npm run lint && mocha ./tests/*.js --timeout 15000",
     "ogt": "mocha ./tests/opengraph.js --reporter spec --timeout 15000",

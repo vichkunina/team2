@@ -35,6 +35,10 @@ export class WorkerWrapper {
             .postMessage({ action: 'SendMessage', value: { chatId, text, tempId, attachments } });
     }
 
+    sendReaction(code, messageId) {
+        this._worker.postMessage({ action: 'SendReaction', value: { code, messageId } });
+    }
+
     deleteProfile(userId) {
         this._worker.postMessage({ action: 'DeleteProfile', value: { userId } });
     }

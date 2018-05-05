@@ -53,8 +53,6 @@ app.use(session({
     }
 }));
 
-app.use(express.static(config.get('staticPath')));
-
 passport.use(strategy);
 setSerializers(passport);
 
@@ -65,6 +63,7 @@ const viewsDir = path.join(__dirname, 'app/views');
 
 if (config.get('debug')) {
     app.use(morgan('dev'));
+    app.use(express.static(config.get('clientFiles')));
 }
 
 app.set('view engine', 'hbs');

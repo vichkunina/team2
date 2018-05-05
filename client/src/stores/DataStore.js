@@ -47,6 +47,42 @@ export default class DataStore {
         });
     };
 
+    @action addReaction = (result) => {
+        const index = this.chatHistories
+            .get(result.chatId)
+            .findIndex(msg => msg._id === result.messageId);
+
+        if (index !== -1) {
+            const message = this.chatHistories.get(result.chatId)[index];
+            if (!message.reactions) {
+                message.reactions = {};
+            }
+
+            if (!message.reactions[result.code]) {
+                message.reactions[result.code] = [];
+            }
+
+            if (message.reactions[result.code].some(r => r.uid === result.uid)) {
+                message.reactions[result.code] = message
+                    .reactions[result.code]
+                    .filter(r => r.uid !== result.uid);
+            } else {
+                message.reactions[result.code].push({
+                    uid: result.uid,
+                    code: result.code
+                });
+            }
+
+            if (!message.reactions[result.code].length) {
+                delete message.reactions[result.code];
+            }
+
+            message.reactions = Object.assign({}, message.reactions);
+
+            this.chatHistories.get(result.chatId)[index] = Object.assign({}, message);
+        }
+    };
+
     @action addMessage = (message) => {
         this.chatHistories.get(message.chatId).push(message);
     };
@@ -54,6 +90,10 @@ export default class DataStore {
     @action addContact = (userId) => {
         this.loadingState = States.ADD_CONTACT;
         this.webWorker.addContact(userId);
+    };
+
+    @action sendReaction = (emojiCode, messageId) => {
+        this.webWorker.sendReaction(emojiCode, messageId);
     };
 
     @action sendMessage = ({ text, chatId, attachments }) => {
@@ -160,6 +200,7 @@ function initChat(chat) {
     if (!chat) {
         return;
     }
+
     const user = chat.users.find(entry => entry._id !== this.profile._id);
 
     chat.avatar = user.avatar;

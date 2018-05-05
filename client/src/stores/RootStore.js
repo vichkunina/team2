@@ -29,6 +29,14 @@ function initWorker(webWorker, dataStore, state) {
         }
     });
 
+    webWorker.subscribe('SendReaction', (err) => {
+        console.info(err);
+    });
+
+    webWorker.subscribe('NewReaction', (error, result) => {
+        dataStore.addReaction(result);
+    });
+
     webWorker.subscribe('SendMessage', (error, result) => {
         dataStore.messageDidSent(result);
         if (error) {

@@ -8,6 +8,10 @@ const messageSchema = new mongoose.Schema({
     body: String,
     og: mongoose.Schema.Types.Mixed,
     createdAt: { type: Date, default: Date.now },
+    reactions: {
+        type: mongoose.Schema.Types.Mixed,
+        default: {}
+    },
     attachments: []
 });
 

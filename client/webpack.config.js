@@ -1,6 +1,6 @@
+/* eslint-disable */
 const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const vendorLibs = [
     'react',
@@ -101,10 +101,6 @@ module.exports = {
     },
 
     plugins: [
-        new HtmlWebpackPlugin({
-            template: 'app.html',
-            filename: 'app.html'
-        }),
         new webpack.DefinePlugin({
             'process.env.HOST': JSON.stringify(host)
         })

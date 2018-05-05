@@ -5,6 +5,7 @@ import ChatInputState from './states/ChatInputState';
 import ChatState from './states/ChatState';
 import ChatListState from './states/ChatListState';
 import ChatPreviewState from './states/ChatPreviewState';
+import ReactionSelectorState from './states/ReactionSelectorState';
 
 export default class UIStore {
 
@@ -15,6 +16,7 @@ export default class UIStore {
         this.chatPreviewState = new ChatPreviewState(this.rootStore.dataStore);
         this.chatInputState =
             new ChatInputState(this, this.rootStore.dataStore, this.chatPreviewState);
+        this.reactionSelectorState = new ReactionSelectorState(this.rootStore.dataStore);
     }
 
     @observable mainView = {

@@ -1,5 +1,6 @@
 'use strict';
 
+const { readFileSync } = require('fs');
 const mongoose = require('mongoose');
 const PassportMemStoreSessionGetter = require('./classes/PassportMemStoreSessionGetter');
 const olesya = require('./tools/olesya');
@@ -19,6 +20,10 @@ const {
 } = require('./models');
 const sendQueue = new SendQueue();
 const executeQueues = {};
+const emojiJSON = JSON.parse(readFileSync('./emoji.json', 'utf8'));
+const emojiArray = Object
+    .keys(emojiJSON.emojis)
+    .map(n => emojiJSON.emojis[n].u);
 
 module.exports = async function (app, sessionStore) {
     const sessionGetter = new PassportMemStoreSessionGetter(sessionStore);
@@ -85,6 +90,35 @@ module.exports = async function (app, sessionStore) {
             uid,
             execute.bind(null, socket, uid, GetChatList)
         ));
+        socket.on('SendReaction',
+            pushAction.bind(null, uid, async ({ code, messageId }) => {
+                try {
+                    const result = await addReaction(uid, messageId, code);
+
+                    socket.emit('SendReactionResult', {
+                        success: true,
+                        result: {
+                            chatId: result.chat._id,
+                            messageId: messageId,
+                            uid,
+                            code
+                        }
+                    });
+                    result.chat.users.forEach(userId => {
+                        wsServer.emitByUID(userId, 'NewReaction', {
+                            uid,
+                            chatId: result.chat._id,
+                            messageId,
+                            code
+                        });
+                    });
+                } catch (error) {
+                    wsServer.emitByUID(uid, 'AddReactionResult', {
+                        success: false,
+                        error: error.message || error.body
+                    });
+                }
+            }));
         socket.on('SendMessage', pushAction
             .bind(null, uid, async ({ chatId, text, tempId, attachments }) => {
                 try {
@@ -149,6 +183,32 @@ async function execute(socket, uid, fn, data) {
             error: error.message || error.body
         });
     }
+}
+
+async function addReaction(uid, messageId, code) {
+    const message = await MessageModel.findById(messageId);
+    const chat = await ChatModel.findById(message.chatId);
+
+    if (chat.users.indexOf(uid) === -1) {
+        throw new Error('Not your chat!');
+    }
+
+    if (emojiArray.indexOf(code) === -1) {
+        throw new Error('This is not one emoji!');
+    }
+
+    const executeObj = getAddReactionObject(uid, code, message);
+
+    await MessageModel.update(
+        { _id: messageId },
+        executeObj,
+    ).exec();
+
+    return {
+        chat,
+        message,
+        uid
+    };
 }
 
 async function sendMessage(uid, chatId, text, attachments) {
@@ -295,4 +355,25 @@ function getProfileFromUser(user) {
         login: user.login,
         avatar: user.avatar
     };
+}
+
+function getAddReactionObject(uid, code, message) {
+    const executeObj = {};
+    if (message.reactions[code] && message.reactions[code].some(r => r.uid === uid)) {
+        if (message.reactions[code].filter(r => r.uid !== uid).length === 0) {
+            executeObj.$unset = {};
+            executeObj.$unset[`reactions.${code}`] = 1;
+        } else {
+            executeObj.$pull = {};
+            executeObj.$pull[`reactions.${code}`] = { uid };
+        }
+    } else {
+        executeObj.$push = {};
+        executeObj.$push[`reactions.${code}`] = {
+            uid,
+            code
+        };
+    }
+
+    return executeObj;
 }

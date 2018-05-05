@@ -21,7 +21,13 @@ export default class App extends Component {
 
     render() {
         const { dataStore, state } = this.props.rootStore;
-        const { chatState, chatListState, chatInputState, chatPreviewState } = state;
+        const {
+            chatState,
+            chatListState,
+            chatInputState,
+            chatPreviewState,
+            reactionSelectorState
+        } = state;
 
         const chatList = chatListState.chatsToDisplay.map(chat => (
             <ChatItem key={chat._id}
@@ -34,13 +40,16 @@ export default class App extends Component {
         ));
 
         const chatHistory = chatState.currentChatHistory.map(message => (
-            <UserMessage key={message._id || message.tempId}
+            <UserMessage
+                key={message._id || message.tempId}
+                id={message._id}
                 fromMe={message.from === dataStore.profile._id}
                 isSent={Boolean(message._id)}
                 name={message.name}
                 body={message.body}
                 createdAt={message.createdAt}
                 attachments={message.attachments}
+                reactions={message.reactions || {}}
                 og={message.og}/>
         ));
 
@@ -50,7 +59,8 @@ export default class App extends Component {
             <Provider chatInputState={chatInputState}
                 chatListState={chatListState}
                 chatPreviewState={chatPreviewState}
-                chatState={chatState}>
+                chatState={chatState}
+                reactionSelectorState={reactionSelectorState}>
                 <div className={styles.Wrapper}>
                     <div className={styles.LoadingScreen}
                         style={{ display: loaderState ? 'flex' : 'none' }}>
@@ -79,4 +89,3 @@ export default class App extends Component {
         );
     }
 }
-

@@ -4,7 +4,7 @@ import ss from 'socket.io-stream';
 
 const METHODS =
     ['GetMessages', 'GetProfile', 'SearchByLogin', 'AddContact', 'GetChatList',
-        'SendMessage', 'DeleteProfile', 'UploadImage'];
+        'SendMessage', 'SendReaction', 'DeleteProfile', 'UploadImage'];
 
 let TOKEN;
 let socket;
@@ -20,6 +20,10 @@ function init() {
     });
     socket.on('NewChat', chat => {
         postMessage({ action: 'NewChat', result: chat, type: Types.EMIT });
+    });
+
+    socket.on('NewReaction', reaction => {
+        postMessage({ action: 'NewReaction', result: reaction, type: Types.EMIT });
     });
 
     for (const method of METHODS) {
