@@ -51,24 +51,8 @@ export class WorkerWrapper {
         this._worker.postMessage({ action: 'UploadImage', value: image });
     }
 
-    createChat(userIds) {
-        this._worker.postMessage({ action: 'CreateChat', value: userIds });
-    }
-
-    revokeLink(chatId) {
-        this._worker.postMessage({ action: 'RevokeLink', value: chatId });
-    }
-
-    getContactList() {
-        this._worker.postMessage({ action: 'GetContactList' });
-    }
-
     _handleResponse(response) {
         const handlers = this._handlers[response.action];
-
-        if (!handlers) {
-            throw new Error(`No handlers for ${response.action}`);
-        }
 
         if (response.type === Types.RESPONSE) {
             handlers.forEach(handler => handler(null, response.result.value));

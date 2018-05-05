@@ -20,8 +20,7 @@ export default class Chat extends Component {
 
         name: ReactPropTypes.string,
         avatar: ReactPropTypes.string,
-        children: ReactPropTypes.array,
-        inviteLink: ReactPropTypes.string
+        children: ReactPropTypes.array
     };
 
     sendReaction(code) {
@@ -44,8 +43,7 @@ export default class Chat extends Component {
                 }
                 <ChatHeader avatar={this.props.avatar}
                     name={this.props.name}
-                    status={'online'}
-                    inviteLink={this.props.inviteLink}/>
+                    status={'online'}/>
                 <ChatHistory>
                     {this.props.children}
                 </ChatHistory>

@@ -8,7 +8,6 @@ export default class ChatListState {
 
     @observable chatInput = '';
     @observable searchResults = [];
-    @observable isCreating = false;
 
     @action change = (inputText) => {
         this.chatInput = inputText;
@@ -22,11 +21,6 @@ export default class ChatListState {
         this.searchResults = this.searchResults
             .filter(chat => chat.login !== login);
     };
-
-    @action toggleCreating = () => {
-        this.isCreating = !this.isCreating;
-    };
-
 
     @computed
     get searchResultsToDisplay() {
@@ -44,10 +38,4 @@ export default class ChatListState {
             return chat;
         });
     }
-
-    @computed
-    get isCreatingChat() {
-        return this.isCreating;
-    }
-
 }

@@ -19,13 +19,8 @@
     padding: 16px 0;
 }
 
-.TopRow {
-    display: flex;
-}
-
 .SearchForm {
     padding: 0 16px;
-    width: 75%;
 }
 
 .SearchInput {
@@ -69,41 +64,6 @@
     color: #757575;
 }
 
-.Button {
-    display: flex;
-
-    margin: auto 16px 16px 0;
-    padding: 0;
-
-    color: #757575;
-    text-decoration: none;
-    user-select: none;
-    background: transparent;
-    outline: none;
-    border: 0;
-}
-
-.CreateChatBtn:active {
-    color: #03a9f4;
-    transform: rotate(45deg);
-    transition: transform .3s;
-}
-
-.CreateChatActive{
-    color: #03a9f4;
-    transform: rotate(45deg);
-    transition: transform .3s;
-}
-
-.CreateChatActive:active{
-    color: #757575;
-    transform: rotate(0);
-    transition: transform .3s;
-}
-
-.CreateChatIcon{
-    font-size: 30px;
-}
 
 /* Mobile */
 @media screen and (max-width: 767px) {
