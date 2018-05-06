@@ -117,8 +117,8 @@ export default class App extends Component {
                     <Popup
                         open={alarmState.alarmMessage !== null}
                         modal
-                        closeOnDocumentClick
-                        closeOnEscape
+                        closeOnDocumentClick={false}
+                        closeOnEscape={false}
                         contentStyle={this.defaultStyleOverride}
                     >
                         {close => (
