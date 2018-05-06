@@ -126,16 +126,16 @@ export default class UserMessage extends Component {
                         }
                     </time>
                     {this.props.attachments
-                    ? <div className={styles.ImageWrapper}>
-                        {this.props.attachments.map((attachment, index) => (
-                            <img key={index} src={attachment}
-                                className={styles.Img}
-                                onClick={this.onClick.bind(this)}/>
-                        ))}
-                    </div>
-                    : null}
+                        ? <div className={styles.ImageWrapper}>
+                            {this.props.attachments.map((attachment, index) => (
+                                <img key={index} src={attachment}
+                                    className={styles.Img}
+                                    onClick={this.onClick.bind(this)}/>
+                            ))}
+                        </div>
+                        : null}
 
-                {this.props.chatState.fullSizeImg &&
+                    {this.props.chatState.fullSizeImg &&
                 <Popup
                     open={true}
                     modal
