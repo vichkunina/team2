@@ -35,6 +35,29 @@ export default class UserMessage extends Component {
 
         return (
             <div className={className}>
+            {this.props.chatState.fullSizeImg &&
+                <Popup
+                    open={true}
+                    modal
+                    closeOnEscape
+                    closeOnDocumentClick
+                    onClose={this.props.chatState.changeFullSizeImg
+                        .bind(this.props.chatState)}>
+
+                    {
+                        (close) => (
+                            <div className={styles.PopupContainer}>
+                                <span className={styles.ErrorMessage}>
+                                    <img src={this.props.chatState.file} className={styles.ImgBig}/>
+                                    { <span className={styles.PopupClose}
+                                        onClick={close}>
+                                    ❌
+                                    </span>}
+                                </span>
+                            </div>
+                        )
+                    }
+                </Popup>}
                 <span className={styles.Name}>{this.props.name}</span>
                 <div className={styles.Body} dangerouslySetInnerHTML={{ __html: this.props.body }}/>
                 {this.props.og &&
@@ -61,31 +84,6 @@ export default class UserMessage extends Component {
                         ))}
                     </div>
                     : null}
-
-                {this.props.chatState.fullSizeImg &&
-                <Popup
-                    open={true}
-                    modal
-                    closeOnEscape
-                    contentStyle={this.defaultStyleOverride}
-                    closeOnDocumentClick
-                    onClose={this.props.chatState.changeFullSizeImg
-                        .bind(this.props.chatState)}>
-
-                    {
-                        (close) => (
-                            <div className={styles.PopupContainer}>
-                                <span className={styles.ErrorMessage}>
-                                    <img src={this.props.chatState.file} className={styles.ImgBig}/>
-                                    { <span className={styles.PopupClose}
-                                        onClick={close}>
-                                    ❌
-                                    </span>}
-                                </span>
-                            </div>
-                        )
-                    }
-                </Popup>}
             </div>
         );
     }
