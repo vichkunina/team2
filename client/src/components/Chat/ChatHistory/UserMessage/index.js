@@ -1,3 +1,4 @@
+/* eslint-disable complexity*/
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { PropTypes as MobxPropsTypes } from 'mobx-react';
@@ -5,8 +6,9 @@ import OGAttachment from
     './OGAttachment';
 import styles from './index.css';
 import { inject, observer } from 'mobx-react';
+import Popup from 'reactjs-popup';
 
-@inject('reactionSelectorState', 'alarmState') @observer
+@inject('reactionSelectorState', 'alarmState', 'chatState') @observer
 export default class UserMessage extends Component {
     constructor(props) {
         super(props);
@@ -15,7 +17,7 @@ export default class UserMessage extends Component {
     static propTypes = {
         reactionSelectorState: MobxPropsTypes.observableObject,
         alarmState: MobxPropsTypes.observableObject,
-
+        chatState: PropTypes.object,
         id: PropTypes.string,
         fromMe: PropTypes.bool.isRequired,
         isSent: PropTypes.bool,
@@ -90,6 +92,11 @@ export default class UserMessage extends Component {
         );
     }
 
+    onClick(e) {
+        this.props.chatState.fullSizeImg = true;
+        this.props.chatState.file = e.target.getAttribute('src');
+    }
+
     render() {
         const className =
             `${styles.Message} ${this.props.fromMe ? styles.FromMe : styles.FromSomeone}`;
@@ -121,10 +128,36 @@ export default class UserMessage extends Component {
                     {this.props.attachments
                         ? <div className={styles.ImageWrapper}>
                             {this.props.attachments.map((attachment, index) => (
-                                <img key={index} src={attachment} className={styles.Img}/>
+                                <img key={index} src={attachment}
+                                    className={styles.Img}
+                                    onClick={this.onClick.bind(this)}/>
                             ))}
                         </div>
                         : null}
+
+                    {this.props.chatState.fullSizeImg &&
+                <Popup
+                    open={true}
+                    modal
+                    closeOnEscape
+                    closeOnDocumentClick
+                    onClose={this.props.chatState.changeFullSizeImg
+                        .bind(this.props.chatState)}>
+
+                    {
+                        (close) => (
+                            <div className={styles.PopupContainer}>
+                                <span className={styles.ErrorMessage}>
+                                    <img src={this.props.chatState.file} className={styles.ImgBig}/>
+                                    { <span className={styles.PopupClose}
+                                        onClick={close}>
+                                    ❌
+                                    </span>}
+                                </span>
+                            </div>
+                        )
+                    }
+                </Popup>}
                 </div>
 
                 <div className={styles.Reactions}>

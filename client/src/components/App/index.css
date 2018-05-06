@@ -41,7 +41,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    background: #eee; 
+    background: #eee;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -50,7 +50,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #1e1e248f; 
+    background: #1e1e248f;
 }
 
 .EmptyChat {
