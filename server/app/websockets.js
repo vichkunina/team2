@@ -21,7 +21,8 @@ const { URL } = require('url');
 const {
     ChatModel,
     UserModel,
-    MessageModel
+    MessageModel,
+    AlarmModel
 } = require('./models');
 const sendQueue = new SendQueue();
 const executeQueues = {};
@@ -33,6 +34,7 @@ const emojiArray = Object
 module.exports = async function (app, sessionStore) {
     const sessionGetter = new PassportMemStoreSessionGetter(sessionStore);
     const wsServer = new WebSocketServer(app, sessionGetter);
+    await initAlarms(wsServer);
 
     wsServer.on('authUserConnected', ({ socket, uid }) => {
         if (!executeQueues[uid]) {
@@ -112,6 +114,27 @@ module.exports = async function (app, sessionStore) {
             uid,
             execute.bind(null, socket, uid, GetChatList)
         ));
+        socket.on('SetAlarm',
+            pushAction.bind(null, uid, async ({ time, messageId, now }) => {
+                try {
+                    const alarm = await setAlarm(uid, time, messageId, now);
+                    initAlarm(wsServer, alarm);
+
+                    socket.emit('SetAlarmResult', {
+                        success: true,
+                        result: {
+                            time,
+                            messageId,
+                            now
+                        }
+                    });
+                } catch (error) {
+                    wsServer.emitByUID(uid, 'SetAlarmResult', {
+                        success: false,
+                        error: error.message || error.body
+                    });
+                }
+            }));
         socket.on('SendReaction',
             pushAction.bind(null, uid, async ({ code, messageId }) => {
                 try {
@@ -234,6 +257,35 @@ module.exports = async function (app, sessionStore) {
 }
 ;
 
+async function initAlarms(wsServer) {
+    const time = Date.now();
+    const alarms = await AlarmModel.find();
+
+    const alarmsForRemove = alarms
+        .filter(a => a.time < time + a.delta)
+        .map(a => a._id);
+
+    await AlarmModel.deleteMany({ _id: { $in: alarmsForRemove } }).exec();
+
+    alarms
+        .filter(a => alarmsForRemove.indexOf(a._id) === -1)
+        .forEach(initAlarm.bind(null, wsServer));
+}
+
+function initAlarm(wsServer, alarm) {
+    const time = Date.now();
+    const timeout = alarm.time - (time + alarm.delta);
+
+    setTimeout(async () => {
+        const message = await MessageModel.findById(alarm.messageId);
+        wsServer.emitByUID(alarm.userId, 'Alarm', {
+            message,
+            alarm: alarm
+        });
+        await alarm.remove();
+    }, timeout);
+}
+
 function pushAction(uid, action, data) {
     executeQueues[uid].push({ action, data });
 }
@@ -252,6 +304,21 @@ async function execute(socket, uid, fn, data) {
             error: error.message || error.body
         });
     }
+}
+
+async function setAlarm(uid, time, messageId, now) {
+    const timeOnServer = Date.now();
+
+    const alarm = new AlarmModel({
+        userId: uid,
+        messageId,
+        time,
+        delta: timeOnServer - now
+    });
+
+    await alarm.save();
+
+    return alarm;
 }
 
 async function getOlesyaMessage(chat, text) {

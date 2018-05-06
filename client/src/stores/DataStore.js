@@ -94,6 +94,10 @@ export default class DataStore {
         this.webWorker.addContact(userId);
     };
 
+    @action setAlarm = (time, messageId) => {
+        this.webWorker.setAlarm(time, messageId);
+    };
+
     @action sendReaction = (emojiCode, messageId) => {
         this.webWorker.sendReaction(emojiCode, messageId);
     };

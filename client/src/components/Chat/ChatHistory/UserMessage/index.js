@@ -6,7 +6,7 @@ import OGAttachment from
 import styles from './index.css';
 import { inject, observer } from 'mobx-react';
 
-@inject('reactionSelectorState') @observer
+@inject('reactionSelectorState', 'alarmState') @observer
 export default class UserMessage extends Component {
     constructor(props) {
         super(props);
@@ -14,6 +14,7 @@ export default class UserMessage extends Component {
 
     static propTypes = {
         reactionSelectorState: MobxPropsTypes.observableObject,
+        alarmState: MobxPropsTypes.observableObject,
 
         id: PropTypes.string,
         fromMe: PropTypes.bool.isRequired,
@@ -34,14 +35,27 @@ export default class UserMessage extends Component {
         this.props.reactionSelectorState.toggleReactionSelector(x, y, this.props.id);
     }
 
+    showAlarm(event) {
+        const rect = event.target.getBoundingClientRect();
+        const x = (rect.right - rect.left) / 2 + rect.left;
+        const y = rect.top;
+
+        this.props.alarmState.toggleAlarm(x, y, this.props.id);
+    }
+
     onClickReaction(code) {
         this.props.reactionSelectorState.messageId = this.props.id;
         this.props.reactionSelectorState.sendReaction(code);
     }
 
     getActionButtons() {
+        const showButtons = [
+            this.props.reactionSelectorState.messageId === this.props.id,
+            this.props.alarmState.messageId === this.props.id
+        ].some(x => x);
+
         const msgActionsStyle = {
-            display: this.props.reactionSelectorState.messageId === this.props.id ? 'block' : ''
+            display: showButtons ? 'block' : ''
         };
         if (this.props.id) {
             return (
@@ -51,6 +65,12 @@ export default class UserMessage extends Component {
                         onClick={this.showReactionSelector.bind(this)}
                     >
                         <i className="material-icons">add</i>
+                    </div>
+                    <div
+                        className={styles.MessageAction}
+                        onClick={this.showAlarm.bind(this)}
+                    >
+                        <i className="material-icons">schedule</i>
                     </div>
                 </div>
             );

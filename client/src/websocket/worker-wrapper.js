@@ -40,7 +40,10 @@ export class WorkerWrapper {
     }
 
     sendReaction(code, messageId) {
-        this._worker.postMessage({ action: 'SendReaction', value: { code, messageId } });
+        this._worker.postMessage({
+            action: 'SendReaction',
+            value: { code, messageId }
+        });
     }
 
     deleteProfile(userId) {
@@ -53,6 +56,15 @@ export class WorkerWrapper {
 
     uploadImage(image) {
         this._worker.postMessage({ action: 'UploadImage', value: image });
+    }
+
+    setAlarm(time, messageId) {
+        const now = Date.now();
+
+        this._worker.postMessage({
+            action: 'SetAlarm',
+            value: { time: time * 1000, messageId, now }
+        });
     }
 
     createChat(userIds) {

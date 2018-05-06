@@ -7,6 +7,7 @@ import ChatListState from './states/ChatListState';
 import ChatPreviewState from './states/ChatPreviewState';
 import ReactionSelectorState from './states/ReactionSelectorState';
 import ChatCreateState from './states/ChatCreateState';
+import AlarmState from './states/AlarmState';
 
 export default class UIStore {
 
@@ -19,6 +20,7 @@ export default class UIStore {
         this.chatInputState =
             new ChatInputState(this, this.dataStore, this.chatPreviewState);
         this.reactionSelectorState = new ReactionSelectorState(this.dataStore);
+        this.alarmState = new AlarmState(this.dataStore);
 
         autorun(() => {
             if (this.dataStore.profile.avatar) {

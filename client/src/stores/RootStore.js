@@ -64,6 +64,11 @@ function initWorker(webWorker, dataStore, state) {
         state.addAttachment(result);
     });
 
+    webWorker.subscribe('Alarm', (error, alarm) => {
+        console.log(alarm);
+        state.alarmState.alarm(alarm.message);
+    });
+
     webWorker.subscribe('UploadAvatar', (error, result) => {
         if (error) {
             console.info(error);

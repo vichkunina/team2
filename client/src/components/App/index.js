@@ -8,6 +8,9 @@ import ServiceMessage from '../Chat/ChatHistory/ServiceMessage';
 import styles from './index.css';
 import ChatItem from '../ChatList/ChatItem/index';
 import UserMessage from '../Chat/ChatHistory/UserMessage/index';
+import Popup from 'reactjs-popup';
+import AlarmSound from './alarm.mp3';
+import Sound from 'react-sound';
 
 @inject('rootStore') @observer
 export default class App extends Component {
@@ -19,6 +22,12 @@ export default class App extends Component {
         rootStore: ReactPropTypes.object
     };
 
+    defaultStyleOverride = {
+        width: '420px',
+        padding: '0',
+        'borderRadius': '4px'
+    };
+
     render() {
         const { dataStore, state } = this.props.rootStore;
         const {
@@ -27,7 +36,8 @@ export default class App extends Component {
             chatInputState,
             chatPreviewState,
             reactionSelectorState,
-            chatCreateState
+            chatCreateState,
+            alarmState
         } = state;
 
         const chatList = chatListState.chatsToDisplay.map(chat => (
@@ -66,7 +76,9 @@ export default class App extends Component {
                 chatPreviewState={chatPreviewState}
                 chatState={chatState}
                 reactionSelectorState={reactionSelectorState}
-                chatCreateState={chatCreateState}>
+                chatCreateState={chatCreateState}
+                alarmState={alarmState}
+            >
                 <div className={styles.Wrapper}>
                     <div className={styles.LoadingScreen}
                         style={{ display: loaderState ? 'flex' : 'none' }}>
@@ -93,6 +105,43 @@ export default class App extends Component {
                     <Profile
                         closeProfile={state.closeProfile.bind(state)}
                         profile={dataStore.profile}/>}
+                    <Sound
+                        url={AlarmSound}
+                        playStatus={
+                            alarmState.alarmMessage !== null
+                                ? Sound.status.PLAYING
+                                : Sound.status.STOPPED
+                        }
+                        loop={true}
+                    />
+                    <Popup
+                        open={alarmState.alarmMessage !== null}
+                        modal
+                        closeOnDocumentClick
+                        closeOnEscape
+                        contentStyle={this.defaultStyleOverride}
+                    >
+                        {close => (
+                            <div className={styles.PopupContainer}>
+                                <span className={styles.PopupUserInfo}>
+                            Alarm!
+                                </span>
+                                <span className={styles.PopupClose} onClick={() => {
+                                    close();
+                                    alarmState.close();
+                                }}>
+                            ❌
+                                </span>
+                                <span
+                                    className={styles.PopupContent}
+                                    dangerouslySetInnerHTML={{
+                                        __html: alarmState.alarmMessage.body
+                                    }}
+                                >
+                                </span>
+                            </div>
+                        )}
+                    </Popup>
                 </div>
             </Provider>
         );

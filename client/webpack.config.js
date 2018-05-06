@@ -94,8 +94,16 @@ module.exports = {
                     options: {
                         name: '[name].[ext]',
                         outputPath: 'fonts/'
-                    }
-                }]
+                    }}]
+                }, {
+                    test: /\.mp3$/,
+                    use: [{
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: 'sounds/'
+                        }
+                    }]
             }
         ]
     },
