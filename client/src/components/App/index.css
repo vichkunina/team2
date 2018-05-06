@@ -146,4 +146,5 @@ body {
 .PopupContent
 {
     grid-area: cont;
+    word-wrap: break-word;
 }
