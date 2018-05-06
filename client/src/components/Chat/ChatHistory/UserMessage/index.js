@@ -1,15 +1,20 @@
+/* eslint-disable complexity*/
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import OGAttachment from
     './OGAttachment';
 import styles from './index.css';
+import Popup from 'reactjs-popup';
+import { observer, inject } from 'mobx-react';
 
+@inject('chatState') @observer
 export default class UserMessage extends Component {
     constructor(props) {
         super(props);
     }
 
     static propTypes = {
+        chatState: PropTypes.object,
         fromMe: PropTypes.bool.isRequired,
         isSent: PropTypes.bool,
         name: PropTypes.string,
@@ -18,6 +23,11 @@ export default class UserMessage extends Component {
         og: PropTypes.object,
         attachments: PropTypes.object
     };
+
+    onClick(e) {
+        this.props.chatState.fullSizeImg = true;
+        this.props.chatState.file = e.target.getAttribute('src');
+    }
 
     render() {
         const className =
@@ -45,10 +55,37 @@ export default class UserMessage extends Component {
                 {this.props.attachments
                     ? <div className={styles.ImageWrapper}>
                         {this.props.attachments.map((attachment, index) => (
-                            <img key={index} src={attachment} className={styles.Img}/>
+                            <img key={index} src={attachment}
+                                className={styles.Img}
+                                onClick={this.onClick.bind(this)}/>
                         ))}
                     </div>
                     : null}
+
+                {this.props.chatState.fullSizeImg &&
+                <Popup
+                    open={true}
+                    modal
+                    closeOnEscape
+                    contentStyle={this.defaultStyleOverride}
+                    closeOnDocumentClick
+                    onClose={this.props.chatState.changeFullSizeImg
+                        .bind(this.props.chatState)}>
+
+                    {
+                        (close) => (
+                            <div className={styles.PopupContainer}>
+                                <span className={styles.ErrorMessage}>
+                                    <img src={this.props.chatState.file} className={styles.ImgBig}/>
+                                    { <span className={styles.PopupClose}
+                                        onClick={close}>
+                                    ❌
+                                    </span>}
+                                </span>
+                            </div>
+                        )
+                    }
+                </Popup>}
             </div>
         );
     }

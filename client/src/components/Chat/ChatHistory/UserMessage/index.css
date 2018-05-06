@@ -62,7 +62,7 @@
 .Img
 {
     height: 150px;
-    margin: 0 4px;
+    margin: 0 2px 4px;
 }
 
 /* Desktop */
@@ -77,5 +77,76 @@
     .Wrapper {
         max-width: 250px;
     }
+}
+
+.ImgContainer {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: #8080804f;
+    left:0;
+}
+
+.ImgBig
+{
+    width: 100%;
+    height: 100%;
+}
+
+.PopupContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.ErrorMessage {
+    font-size: 22px;
+    width: 100%;
+    height:600px;
+    text-align: center;
+    margin: auto;
+}
+
+
+.PopupNext
+{
+    opacity: .5;
+    position: absolute;
+    right: 1%;
+    top: 50%;
+    color: rgb(66, 65, 65);
+    font-size: 22px;
+    cursor: pointer;
+    background-color: rgba(220, 220, 220, 0.356);
+    padding: 5px 10px;
+}
+
+.PopupPrev
+{
+    opacity: .5;
+    position: absolute;
+    right: 91%;
+    top: 50%;
+    color:rgb(66, 65, 65);
+    font-size: 22px;
+    cursor: pointer;
+    background-color: rgba(220, 220, 220, 0.356);
+    padding: 5px 10px;
+}
+
+.PopupPrev:hover,
+.PopupNext:hover,
+.PopupClose:hover
+{
+    opacity: 1;
+}
+
+.PopupClose {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: rgb(153, 153, 153);
+    font-size: 22px;
+    cursor: pointer;
 }
 

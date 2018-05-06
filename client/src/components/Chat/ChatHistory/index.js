@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './index.css';
 import { observer, inject } from 'mobx-react';
 
-@inject('chatPreviewState') @observer
+@inject('chatPreviewState', 'chatState') @observer
 export default class ChatHistory extends Component {
     constructor(props) {
         super(props);
@@ -14,6 +14,7 @@ export default class ChatHistory extends Component {
 
     static propTypes = {
         chatPreviewState: PropTypes.object,
+        chatState: PropTypes.object,
         children: PropTypes.oneOfType([
             PropTypes.arrayOf(PropTypes.element),
             PropTypes.element

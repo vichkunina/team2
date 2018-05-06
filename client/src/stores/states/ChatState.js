@@ -9,6 +9,13 @@ export default class ChatState {
 
     @observable currentChat = {};
 
+    @observable fullSizeImg = false;
+    @observable file = '';
+
+    @action changeFullSizeImg = () => {
+        this.fullSizeImg = false;
+    };
+
     @computed
     get currentChatHistory() {
         const chatHistory = this.dataStore.chatHistories.get(this.currentChat._id);
