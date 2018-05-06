@@ -86,6 +86,11 @@ export default class DataStore {
     };
 
     @action addMessage = (message) => {
+        const index = this.chatList.findIndex(chat => chat._id === message.chatId);
+        const chatCopy = this.chatList.slice();
+        const chat = chatCopy.splice(index, 1)[0];
+        chatCopy.unshift(chat);
+        this.chatList = chatCopy;
         this.chatHistories.get(message.chatId).messages.push(message);
     };
 

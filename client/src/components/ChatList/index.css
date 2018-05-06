@@ -133,6 +133,10 @@
     font-size: 30px;
 }
 
+.Width {
+    width: 100%;
+}
+
 /* Mobile */
 @media screen and (max-width: 767px) {
     .Wrapper {

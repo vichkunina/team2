@@ -62,7 +62,7 @@ export default class ChatList extends Component {
                         </button>
                     </div>
                     {chatListState.isCreatingChat ? <ChatCreate/>
-                        : <div>
+                        : <div className={styles.Width}>
                             {this.props.children}
                             {searchResults.length !== 0 &&
                             <div className={styles.GlobalSearchSeparator}>
