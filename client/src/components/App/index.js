@@ -106,7 +106,7 @@ export default class App extends Component {
                         closeProfile={state.closeProfile.bind(state)}
                         profile={dataStore.profile}/>}
                     <Sound
-                        url={AlarmSound}
+                        url={`${process.env.STATIC}/${AlarmSound}`}
                         playStatus={
                             alarmState.alarmMessage !== null
                                 ? Sound.status.PLAYING
