@@ -75,9 +75,7 @@ export default class Chat extends Component {
                     name={this.props.name}
                     status={'online'}
                     inviteLink={this.props.inviteLink}/>
-                <ChatHistory>
-                    {this.props.children}
-                </ChatHistory>
+                <ChatHistory/>
                 <ChatInput/>
             </div>
         );

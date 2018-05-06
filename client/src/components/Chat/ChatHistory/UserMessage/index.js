@@ -8,16 +8,17 @@ import styles from './index.css';
 import { inject, observer } from 'mobx-react';
 import Popup from 'reactjs-popup';
 
-@inject('reactionSelectorState', 'alarmState', 'chatState') @observer
+@inject('reactionSelectorState', 'alarmState', 'state') @observer
 export default class UserMessage extends Component {
     constructor(props) {
         super(props);
+        this.ref = null;
     }
 
     static propTypes = {
         reactionSelectorState: MobxPropsTypes.observableObject,
         alarmState: MobxPropsTypes.observableObject,
-        chatState: PropTypes.object,
+        state: PropTypes.object,
         id: PropTypes.string,
         fromMe: PropTypes.bool.isRequired,
         isSent: PropTypes.bool,
@@ -93,8 +94,8 @@ export default class UserMessage extends Component {
     }
 
     onClick(e) {
-        this.props.chatState.fullSizeImg = true;
-        this.props.chatState.file = e.target.getAttribute('src');
+        this.props.state.chatState.fullSizeImg = true;
+        this.props.state.chatState.file = e.target.getAttribute('src');
     }
 
     render() {
@@ -102,27 +103,28 @@ export default class UserMessage extends Component {
             `${styles.Message} ${this.props.fromMe ? styles.FromMe : styles.FromSomeone}`;
 
         return (
-            <div className={className}>
+            <div className={className} ref={el => {
+                this.ref = el;
+            }}>
                 {this.getActionButtons()}
                 <div style={{ clear: 'both' }}/>
                 <div className={styles.Wrapper}>
                     <span className={styles.Name}>{this.props.name}</span>
                     <div className={styles.Body}
-                        dangerouslySetInnerHTML={{ __html: this.props.body }}
-                    />
+                        dangerouslySetInnerHTML={{ __html: this.props.body }}/>
                     {this.props.og &&
-                        <OGAttachment
-                            url={this.props.og.requestUrl}
-                            title={this.props.og.data.ogTitle}
-                            description={this.props.og.data.ogDescription}
-                            image={this.props.og.data.ogImage} />}
+                    <OGAttachment
+                        url={this.props.og.requestUrl}
+                        title={this.props.og.data.ogTitle}
+                        description={this.props.og.data.ogDescription}
+                        image={this.props.og.data.ogImage}/>}
                     <time className={styles.Time}>
-                        <span>{this._formatDate(this.props.createdAt)}</span>
+                        {this._formatDate(this.props.createdAt)}
 
                         {(this.props.fromMe && !this.props.isSent) &&
-                            <span className={styles.BottomIcon}>
-                                <i className="material-icons">schedule</i>
-                            </span>
+                        <span className={styles.BottomIcon}>
+                            <i className="material-icons">schedule</i>
+                        </span>
                         }
                     </time>
                     {this.props.attachments
@@ -135,20 +137,21 @@ export default class UserMessage extends Component {
                         </div>
                         : null}
 
-                    {this.props.chatState.fullSizeImg &&
+                    {this.props.state.chatState.fullSizeImg &&
                 <Popup
                     open={true}
                     modal
                     closeOnEscape
                     closeOnDocumentClick
-                    onClose={this.props.chatState.changeFullSizeImg
-                        .bind(this.props.chatState)}>
+                    onClose={this.props.state.chatState.changeFullSizeImg
+                        .bind(this.props.state.chatState)}>
 
                     {
                         (close) => (
                             <div className={styles.PopupContainer}>
                                 <span className={styles.ErrorMessage}>
-                                    <img src={this.props.chatState.file} className={styles.ImgBig}/>
+                                    <img src={this.props.state.chatState.file}
+                                        className={styles.ImgBig}/>
                                     { <span className={styles.PopupClose}
                                         onClick={close}>
                                     ❌
@@ -159,7 +162,6 @@ export default class UserMessage extends Component {
                     }
                 </Popup>}
                 </div>
-
                 <div className={styles.Reactions}>
                     {this.getReactions()}
                 </div>

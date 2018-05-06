@@ -15,7 +15,7 @@ export default class ChatItem extends Component {
         photoURL: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         lastMessage: PropTypes.string,
-        lastMessageDate: PropTypes.string,
+        lastMessageDate: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         onClick: PropTypes.func.isRequired
     };
 

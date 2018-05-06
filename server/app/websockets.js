@@ -406,7 +406,10 @@ async function GetMessages(uid, { chatId, offset, limit }) {
             .skip(offset || 0)
             .limit(limit || 0)
             .exec())
-            .reverse()
+            .reverse(),
+        totalCount: await MessageModel
+            .find({ chatId: chatId })
+            .count({})
     };
 }
 

@@ -1,10 +1,8 @@
 /* eslint-disable no-invalid-this */
 import { observable, computed, action, autorun } from 'mobx';
 import * as States from '../enum/LoadState';
-import ChatInputState from './states/ChatInputState';
 import ChatState from './states/ChatState';
 import ChatListState from './states/ChatListState';
-import ChatPreviewState from './states/ChatPreviewState';
 import ReactionSelectorState from './states/ReactionSelectorState';
 import ChatCreateState from './states/ChatCreateState';
 import AlarmState from './states/AlarmState';
@@ -13,14 +11,16 @@ export default class UIStore {
 
     constructor(dataStore) {
         this.dataStore = dataStore;
-        this.chatState = new ChatState(this.dataStore);
-        this.chatListState = new ChatListState(this.dataStore);
+        this.chatListState = new ChatListState(this.dataStore, this);
         this.chatCreateState = new ChatCreateState(this.dataStore);
-        this.chatPreviewState = new ChatPreviewState(this.dataStore);
-        this.chatInputState =
-            new ChatInputState(this, this.dataStore, this.chatPreviewState);
         this.reactionSelectorState = new ReactionSelectorState(this.dataStore);
         this.alarmState = new AlarmState(this.dataStore);
+
+        autorun(() => {
+            if (dataStore.loadingState === States.LOADED) {
+                this.onLoadQueue.forEach(fc => fc());
+            }
+        });
 
         autorun(() => {
             if (this.dataStore.profile.avatar) {
@@ -28,6 +28,8 @@ export default class UIStore {
             }
         });
     }
+
+    @observable onLoadQueue = [];
 
     @observable loadAvatar = false;
 
@@ -38,8 +40,36 @@ export default class UIStore {
     };
 
     @computed
+    get chatStates() {
+        const chatStates = new Map();
+        this.dataStore.chatList.forEach(chat => {
+            if (chat) {
+                chatStates.set(chat._id,
+                    new ChatState(this.dataStore, chat._id));
+            }
+        });
+
+        return chatStates;
+    }
+
+    @computed
     get loaderState() {
         return getLoaderState(this.dataStore.loadingState);
+    }
+
+    @computed
+    get chatState() {
+        return this.chatStates.get(this.chatListState.currentChat._id);
+    }
+
+    @computed
+    get chatInputState() {
+        return this.chatStates.get(this.chatListState.currentChat._id).inputState;
+    }
+
+    @computed
+    get chatPreviewState() {
+        return this.chatStates.get(this.chatListState.currentChat._id).previewState;
     }
 
     @computed
@@ -65,10 +95,12 @@ export default class UIStore {
     };
 
     @action addAttachment = (attachment) => {
-        this.chatPreviewState.addAttachment(attachment);
+        this.chatStates.get(this.chatListState.currentChat._id)
+            .addAttachment(attachment);
     };
 
     @action setSearchResults = (searchResults) => {
+        this.chatListState.inSearch = false;
         if (searchResults) {
             this.chatListState.searchResults = searchResults
                 .filter(chat => chat.login !== this.dataStore.profile.login);

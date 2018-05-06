@@ -6,7 +6,7 @@ import * as States from '../enum/LoadState';
 
 export default class RootStore {
     constructor(webWorker) {
-        this.dataStore = new DataStore(this, webWorker);
+        this.dataStore = new DataStore(webWorker);
         this.state = new UIStore(this.dataStore, webWorker);
         initWorker(webWorker, this.dataStore, this.state);
     }
@@ -113,7 +113,7 @@ function initWorker(webWorker, dataStore, state) {
             return;
         }
 
-        dataStore.setChatHistory(data.chatId, data.messages);
+        dataStore.setChatHistory(data.chatId, data.messages, data.totalCount);
     });
 
     webWorker.subscribe('AddContact', (error, chat) => {

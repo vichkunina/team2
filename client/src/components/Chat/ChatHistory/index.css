@@ -24,7 +24,7 @@
     flex-shrink: 2;
     padding: 16px;
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: hidden;
     cursor: pointer;
     border: thin dashed #b1aeae;
     background: #fcfcfc;

@@ -51,7 +51,7 @@ export default class ChatList extends Component {
                         <form className={styles.SearchForm}>
                             <input placeholder="Search"
                                 className={styles.SearchInput}
-                                value={chatListState.chatInput}
+                                value={chatListState.searchInput}
                                 onChange={this.changeHandler.bind(this)}/>
                         </form>
                         <button type="button"
@@ -69,11 +69,12 @@ export default class ChatList extends Component {
                                 <span className={styles.GlobalSearchHeader}>
                             Global search results
                                 </span>
-                            </div>
-                            }
+                            </div>}
                             {searchResults}
                         </div>
                     }
+                    {chatListState.inSearch &&
+                    <div className={styles.Loader}/>}
                 </div>
             </div>
         );
