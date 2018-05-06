@@ -35,7 +35,7 @@ export default class UserMessage extends Component {
 
         return (
             <div className={className}>
-            {this.props.chatState.fullSizeImg &&
+                {this.props.chatState.fullSizeImg &&
                 <Popup
                     open={true}
                     modal
