@@ -29,6 +29,7 @@ export default class ChatInputState {
         }
 
         if (this.previewState.uploadQueue.length > 0) {
+
             this.previewState.error = 'Wait until all files are loaded';
 
             return;

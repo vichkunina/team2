@@ -149,7 +149,7 @@ export default class UserMessage extends Component {
                     {
                         (close) => (
                             <div className={styles.PopupContainer}>
-                                <span className={styles.ErrorMessage}>
+                                <span className={styles.Photo}>
                                     <img src={this.props.state.chatState.file}
                                         className={styles.ImgBig}/>
                                     { <span className={styles.PopupClose}

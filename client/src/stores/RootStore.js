@@ -39,10 +39,13 @@ function initWorker(webWorker, dataStore, state) {
     });
 
     webWorker.subscribe('SendMessage', (error, result) => {
-        dataStore.messageDidSent(result);
         if (error) {
             console.info(error);
+
+            return;
         }
+
+        dataStore.messageDidSent(result);
     });
 
     webWorker.subscribe('GetProfile', (error, profile) => {
