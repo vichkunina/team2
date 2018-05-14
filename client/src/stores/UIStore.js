@@ -1,17 +1,18 @@
 /* eslint-disable no-invalid-this */
 import { observable, computed, action, autorun } from 'mobx';
 import * as States from '../enum/LoadState';
-import ChatState from './states/ChatState';
 import ChatListState from './states/ChatListState';
 import ReactionSelectorState from './states/ReactionSelectorState';
 import ChatCreateState from './states/ChatCreateState';
 import AlarmState from './states/AlarmState';
+import ChatsState from './states/ChatsState';
 
 export default class UIStore {
 
     constructor(dataStore) {
         this.dataStore = dataStore;
         this.chatListState = new ChatListState(this.dataStore, this);
+        this.chatsState = new ChatsState(this.dataStore, this, this.chatListState);
         this.chatCreateState = new ChatCreateState(this.dataStore);
         this.reactionSelectorState = new ReactionSelectorState(this.dataStore);
         this.alarmState = new AlarmState(this.dataStore);
@@ -40,36 +41,23 @@ export default class UIStore {
     };
 
     @computed
-    get chatStates() {
-        const chatStates = new Map();
-        this.dataStore.chatList.forEach(chat => {
-            if (chat) {
-                chatStates.set(chat._id,
-                    new ChatState(this.dataStore, chat._id));
-            }
-        });
-
-        return chatStates;
-    }
-
-    @computed
     get loaderState() {
         return getLoaderState(this.dataStore.loadingState);
     }
 
     @computed
     get chatState() {
-        return this.chatStates.get(this.chatListState.currentChat._id);
+        return this.chatsState.chatState;
     }
 
     @computed
     get chatInputState() {
-        return this.chatStates.get(this.chatListState.currentChat._id).inputState;
+        return this.chatsState.chatState.inputState;
     }
 
     @computed
     get chatPreviewState() {
-        return this.chatStates.get(this.chatListState.currentChat._id).previewState;
+        return this.chatsState.chatState.previewState;
     }
 
     @computed
@@ -95,8 +83,7 @@ export default class UIStore {
     };
 
     @action addAttachment = (attachment) => {
-        this.chatStates.get(this.chatListState.currentChat._id)
-            .addAttachment(attachment);
+        this.chatsState.addAttachment(attachment);
     };
 
     @action setSearchResults = (searchResults) => {
