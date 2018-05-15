@@ -8,7 +8,7 @@ import { observer, inject } from 'mobx-react';
 import UserMessage from './UserMessage/index';
 import ServiceMessage from './ServiceMessage/index';
 
-@inject('state', 'dataStore', 'chatListState') @observer
+@inject('state', 'dataStore') @observer
 export default class ChatHistory extends Component {
     constructor(props) {
         super(props);
@@ -19,7 +19,6 @@ export default class ChatHistory extends Component {
     }
 
     static propTypes = {
-        chatListState: PropTypes.observableObject,
         state: PropTypes.object,
         dataStore: PropTypes.object,
         children: PropTypes.oneOfType([

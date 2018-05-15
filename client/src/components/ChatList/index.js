@@ -29,14 +29,6 @@ export default class ChatList extends Component {
         this.props.chatListState.toggleCreating();
     }
 
-    changeThemeHandler() {
-        if (this.props.chatListState.isChangedTheme) {
-            this.props.chatListState.isChangedTheme = false;
-        } else {
-            this.props.chatListState.isChangedTheme = true;
-        }
-    }
-
     render() {
         const { chatListState, state } = this.props;
 
