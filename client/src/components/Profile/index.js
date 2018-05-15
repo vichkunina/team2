@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
 import styles from './index.css';
 
-@inject('state') @observer
+@inject('state', 'chatListState') @observer
 export default class Profile extends Component {
     static propTypes = {
+        chatListState: PropTypes.observableObject,
         closeProfile: PropTypes.func,
         state: PropTypes.object,
         profile: PropTypes.shape({
