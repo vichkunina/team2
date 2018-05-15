@@ -75,7 +75,9 @@ export default class Chat extends Component {
                 </div>
                 }
                 {this.props.reactionSelectorState.show &&
-                    <div className={styles.EmojiPicker} style={emojiPickerStyle}>
+                    <div className={this.props.state.mainView.isNightTheme
+                        ? styles.EmojiPickerStyle : styles.EmojiPickerStyleNight}
+                    style={emojiPickerStyle}>
                         <EmojiPicker
                             onEmojiClick={this.sendReaction.bind(this)}/>
                     </div>
