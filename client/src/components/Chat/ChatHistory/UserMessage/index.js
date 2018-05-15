@@ -1,4 +1,5 @@
 /* eslint-disable complexity*/
+/* eslint-disable no-nested-ternary*/
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { PropTypes as MobxPropsTypes } from 'mobx-react';
