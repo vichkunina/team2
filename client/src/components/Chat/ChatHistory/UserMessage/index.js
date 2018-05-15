@@ -8,7 +8,7 @@ import styles from './index.css';
 import { inject, observer } from 'mobx-react';
 import Popup from 'reactjs-popup';
 
-@inject('reactionSelectorState', 'alarmState', 'state') @observer
+@inject('reactionSelectorState', 'alarmState', 'state', 'chatListState') @observer
 export default class UserMessage extends Component {
     constructor(props) {
         super(props);
@@ -16,6 +16,7 @@ export default class UserMessage extends Component {
     }
 
     static propTypes = {
+        chatListState: PropTypes.observableObject,
         reactionSelectorState: MobxPropsTypes.observableObject,
         alarmState: MobxPropsTypes.observableObject,
         state: PropTypes.object,
@@ -100,7 +101,9 @@ export default class UserMessage extends Component {
 
     render() {
         const className =
-            `${styles.Message} ${this.props.fromMe ? styles.FromMe : styles.FromSomeone}`;
+            `${styles.Message} ${this.props.chatListState.isChangedTheme
+                ? this.props.fromMe ? styles.FromMe : styles.FromSomeone
+                : this.props.fromMe ? styles.FromMeNight : styles.FromSomeoneNight}`;
 
         return (
             <div className={className} ref={el => {
