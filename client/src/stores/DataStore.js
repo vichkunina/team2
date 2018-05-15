@@ -86,6 +86,7 @@ export default class DataStore {
     };
 
     @action addMessage = (message) => {
+        this.liftChat(message);
         this.chatHistories.get(message.chatId).messages.push(message);
     };
 
@@ -126,6 +127,7 @@ export default class DataStore {
         delete this._messagesForSend[message.tempId];
         this._dumpMessagesForSend();
 
+        this.liftChat(message);
         const index = this.chatHistories
             .get(message.chatId)
             .messages.findIndex(msg => msg.tempId === message.tempId);
@@ -195,6 +197,14 @@ export default class DataStore {
         };
         this.addMessage(message);
     };
+
+    liftChat(message) {
+        const index = this.chatList.findIndex(chat => chat._id === message.chatId);
+        const chatCopy = this.chatList.slice();
+        const chat = chatCopy.splice(index, 1)[0];
+        chatCopy.unshift(chat);
+        this.chatList = chatCopy;
+    }
 
     getLastChatMessage(chat) {
         const chatHistory = this.chatHistories.get(chat._id);
