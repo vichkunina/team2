@@ -9,7 +9,6 @@ import styles from './index.css';
 import { inject } from 'mobx-react';
 import { PropTypes as MobxPropsTypes } from 'mobx-react';
 import InputMoment from 'input-moment';
-import PropTypes from 'prop-types';
 
 @inject('reactionSelectorState', 'alarmState', 'state') @observer
 export default class Chat extends Component {
