@@ -9,14 +9,16 @@ import styles from './index.css';
 import { inject } from 'mobx-react';
 import { PropTypes as MobxPropsTypes } from 'mobx-react';
 import InputMoment from 'input-moment';
+import PropTypes from 'prop-types';
 
-@inject('reactionSelectorState', 'alarmState', 'state') @observer
+@inject('reactionSelectorState', 'alarmState', 'state', 'chatListState') @observer
 export default class Chat extends Component {
     constructor(props) {
         super(props);
     }
 
     static propTypes = {
+        chatListState: PropTypes.observableObject,
         reactionSelectorState: MobxPropsTypes.observableObject,
         alarmState: MobxPropsTypes.observableObject,
         state: MobxPropsTypes.observableObject,
