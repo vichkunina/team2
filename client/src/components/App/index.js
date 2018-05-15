@@ -102,7 +102,8 @@ export default class App extends Component {
                         contentStyle={this.defaultStyleOverride}
                     >
                         {close => (
-                            <div className={styles.PopupContainer}>
+                            <div className={state.mainView.isNightTheme
+                                ? styles.PopupContainer : styles.PopupContainerNight}>
                                 <span className={styles.PopupUserInfo}>
                             Alarm!
                                 </span>

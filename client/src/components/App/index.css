@@ -124,7 +124,8 @@ body {
 }
 
 /* Popup */
-.PopupContainer {
+.PopupContainer,
+.PopupContainerNight {
     padding: 20px;
     width: 380px;
     height: 160px;
@@ -132,6 +133,12 @@ body {
     grid-template-areas: "u u c" "cont cont cont" "lh lv lv";
     grid-template-rows: 60px 35px 35px;
     grid-template-columns: 90px 270px 20px;
+}
+
+.PopupContainerNight
+{
+    background: rgb(136, 136, 136);
+    color: white;
 }
 
 .PopupUserInfo {

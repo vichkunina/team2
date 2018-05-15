@@ -149,7 +149,15 @@
 
 .NightThemeBtn
 {
-    color: rgba(236, 236, 87, 0.788);
+    color: rgb(238, 238, 44);
+    animation: neonGlow 1.5s infinite;
+}
+
+@keyframes neonGlow {
+    0% { text-shadow: 0 0 20px yellow; }
+    30% { text-shadow: 0 0 50px yellow; }
+    80% { text-shadow: 0 0 50px yellow; }
+    100% { text-shadow: 0 0 20px yellow; }
 }
 
 .CreateChatActive{
