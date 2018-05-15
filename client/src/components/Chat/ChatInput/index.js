@@ -5,13 +5,14 @@ import styles from './index.css';
 import ChatEmojiPicker from '../ChatEmojiPicker';
 import Preview from '../ChatPreview';
 
-@inject('state') @observer
+@inject('state', 'chatListState') @observer
 export default class ChatInput extends React.Component {
     constructor(props) {
         super(props);
     }
 
     static propTypes = {
+        chatListState: PropTypes.observableObject,
         state: PropTypes.observableObject
     };
 
