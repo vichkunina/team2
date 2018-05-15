@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
 import styles from './index.css';
 
-@inject('state') @observer
+@inject('state', 'chatListState') @observer
 export default class Profile extends Component {
     static propTypes = {
+        chatListState: PropTypes.observableObject,
         closeProfile: PropTypes.func,
         state: PropTypes.object,
         profile: PropTypes.shape({
@@ -22,7 +23,8 @@ export default class Profile extends Component {
 
     render() {
         return (
-            <div className={styles.Wrapper}
+            <div className={this.props.chatListState.isChangedTheme
+                ? styles.Wrapper : styles.WrapperNight}
                 onClick={this.props.state.showProfile.bind(this.props.state)}>
                 <img className={this.props.state.loadAvatar ? styles.Loader : styles.Photo}
                     src={this.props.profile.avatar}/>
