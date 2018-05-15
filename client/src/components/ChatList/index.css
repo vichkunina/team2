@@ -1,4 +1,5 @@
-.Wrapper {
+.Wrapper,
+.WrapperNight {
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-start;
@@ -13,19 +14,37 @@
     overflow-y: scroll;
 }
 
+.WrapperNight {
+    background: linear-gradient(#1e1e24, #1e1e24c4);
+    color: white;
+}
+
 .Wrappers {
     border: none;
     display: flex;
     flex-wrap: wrap;
-    padding: 16px 0;
 }
 
-.TopRow {
+.TopRow,
+.TopRowNight {
+    position: sticky;
+    top: 0;
     display: flex;
     width: 100%;
     justify-content: space-around;
     margin-bottom: 10px;
+    background-color: #fffffa;
+    box-shadow: 2px -2px 4px 2px inherit;
+    padding: 20px 0 17px;
 }
+
+.TopRowNight
+{
+    box-shadow: 2px -2px 4px 2px rgb(112, 112, 112);
+    background-color: rgb(112, 112, 112);
+    color: rgb(185, 185, 185);
+}
+
 
 .Profile {
     margin-left: 10px;
@@ -115,6 +134,20 @@
     color: #03a9f4;
     transform: rotate(45deg);
     transition: transform .3s;
+}
+
+.NightThemeBtn,
+.LightThemeBtn
+{
+    color: rgb(185, 185, 185);
+    top: 20px;
+    position: absolute;
+    right: 10px;
+}
+
+.NightThemeBtn
+{
+    color: rgba(236, 236, 87, 0.788);
 }
 
 .CreateChatActive{

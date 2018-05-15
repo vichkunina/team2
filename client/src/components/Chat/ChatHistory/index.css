@@ -1,4 +1,5 @@
-.Wrapper
+.Wrapper,
+.WrapperNight
 {
     display: flex;
     flex-flow: column nowrap;
@@ -9,6 +10,11 @@
     background: linear-gradient(#e6e9f0, #eef1f5);
     overflow-y: scroll;
     border: thin dashed transparent;
+}
+
+.WrapperNight
+{
+    background: linear-gradient(#1e1e24, #1e1e24c4);
 }
 
 .Supporter

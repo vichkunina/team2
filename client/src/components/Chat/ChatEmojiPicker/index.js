@@ -13,6 +13,7 @@ export default class ChatEmojiPicker extends Component {
         onMouseLeave: ReactPropTypes.func
     };
 
+
     render() {
         return (
             <div className={styles.Wrapper}

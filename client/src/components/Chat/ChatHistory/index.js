@@ -1,4 +1,5 @@
 /* eslint-disable complexity */
+/* eslint-disable no-nested-ternary */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -7,7 +8,7 @@ import { observer, inject } from 'mobx-react';
 import UserMessage from './UserMessage/index';
 import ServiceMessage from './ServiceMessage/index';
 
-@inject('state', 'dataStore') @observer
+@inject('state', 'dataStore', 'chatListState') @observer
 export default class ChatHistory extends Component {
     constructor(props) {
         super(props);
@@ -18,6 +19,7 @@ export default class ChatHistory extends Component {
     }
 
     static propTypes = {
+        chatListState: PropTypes.observableObject,
         state: PropTypes.object,
         dataStore: PropTypes.object,
         children: PropTypes.oneOfType([
@@ -92,7 +94,8 @@ export default class ChatHistory extends Component {
                 onDrop={this.onDrop.bind(this)}
                 onDragLeave={this.onDragLeave.bind(this)}
                 className={this.props.state.chatPreviewState.isDropping
-                    ? styles.Dropzone : styles.Wrapper}
+                    ? styles.Dropzone : this.props.chatListState.isChangedTheme
+                        ? styles.Wrapper : styles.WrapperNight}
                 ref={el => {
                     this.topRef = el;
                 }}>

@@ -53,6 +53,7 @@
 .FromMe .Wrapper {
     background: #e9fffb;
     border-radius: 8px 8px 0;
+    color: black;
 }
 
 .FromSomeone {
@@ -62,6 +63,7 @@
 .FromSomeone .Wrapper {
     background: #fffffa;
     border-radius: 8px 8px 8px 0;
+    color: black;
 }
 
 .FromMe .Time,
