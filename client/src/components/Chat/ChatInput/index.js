@@ -5,14 +5,13 @@ import styles from './index.css';
 import ChatEmojiPicker from '../ChatEmojiPicker';
 import Preview from '../ChatPreview';
 
-@inject('state', 'chatListState') @observer
+@inject('state') @observer
 export default class ChatInput extends React.Component {
     constructor(props) {
         super(props);
     }
 
     static propTypes = {
-        chatListState: PropTypes.observableObject,
         state: PropTypes.observableObject
     };
 
@@ -44,11 +43,11 @@ export default class ChatInput extends React.Component {
                             .bind(chatInputState)}/>
                     : null}
                 <article className={styles.SendBar}>
-                    <form id="send-message-form" className={this.props.chatListState.isChangedTheme
+                    <form id="send-message-form" className={this.props.state.mainView.isNightTheme
                         ? styles.Wrapper : styles.WrapperNight}
                     onSubmit={this.submitHandler.bind(this)}>
                         <Preview chatPreviewState={this.props.state.chatPreviewState}/>
-                        <input type="text" className={this.props.chatListState.isChangedTheme
+                        <input type="text" className={this.props.state.mainView.isNightTheme
                             ? styles.Input : styles.InputNight}
                         value={chatInputState.chatInput}
                         placeholder=" Write a message..."

@@ -35,7 +35,7 @@
     margin-bottom: 10px;
     background-color: #fffffa;
     box-shadow: 2px -2px 4px 2px inherit;
-    padding: 20px 0 17px;
+    padding: 24px 0 14px;
 }
 
 .TopRowNight
@@ -141,7 +141,7 @@
 .LightThemeBtn
 {
     color: rgb(185, 185, 185);
-    top: 20px;
+    top: 24px;
     position: absolute;
     right: 10px;
     cursor: pointer;

@@ -76,8 +76,8 @@ export default class App extends Component {
                             inviteLink={chatListState.currentChat.inviteLink}
                             dialog={chatListState.currentChat.dialog}>
                         </Chat>
-                        : <div className={chatListState.isChangedTheme
-                            ? styles.StubWrapper : styles.StubWrapper}
+                        : <div className={state.mainView.isNightTheme
+                            ? styles.StubWrapper : styles.StubWrapperNight}
                         onClick={state.closeProfile.bind(state)}>
                             <ServiceMessage text="Please select a chat to start messaging"/>
                         </div>}

@@ -29,14 +29,6 @@ export default class ChatList extends Component {
         this.props.chatListState.toggleCreating();
     }
 
-    changeThemeHandler() {
-        if (this.props.chatListState.isChangedTheme) {
-            this.props.chatListState.isChangedTheme = false;
-        } else {
-            this.props.chatListState.isChangedTheme = true;
-        }
-    }
-
     render() {
         const { chatListState, state } = this.props;
 
@@ -50,10 +42,10 @@ export default class ChatList extends Component {
         );
 
         return (
-            <div className={this.props.chatListState.isChangedTheme
+            <div className={this.props.state.mainView.isNightTheme
                 ? styles.Wrapper : styles.WrapperNight}>
                 <div className={styles.Wrappers}>
-                    <div className={this.props.chatListState.isChangedTheme
+                    <div className={this.props.state.mainView.isNightTheme
                         ? styles.TopRow : styles.TopRowNight}>
                         <div className={styles.Profile}
                             onClick={state.toggleProfile.bind(state)}>
@@ -88,11 +80,11 @@ export default class ChatList extends Component {
                     <div className={styles.Loader}/>}
                 </div>
                 <button type="button"
-                    className={`${this.props.chatListState.isChangedTheme
+                    className={`${this.props.state.mainView.isNightTheme
                         ? styles.NightThemeBtn : styles.LightThemeBtn} ${styles.Button}`}
-                    onClick={this.changeThemeHandler.bind(this)}
+                    onClick={state.toggleNightMode.bind(state)}
                 >
-                    <i className={`material-icons ${styles.CreateChatIcon}`}>highlight</i>
+                    <i className={`material-icons ${styles.Theme}`}>highlight</i>
                 </button>
             </div>
         );

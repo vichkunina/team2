@@ -37,8 +37,16 @@ export default class UIStore {
     @observable mainView = {
         showContacts: true,
         showChat: true,
-        showProfile: false
+        showProfile: false,
+        isNightTheme: localStorage.getItem('isNightTheme') === 'true'
     };
+
+    @action toggleNightMode = () => {
+        console.log('БЫЛО', this.mainView.isNightTheme)
+        this.mainView.isNightTheme = !this.mainView.isNightTheme;
+        localStorage.setItem('isNightTheme', this.mainView.isNightTheme);
+        console.log('СТАЛО', this.mainView.isNightTheme)
+    }
 
     @computed
     get loaderState() {

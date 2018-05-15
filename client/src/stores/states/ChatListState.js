@@ -9,7 +9,7 @@ export default class ChatListState {
     }
 
     @observable searchInput = '';
-    @observable isChangedTheme = true;
+    @observable isNightTheme = true;
     @observable searchResults = [];
     @observable currentChat = {};
     @observable inSearch = false;

@@ -6,7 +6,7 @@ import Popup from 'reactjs-popup';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { observer, inject } from 'mobx-react';
 
-@inject('chatListState') @observer
+@inject('state') @observer
 export default class ChatHeader extends Component {
     constructor(props) {
         super(props);
@@ -27,7 +27,7 @@ export default class ChatHeader extends Component {
     };
 
     static propTypes = {
-        chatListState: PropTypes.observableObject,
+        state: PropTypes.observableObject,
         avatar: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         status: PropTypes.string,
@@ -59,7 +59,7 @@ export default class ChatHeader extends Component {
     render() {
         return (
             <Popup
-                trigger={<div className={this.props.chatListState.isChangedTheme
+                trigger={<div className={this.props.state.mainView.isNightTheme
                     ? styles.Wrapper : styles.WrapperNight}>
                     <Avatar src={this.props.avatar} size={48}/>
                     <a className={styles.Info}>
@@ -74,7 +74,7 @@ export default class ChatHeader extends Component {
                 }
                 modal
                 closeOnEscape
-                contentStyle={this.props.chatListState.isChangedTheme
+                contentStyle={this.props.state.mainView.isNightTheme
                     ? this.defaultStyleOverride : this.defaultStyleOverrideNight}
                 closeOnDocumentClick
             >
