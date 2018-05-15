@@ -9,14 +9,16 @@ import styles from './index.css';
 import { inject } from 'mobx-react';
 import { PropTypes as MobxPropsTypes } from 'mobx-react';
 import InputMoment from 'input-moment';
+import PropTypes from 'prop-types';
 
-@inject('reactionSelectorState', 'alarmState', 'state') @observer
+@inject('reactionSelectorState', 'alarmState', 'state', 'chatListState') @observer
 export default class Chat extends Component {
     constructor(props) {
         super(props);
     }
 
     static propTypes = {
+        chatListState: PropTypes.observableObject,
         reactionSelectorState: MobxPropsTypes.observableObject,
         alarmState: MobxPropsTypes.observableObject,
         state: MobxPropsTypes.observableObject,
@@ -51,11 +53,19 @@ export default class Chat extends Component {
             left: this.props.alarmState.left
         };
 
+        const alarmStyleNight = {
+            top: this.props.alarmState.top,
+            left: this.props.alarmState.left,
+            background: '#3a3a42'
+        };
+
         return (
             <div className={styles.Wrapper}
                 onClick={this.props.state.closeProfile.bind(this.props.state)}>
                 {this.props.alarmState.show &&
-                <div className={styles.DatetimePicker} style={alarmStyle}>
+                <div className={styles.DatetimePicker}
+                    style={this.props.chatListState.isChangedTheme
+                        ? alarmStyle : alarmStyleNight}>
                     <InputMoment
                         lol={this.props.alarmState.key}
                         moment={this.props.alarmState.moment}

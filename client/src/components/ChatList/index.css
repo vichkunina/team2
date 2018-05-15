@@ -49,6 +49,7 @@
 .Profile {
     margin-left: 10px;
     align-self: center;
+    cursor: pointer;
 }
 
 .SearchForm {
@@ -143,6 +144,7 @@
     top: 20px;
     position: absolute;
     right: 10px;
+    cursor: pointer;
 }
 
 .NightThemeBtn
@@ -164,6 +166,8 @@
 
 .CreateChatIcon{
     font-size: 30px;
+    color: #aaa;
+    cursor: pointer;
 }
 
 .Width {
