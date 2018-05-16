@@ -1,5 +1,4 @@
 /* eslint-disable complexity*/
-/* eslint-disable no-nested-ternary*/
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { PropTypes as MobxPropsTypes } from 'mobx-react';
@@ -101,12 +100,13 @@ export default class UserMessage extends Component {
 
     render() {
         const className =
-            `${styles.Message} ${this.props.state.mainView.isNightTheme
-                ? this.props.fromMe ? styles.FromMe : styles.FromSomeone
-                : this.props.fromMe ? styles.FromMeNight : styles.FromSomeoneNight}`;
+            `${styles.Message} ${this.props.fromMe ? styles.FromMe : styles.FromSomeone}`;
+        const classNameNight =
+            `${styles.Message} ${this.props.fromMe ? styles.FromMeNight : styles.FromSomeoneNight}`;
 
         return (
-            <div className={className} ref={el => {
+            <div className={this.props.state.mainView.isNightTheme
+                ? className : classNameNight} ref={el => {
                 this.ref = el;
             }}>
                 {this.getActionButtons()}
