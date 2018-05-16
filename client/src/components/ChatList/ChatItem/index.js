@@ -13,7 +13,7 @@ export default class ChatItem extends Component {
     static dayInterval = 1000 * 60 * 60 * 24;
     static weekInterval = 1000 * 60 * 60 * 24 * 7;
     static propTypes = {
-        state: PropTypes.observableObject,
+        state: PropTypes.object,
         current: PropTypes.bool.isRequired,
         photoURL: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,

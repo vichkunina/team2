@@ -27,7 +27,7 @@ export default class ChatHeader extends Component {
     };
 
     static propTypes = {
-        state: PropTypes.observableObject,
+        state: PropTypes.object,
         avatar: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         status: PropTypes.string,
