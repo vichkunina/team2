@@ -51,11 +51,19 @@ export default class Chat extends Component {
             left: this.props.alarmState.left
         };
 
+        const alarmStyleNight = {
+            top: this.props.alarmState.top,
+            left: this.props.alarmState.left,
+            background: '#3a3a42'
+        };
+
         return (
             <div className={styles.Wrapper}
                 onClick={this.props.state.closeProfile.bind(this.props.state)}>
                 {this.props.alarmState.show &&
-                <div className={styles.DatetimePicker} style={alarmStyle}>
+                <div className={styles.DatetimePicker}
+                    style={this.props.state.mainView.isNightTheme
+                        ? alarmStyle : alarmStyleNight}>
                     <InputMoment
                         lol={this.props.alarmState.key}
                         moment={this.props.alarmState.moment}
@@ -67,7 +75,9 @@ export default class Chat extends Component {
                 </div>
                 }
                 {this.props.reactionSelectorState.show &&
-                    <div className={styles.EmojiPicker} style={emojiPickerStyle}>
+                    <div className={this.props.state.mainView.isNightTheme
+                        ? styles.EmojiPickerStyle : styles.EmojiPickerStyleNight}
+                    style={emojiPickerStyle}>
                         <EmojiPicker
                             onEmojiClick={this.sendReaction.bind(this)}/>
                     </div>

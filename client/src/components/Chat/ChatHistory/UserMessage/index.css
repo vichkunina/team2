@@ -30,7 +30,7 @@
 
     text-align: right;
 
-    color: #aaa;
+    color: rgb(218, 216, 216);
 }
 
 .BottomIcon > i
@@ -45,7 +45,8 @@
     vertical-align: middle;
 }
 
-.FromMe
+.FromMe,
+.FromMeNight
 {
     align-self: flex-end;
 }
@@ -53,15 +54,30 @@
 .FromMe .Wrapper {
     background: #e9fffb;
     border-radius: 8px 8px 0;
+    color: black;
 }
 
-.FromSomeone {
+.FromMeNight .Wrapper {
+    background: #a8a8a8;
+    border-radius: 8px 8px 0;
+    color: white;
+}
+
+.FromSomeone,
+.FromSomeoneNight {
     align-self: flex-start;
 }
 
 .FromSomeone .Wrapper {
     background: #fffffa;
     border-radius: 8px 8px 8px 0;
+    color: black;
+}
+
+.FromSomeoneNight .Wrapper {
+    background: #bdbaba;
+    border-radius: 8px 8px 8px 0;
+    color: white;
 }
 
 .FromMe .Time,
@@ -84,12 +100,12 @@
 
 .Message:hover .MessageActions
 {
-    display: block;
+    visibility: visible;
 }
 
 .MessageActions
 {
-    display: none;
+    visibility: hidden;
     height: 20px;
     border: 1px solid rgb(218, 218, 218);
     background: white;

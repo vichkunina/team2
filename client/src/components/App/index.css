@@ -4,7 +4,8 @@ body {
     margin: 0;
 }
 
-.StubWrapper {
+.StubWrapper,
+.StubWrapperNight {
     flex-grow: 2;
 
     display: flex;
@@ -17,8 +18,13 @@ body {
     overflow-y: auto;
 }
 
+.StubWrapperNight
+{
+    background: linear-gradient(#1e1e24, #1e1e24c4);
+}
 
-.Wrapper {
+.Wrapper,
+.WrapperNight {
     display: flex;
     flex-flow: row nowrap;
     align-items: stretch;
@@ -37,7 +43,7 @@ body {
 }
 
 ::-webkit-scrollbar {
-    width: 4px;
+    width: 2px;
 }
 
 ::-webkit-scrollbar-track {
@@ -46,7 +52,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
     border-radius: 0;
-    background-color:#1e1e2438;
+    background-color:#1e1e2433;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -64,11 +70,12 @@ body {
     top: 0;
     left: 0;
     background: #00000075;
-    z-index: 5;
+    z-index: 10005;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .LoaderText {
@@ -117,7 +124,8 @@ body {
 }
 
 /* Popup */
-.PopupContainer {
+.PopupContainer,
+.PopupContainerNight {
     padding: 20px;
     width: 380px;
     height: 160px;
@@ -125,6 +133,12 @@ body {
     grid-template-areas: "u u c" "cont cont cont" "lh lv lv";
     grid-template-rows: 60px 35px 35px;
     grid-template-columns: 90px 270px 20px;
+}
+
+.PopupContainerNight
+{
+    background: rgb(136, 136, 136);
+    color: white;
 }
 
 .PopupUserInfo {

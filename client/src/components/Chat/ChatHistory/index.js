@@ -84,6 +84,10 @@ export default class ChatHistory extends Component {
     render() {
         const { chatState, chatListState } = this.props.state;
         const { dataStore } = this.props;
+        const className = `${this.props.state.chatPreviewState.isDropping
+            ? styles.Dropzone : styles.Wrapper}`;
+        const classNameNight = `${this.props.state.chatPreviewState.isDropping
+            ? styles.DropzoneNight : styles.WrapperNight}`;
 
         return (
             <div
@@ -91,8 +95,8 @@ export default class ChatHistory extends Component {
                 onDragOver={this.onDragStart.bind(this)}
                 onDrop={this.onDrop.bind(this)}
                 onDragLeave={this.onDragLeave.bind(this)}
-                className={this.props.state.chatPreviewState.isDropping
-                    ? styles.Dropzone : styles.Wrapper}
+                className={ this.props.state.mainView.isNightTheme
+                    ? className : classNameNight}
                 ref={el => {
                     this.topRef = el;
                 }}>

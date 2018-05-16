@@ -1,3 +1,4 @@
+/* eslint-disable complexity*/
 import React, { Component } from 'react';
 import ReactPropTypes from 'prop-types';
 import { observer, inject, Provider } from 'mobx-react';
@@ -75,8 +76,9 @@ export default class App extends Component {
                             inviteLink={chatListState.currentChat.inviteLink}
                             dialog={chatListState.currentChat.dialog}>
                         </Chat>
-                        : <div className={styles.StubWrapper}
-                            onClick={state.closeProfile.bind(state)}>
+                        : <div className={state.mainView.isNightTheme
+                            ? styles.StubWrapper : styles.StubWrapperNight}
+                        onClick={state.closeProfile.bind(state)}>
                             <ServiceMessage text="Please select a chat to start messaging"/>
                         </div>}
                     {state.mainView.showProfile &&
@@ -100,7 +102,8 @@ export default class App extends Component {
                         contentStyle={this.defaultStyleOverride}
                     >
                         {close => (
-                            <div className={styles.PopupContainer}>
+                            <div className={state.mainView.isNightTheme
+                                ? styles.PopupContainer : styles.PopupContainerNight}>
                                 <span className={styles.PopupUserInfo}>
                             Alarm!
                                 </span>

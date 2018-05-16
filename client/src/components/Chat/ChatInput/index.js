@@ -43,17 +43,19 @@ export default class ChatInput extends React.Component {
                             .bind(chatInputState)}/>
                     : null}
                 <article className={styles.SendBar}>
-                    <form id="send-message-form" className={styles.Wrapper}
-                        onSubmit={this.submitHandler.bind(this)}>
+                    <form id="send-message-form" className={this.props.state.mainView.isNightTheme
+                        ? styles.Wrapper : styles.WrapperNight}
+                    onSubmit={this.submitHandler.bind(this)}>
                         <Preview chatPreviewState={this.props.state.chatPreviewState}/>
-                        <input type="text" className={styles.Input}
-                            value={chatInputState.chatInput}
-                            placeholder=" Write a message..."
-                            onChange={this.changeHandler.bind(this)}
-                            ref={(input) => {
-                                this.chatInput = input;
-                            }}
-                            autoFocus/>
+                        <input type="text" className={this.props.state.mainView.isNightTheme
+                            ? styles.Input : styles.InputNight}
+                        value={chatInputState.chatInput}
+                        placeholder=" Write a message..."
+                        onChange={this.changeHandler.bind(this)}
+                        ref={(input) => {
+                            this.chatInput = input;
+                        }}
+                        autoFocus/>
                         <button type="button" className={`${styles.EmojiButton} ${styles.Button}`}
                             onClick={this.emojiButtonClick.bind(this)}>
                             <i className="material-icons">tag_faces</i>

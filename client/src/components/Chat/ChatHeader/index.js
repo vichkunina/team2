@@ -4,9 +4,9 @@ import Avatar from '../../Contact/Avatar';
 import styles from './index.css';
 import Popup from 'reactjs-popup';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 
-@observer
+@inject('state') @observer
 export default class ChatHeader extends Component {
     constructor(props) {
         super(props);
@@ -18,7 +18,16 @@ export default class ChatHeader extends Component {
         'borderRadius': '4px'
     };
 
+    defaultStyleOverrideNight = {
+        width: '420px',
+        padding: '0',
+        'borderRadius': '4px',
+        background: 'gray',
+        color: 'white'
+    };
+
     static propTypes = {
+        state: PropTypes.object,
         avatar: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         status: PropTypes.string,
@@ -50,7 +59,8 @@ export default class ChatHeader extends Component {
     render() {
         return (
             <Popup
-                trigger={<div className={styles.Wrapper}>
+                trigger={<div className={this.props.state.mainView.isNightTheme
+                    ? styles.Wrapper : styles.WrapperNight}>
                     <Avatar src={this.props.avatar} size={48}/>
                     <a className={styles.Info}>
                         <span className={styles.Name}>
@@ -64,7 +74,8 @@ export default class ChatHeader extends Component {
                 }
                 modal
                 closeOnEscape
-                contentStyle={this.defaultStyleOverride}
+                contentStyle={this.props.state.mainView.isNightTheme
+                    ? this.defaultStyleOverride : this.defaultStyleOverrideNight}
                 closeOnDocumentClick
             >
                 {close => (

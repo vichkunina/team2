@@ -1,3 +1,4 @@
+/* eslint-disable complexity*/
 import React, { Component } from 'react';
 import { PropTypes } from 'mobx-react';
 import ReactPropTypes from 'prop-types';
@@ -41,9 +42,11 @@ export default class ChatList extends Component {
         );
 
         return (
-            <div className={styles.Wrapper}>
+            <div className={this.props.state.mainView.isNightTheme
+                ? styles.Wrapper : styles.WrapperNight}>
                 <div className={styles.Wrappers}>
-                    <div className={styles.TopRow}>
+                    <div className={this.props.state.mainView.isNightTheme
+                        ? styles.TopRow : styles.TopRowNight}>
                         <div className={styles.Profile}
                             onClick={state.toggleProfile.bind(state)}>
                             <Avatar src={state.profile.avatar} size={30}/>
@@ -76,6 +79,13 @@ export default class ChatList extends Component {
                     {chatListState.inSearch &&
                     <div className={styles.Loader}/>}
                 </div>
+                <button type="button"
+                    className={`${this.props.state.mainView.isNightTheme
+                        ? styles.NightThemeBtn : styles.LightThemeBtn} ${styles.Button}`}
+                    onClick={state.toggleNightMode.bind(state)}
+                >
+                    <i className={`material-icons ${styles.Theme}`}>highlight</i>
+                </button>
             </div>
         );
     }
