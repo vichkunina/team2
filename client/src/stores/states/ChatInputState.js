@@ -13,6 +13,8 @@ export default class ChatInputState {
     }
 
     @observable chatInput = '';
+    @observable isRecord = false;
+    @observable recognizer = null;
     @observable showEmojiList = false;
 
     @action toggleEmojiList = () => {
@@ -20,6 +22,7 @@ export default class ChatInputState {
     };
 
     @action change = (inputText) => {
+        console.log('LOOK', inputText);
         this.chatInput = inputText;
     };
 
