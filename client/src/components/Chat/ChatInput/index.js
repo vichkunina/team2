@@ -30,6 +30,30 @@ export default class ChatInput extends React.Component {
         this.chatInput.focus();
     }
 
+    startSpeech() {
+        const SpeechRecognition = window.SpeechRecognition ||
+            window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+            const recognizer = new SpeechRecognition();
+            recognizer.lang = 'ru-RU';
+            this.props.state.chatInputState.recognizer;
+            recognizer.start();
+            this.props.state.chatInputState.isRecord = true;
+            recognizer.onresult = event => {
+                let result = event.results[event.resultIndex][0].transcript;
+                console.log(result);
+                this.state.chatInputState.chatInput.change(result);
+                this.props.state.chatInputState.isRecord = false;
+            };
+        }
+    }
+
+
+    stopSpeech() {
+        this.recognizer.stop();
+        this.props.state.chatInputState.isRecord = false;
+    }
+
     render() {
         const { chatInputState } = this.props.state;
 
@@ -56,6 +80,21 @@ export default class ChatInput extends React.Component {
                             this.chatInput = input;
                         }}
                         autoFocus/>
+                        {
+                            this.props.state.chatInputState.isRecord
+                                ? <button form="send-message-form" type="submit"
+                                    className={`${styles.MicroButtonOn}`}
+                                    onClick={this.stopSpeech.bind(this)}
+                                >
+                                    <i className="material-icons">micro</i>
+                                </button>
+                                : <button form="send-message-form" type="submit"
+                                    className={`${styles.MicroButtonOff}`}
+                                    onClick={this.startSpeech.bind(this)}
+                                >
+                                    <i className="material-icons">micro</i>
+                                </button>
+                        }
                         <button type="button" className={`${styles.EmojiButton} ${styles.Button}`}
                             onClick={this.emojiButtonClick.bind(this)}>
                             <i className="material-icons">tag_faces</i>
