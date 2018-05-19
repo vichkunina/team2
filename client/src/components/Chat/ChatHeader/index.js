@@ -32,7 +32,6 @@ export default class ChatHeader extends Component {
         state: PropTypes.object,
         avatar: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
-        status: PropTypes.string,
         inviteLink: PropTypes.string,
         dialog: PropTypes.bool
     };

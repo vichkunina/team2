@@ -38,7 +38,6 @@ export default class Profile extends Component {
                 <div className={styles.Info}>
                     <div title={this.props.profile.login}>
                         <div className={styles.Name}>{this.props.profile.login}</div>
-                        <div className={styles.Status}>online</div>
                     </div>
                     { this.props.canChangeAvatar &&
                         <span>
