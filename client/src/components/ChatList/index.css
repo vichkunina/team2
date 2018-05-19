@@ -141,10 +141,11 @@
 .LightThemeBtn
 {
     color: rgb(185, 185, 185);
-    top: 24px;
+    top: 17px;
     position: absolute;
     right: 10px;
     cursor: pointer;
+    padding: 7px;
 }
 
 .NightThemeBtn
