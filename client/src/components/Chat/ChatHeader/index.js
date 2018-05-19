@@ -59,7 +59,7 @@ export default class ChatHeader extends Component {
 
     render() {
         return (
-            <div className={this.props.state.mainView.isNightTheme
+            <div className={!this.props.state.mainView.isNightTheme
                 ? styles.Wrapper : styles.WrapperNight}>
                 <button form="send-message-form" type="submit"
                     className={this.props.state.mainView.isNightTheme
@@ -74,9 +74,6 @@ export default class ChatHeader extends Component {
                         <a className={styles.Info}>
                             <span className={styles.Name}>
                                 {this.props.name}
-                            </span>
-                            <span className={styles.Status}>
-                                {this.props.status}
                             </span>
                         </a>
                     }

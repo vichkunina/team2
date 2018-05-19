@@ -1,3 +1,4 @@
+/* eslint-disable complexity*/
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
@@ -17,14 +18,6 @@ export default class Profile extends Component {
             link: PropTypes.string
         }).isRequired,
         canChangeAvatar: PropTypes.bool
-    };
-
-    defaultStyleOverrideNight = {
-        width: '420px',
-        padding: '0',
-        'borderRadius': '4px',
-        background: 'gray',
-        color: 'white'
     };
 
     defaultStyleOverrideNight = {
@@ -68,8 +61,7 @@ export default class Profile extends Component {
                         modal
                         closeOnEscape
                         closeOnDocumentClick
-                        contentStyle={!this.props.state.mainView.isNightTheme
-                            ? this.defaultStyleOverride : this.defaultStyleOverrideNight}
+                        contentStyle={this.defaultStyleOverrideNight}
                         onClose={this.props.state.clearError}
                     >
                         {
