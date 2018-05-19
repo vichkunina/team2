@@ -25,7 +25,7 @@ export default class ChatInputState {
         this.chatInput = inputText;
     };
 
-    @action changeRecordState = () => {
+    @action toggleRecord = () => {
         this.isRecord = !this.isRecord;
     };
 

@@ -29,25 +29,24 @@ export default class ChatInput extends React.Component {
 
     speechStart() {
         const recognition = new webkitSpeechRecognition();
-        this.props.state.chatInputState.changeRecordState();
+        this.props.state.chatInputState.toggleRecord();
         this.props.state.chatInputState.recognition = recognition;
         recognition.continuous = true;
         recognition.interimResults = false;
         recognition.lang = 'ru-RU';
-        let currentText = '';
         recognition.onresult = event => {
             this.props.state.chatInputState.chatInput = Array.prototype
-                .reduce.call(event.results, (str, result) => {
+                .reduce
+                .call(event.results, (str, result) => {
                     return str + result[0].transcript;
-                }, '');
-            // this.props.state.chatInputState.chatInput = '' + currentText;
+                }, ' ');
         };
         recognition.start();
     }
 
     speechStop() {
         this.props.state.chatInputState.recognition.stop();
-        this.props.state.chatInputState.changeRecordState();
+        this.props.state.chatInputState.toggleRecord();
     }
 
     emojiButtonClick() {
