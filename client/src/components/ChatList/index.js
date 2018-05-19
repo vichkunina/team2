@@ -42,10 +42,10 @@ export default class ChatList extends Component {
         );
 
         return (
-            <div className={this.props.state.mainView.isNightTheme
+            <div className={!this.props.state.mainView.isNightTheme
                 ? styles.Wrapper : styles.WrapperNight}>
                 <div className={styles.Wrappers}>
-                    <div className={this.props.state.mainView.isNightTheme
+                    <div className={!this.props.state.mainView.isNightTheme
                         ? styles.TopRow : styles.TopRowNight}>
                         <div className={styles.Profile}
                             onClick={state.toggleProfile.bind(state)}>
@@ -80,9 +80,10 @@ export default class ChatList extends Component {
                     <div className={styles.Loader}/>}
                 </div>
                 <button type="button"
-                    className={`${this.props.state.mainView.isNightTheme
+                    className={`${!this.props.state.mainView.isNightTheme
                         ? styles.NightThemeBtn : styles.LightThemeBtn} ${styles.Button}`}
                     onClick={state.toggleNightMode.bind(state)}
+                    title={'Change theme'}
                 >
                     <i className={`material-icons ${styles.Theme}`}>highlight</i>
                 </button>

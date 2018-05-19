@@ -59,7 +59,7 @@ export default class ChatHeader extends Component {
     render() {
         return (
             <Popup
-                trigger={<div className={this.props.state.mainView.isNightTheme
+                trigger={<div className={!this.props.state.mainView.isNightTheme
                     ? styles.Wrapper : styles.WrapperNight}>
                     <Avatar src={this.props.avatar} size={48}/>
                     <a className={styles.Info}>
@@ -74,7 +74,7 @@ export default class ChatHeader extends Component {
                 }
                 modal
                 closeOnEscape
-                contentStyle={this.props.state.mainView.isNightTheme
+                contentStyle={!this.props.state.mainView.isNightTheme
                     ? this.defaultStyleOverride : this.defaultStyleOverrideNight}
                 closeOnDocumentClick
             >

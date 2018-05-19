@@ -22,7 +22,7 @@ export default class Profile extends Component {
 
     render() {
         return (
-            <div className={this.props.state.mainView.isNightTheme
+            <div className={!this.props.state.mainView.isNightTheme
                 ? styles.Wrapper : styles.WrapperNight}
             onClick={this.props.state.showProfile.bind(this.props.state)}>
                 <img className={this.props.state.loadAvatar ? styles.Loader : styles.Photo}

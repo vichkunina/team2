@@ -80,7 +80,7 @@ export default class App extends Component {
                             inviteLink={chatListState.currentChat.inviteLink}
                             dialog={chatListState.currentChat.dialog}>
                         </Chat>
-                        : <div className={state.mainView.isNightTheme
+                        : <div className={!state.mainView.isNightTheme
                             ? styles.StubWrapper : styles.StubWrapperNight}
                         onClick={state.closeProfile.bind(state)}>
                             <ServiceMessage text="Please select a chat to start messaging"/>
@@ -106,7 +106,7 @@ export default class App extends Component {
                         contentStyle={this.defaultStyleOverride}
                     >
                         {close => (
-                            <div className={state.mainView.isNightTheme
+                            <div className={!state.mainView.isNightTheme
                                 ? styles.PopupContainer : styles.PopupContainerNight}>
                                 <span className={styles.PopupUserInfo}>
                             Alarm!
