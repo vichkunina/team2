@@ -77,7 +77,6 @@ label
     display: none;
 }
 
-<<<<<<< HEAD
 .Link {
     display: flex;
     align-items: center;
@@ -101,13 +100,6 @@ label
 
 .CopyLinkButton i {
     font-size: 16px;
-=======
-.ChangeAvatar
-{
-    padding: 3px;
-    cursor: pointer;
-    height: 20px;
->>>>>>> fix
 }
 
 .LoginHeader {
