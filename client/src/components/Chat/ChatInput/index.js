@@ -34,12 +34,15 @@ export default class ChatInput extends React.Component {
         recognition.continuous = true;
         recognition.interimResults = false;
         recognition.lang = 'ru-RU';
+        let currentText = this.props.state.chatInputState.chatInput;
         recognition.onresult = event => {
-            this.props.state.chatInputState.chatInput = Array.prototype
+            currentText = Array.prototype
                 .reduce
-                .call(event.results, (str, result) => {
-                    return str + result[0].transcript;
+                .call(event.results, result => {
+                    return ' ' + result[0].transcript;
                 }, ' ');
+            this.props.state.chatInputState.chatInput += currentText;
+            currentText = '';
         };
         recognition.start();
     }
