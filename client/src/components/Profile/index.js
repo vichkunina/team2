@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import styles from './index.css';
 
-@inject('state') @observer
+@inject('state', 'dataStore') @observer
 export default class Profile extends Component {
     static propTypes = {
-        closeProfile: PropTypes.func,
+        close: PropTypes.func,
         state: PropTypes.object,
         profile: PropTypes.shape({
-            avatar: PropTypes.string,
-            login: PropTypes.string
-        }
-        )
+            avatar: PropTypes.string.isRequired,
+            login: PropTypes.string.isRequired,
+            status: PropTypes.string,
+            link: PropTypes.string
+        }).isRequired,
+        canChangeAvatar: PropTypes.bool
     };
 
     changeHandler(event) {
@@ -23,24 +26,43 @@ export default class Profile extends Component {
     render() {
         return (
             <div className={this.props.state.mainView.isNightTheme
-                ? styles.Wrapper : styles.WrapperNight}
-            onClick={this.props.state.showProfile.bind(this.props.state)}>
+                ? styles.Wrapper : styles.WrapperNight}>
                 <img className={this.props.state.loadAvatar ? styles.Loader : styles.Photo}
                     src={this.props.profile.avatar}/>
+                <i onClick={this.props.close} className={
+                    `material-icons ${this.props.state.mainView.isNightTheme
+                        ? styles.BackButton
+                        : styles.BackButtonNight}`}>
+                    close
+                </i>
                 <div className={styles.Info}>
                     <div>
                         <div className={styles.Name}>{this.props.profile.login}</div>
-                        <div className={styles.Status}>{'online'}</div>
+                        <div className={styles.Status}>online</div>
                     </div>
-                    <label>
-                        <input type="file" onChange={this.changeHandler.bind(this)}
-                            accept="image/*" className={styles.ChangeAvatarButton}/>
-                        <i>Change avatar</i>
-                    </label>
-                    <div className={styles.Login}>
+                    { this.props.canChangeAvatar &&
+                        <span>
+                            <input type="file" id="avatar-input"
+                                onChange={this.changeHandler.bind(this)}
+                                accept="image/*" className={styles.ChangeAvatarButton}/>
+                            <label htmlFor="avatar-input">Change avatar</label>
+                        </span>
+                    }
+                    {/* <div className={styles.Login}>
                         <span className={styles.LoginHeader}>User nickname: </span>
                         <span className={styles.LoginValue}>@{this.props.profile.login}</span>
-                    </div>
+                    </div> */}
+                    {this.props.profile.link &&
+                        <div className={styles.Link}>
+                            <span className={styles.LinkHeader}>Link: </span>
+                            <input className={styles.LinkInput}
+                                disabled value={this.props.profile.link}/>
+                            <CopyToClipboard text={this.props.profile.link}>
+                                <button className={styles.CopyLinkButton}>
+                                    <i className="material-icons">content_copy</i>
+                                </button>
+                            </CopyToClipboard>
+                        </div>}
                 </div>
             </div>
         );

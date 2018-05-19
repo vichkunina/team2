@@ -8,7 +8,7 @@
 
 .WrapperNight
 {
-    background: rgb(112, 112, 112);
+    background: #7f7979;
 }
 
 .Input,
@@ -68,7 +68,7 @@
 .InputNight
 {
     color: white;
-    background: rgb(112, 112, 112);
+    background: #7f7979;
 }
 
 .Button:active

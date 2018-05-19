@@ -30,7 +30,7 @@
 .LastMessage {
     grid-area: m;
 
-    margin: 0 0 0 16px;
+    margin: 0 8px 0 12px;
 
     white-space: nowrap;
     overflow: hidden;
@@ -62,7 +62,7 @@
 
 .WrapperNight:hover
 {
-    background: rgb(112, 112, 112);
+    background: #7f7979;
     cursor: pointer;
 }
 
@@ -72,4 +72,8 @@
 
 .LastMessage p {
     margin: 0;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

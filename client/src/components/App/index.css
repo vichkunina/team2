@@ -8,6 +8,7 @@ body {
 .StubWrapperNight {
     flex-grow: 2;
 
+    z-index: 2;
     display: flex;
     flex-flow: column nowrap;
     align-items: stretch;
@@ -21,6 +22,15 @@ body {
 .StubWrapperNight
 {
     background: linear-gradient(#1e1e24, #1e1e24c4);
+}
+
+
+/* Mobile */
+@media screen and (max-width: 767px) {
+    .StubWrapper,
+    .StubWrapperNight {
+        display: none;
+    }
 }
 
 .Wrapper,
@@ -127,12 +137,12 @@ body {
 .PopupContainer,
 .PopupContainerNight {
     padding: 20px;
-    width: 380px;
+    max-width: 380px;
     height: 160px;
     display: grid;
     grid-template-areas: "u u c" "cont cont cont" "lh lv lv";
-    grid-template-rows: 60px 35px 35px;
-    grid-template-columns: 90px 270px 20px;
+    grid-template-rows: 2fr 1fr 1fr;
+    grid-template-columns: 4.5fr 14.5fr 1fr;
 }
 
 .PopupContainerNight

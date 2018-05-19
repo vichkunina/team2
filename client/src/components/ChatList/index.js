@@ -63,6 +63,12 @@ export default class ChatList extends Component {
                             onClick={this.chatCreateHandler.bind(this)}>
                             <i className={`material-icons ${styles.CreateChatIcon}`}>add</i>
                         </button>
+                        <button type="button"
+                            className={`${this.props.state.mainView.isNightTheme
+                                ? styles.NightThemeBtn : styles.LightThemeBtn} ${styles.Button}`}
+                            onClick={state.toggleNightMode.bind(state)}>
+                            <i className={`material-icons ${styles.Theme}`}>highlight</i>
+                        </button>
                     </div>
                     {chatListState.isCreatingChat ? <ChatCreate/>
                         : <div className={styles.Width}>
@@ -79,13 +85,6 @@ export default class ChatList extends Component {
                     {chatListState.inSearch &&
                     <div className={styles.Loader}/>}
                 </div>
-                <button type="button"
-                    className={`${this.props.state.mainView.isNightTheme
-                        ? styles.NightThemeBtn : styles.LightThemeBtn} ${styles.Button}`}
-                    onClick={state.toggleNightMode.bind(state)}
-                >
-                    <i className={`material-icons ${styles.Theme}`}>highlight</i>
-                </button>
             </div>
         );
     }

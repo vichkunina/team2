@@ -87,8 +87,9 @@ export default class App extends Component {
                         </div>}
                     {state.mainView.showProfile &&
                     <Profile
-                        closeProfile={state.closeProfile.bind(state)}
-                        profile={dataStore.profile}/>}
+                        close={state.closeProfile.bind(state)}
+                        profile={dataStore.profile}
+                        canChangeAvatar />}
                     <Sound
                         url={`${process.env.STATIC}/${AlarmSound}`}
                         playStatus={
