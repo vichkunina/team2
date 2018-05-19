@@ -39,8 +39,12 @@
 
 .TopRowNight
 {
+<<<<<<< HEAD
     box-shadow: 2px -2px 4px 2px #7f7979;
     background-color: #7f7979;
+=======
+    background-color: #424244;
+>>>>>>> длинное имя юзера, чата; поинтеры, ночной список
     color: rgb(185, 185, 185);
 }
 
