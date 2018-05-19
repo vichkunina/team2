@@ -54,6 +54,7 @@ export default class ChatInput extends React.Component {
         this.props.state.chatInputState.toggleRecord();
     }
 
+
     emojiButtonClick() {
         this.props.state.chatInputState.toggleEmojiList();
         this.chatInput.focus();
