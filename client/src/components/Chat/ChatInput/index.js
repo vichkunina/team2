@@ -38,11 +38,10 @@ export default class ChatInput extends React.Component {
         recognition.onresult = event => {
             currentText = Array.prototype
                 .reduce
-                .call(event.results, result => {
+                .call(event.results, (str, result) => {
                     return ' ' + result[0].transcript;
                 }, ' ');
             this.props.state.chatInputState.chatInput += currentText;
-            currentText = '';
         };
         recognition.start();
     }
