@@ -43,6 +43,9 @@ export default class ChatInput extends React.Component {
                 }, ' ');
             this.props.state.chatInputState.chatInput += currentText;
         };
+        recognition.onaudioend = () => {
+            this.props.state.chatInputState.toggleRecord();
+        };
         recognition.start();
     }
 
