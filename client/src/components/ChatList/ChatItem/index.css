@@ -38,11 +38,6 @@
     width: 100px;
 }
 
-.LastMessage a:visited
-{
-    color: white;
-}
-
 .LastMessageDate {
     grid-area: d;
 
