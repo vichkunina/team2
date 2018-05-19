@@ -15,7 +15,7 @@
 }
 
 .WrapperNight {
-    background: linear-gradient(#1e1e24, #1e1e24c4);
+    background:  #424244;
     color: white;
 }
 
@@ -40,8 +40,7 @@
 
 .TopRowNight
 {
-    box-shadow: 2px -2px 4px 2px rgb(112, 112, 112);
-    background-color: rgb(112, 112, 112);
+    background-color: #424244;
     color: rgb(185, 185, 185);
 }
 

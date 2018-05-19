@@ -28,7 +28,7 @@ export default class Profile extends Component {
                 <img className={this.props.state.loadAvatar ? styles.Loader : styles.Photo}
                     src={this.props.profile.avatar}/>
                 <div className={styles.Info}>
-                    <div>
+                    <div title={this.props.profile.login}>
                         <div className={styles.Name}>{this.props.profile.login}</div>
                         <div className={styles.Status}>{'online'}</div>
                     </div>
