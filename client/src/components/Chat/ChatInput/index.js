@@ -1,3 +1,6 @@
+/* eslint-disable no-undef*/
+/* eslint-disable new-cap*/
+/* eslint-disable no-implicit-coercion*/
 import React from 'react';
 import { PropTypes } from 'mobx-react';
 import { observer, inject } from 'mobx-react';
@@ -25,33 +28,32 @@ export default class ChatInput extends React.Component {
         this.props.state.chatInputState.change(event.target.value);
     }
 
+    speechStart() {
+        const recognition = new webkitSpeechRecognition();
+        this.props.state.chatInputState.changeRecordState();
+        this.props.state.chatInputState.recognizer = recognition;
+        recognition.continuous = true;
+        recognition.interimResults = false;
+        recognition.lang = 'ru-RU';
+        let currentText = '';
+        recognition.onresult = event => {
+            currentText = Array.prototype
+                .reduce.call(event.results, (str, result) => {
+                    return str + result[0].transcript;
+                }, '');
+            this.props.state.chatInputState.chatInput = '' + currentText;
+        };
+        recognition.start();
+    }
+
+    speechStop() {
+        this.props.state.chatInputState.recognizer.stop();
+        this.props.state.chatInputState.changeRecordState();
+    }
+
     emojiButtonClick() {
         this.props.state.chatInputState.toggleEmojiList();
         this.chatInput.focus();
-    }
-
-    startSpeech() {
-        const SpeechRecognition = window.SpeechRecognition ||
-            window.webkitSpeechRecognition;
-        if (SpeechRecognition) {
-            const recognizer = new SpeechRecognition();
-            recognizer.lang = 'ru-RU';
-            this.props.state.chatInputState.recognizer;
-            recognizer.start();
-            this.props.state.chatInputState.isRecord = true;
-            recognizer.onresult = event => {
-                let result = event.results[event.resultIndex][0].transcript;
-                console.log(result);
-                this.state.chatInputState.chatInput.change(result);
-                this.props.state.chatInputState.isRecord = false;
-            };
-        }
-    }
-
-
-    stopSpeech() {
-        this.recognizer.stop();
-        this.props.state.chatInputState.isRecord = false;
     }
 
     render() {
@@ -80,17 +82,18 @@ export default class ChatInput extends React.Component {
                             this.chatInput = input;
                         }}
                         autoFocus/>
+
                         {
                             this.props.state.chatInputState.isRecord
-                                ? <button form="send-message-form" type="submit"
-                                    className={`${styles.MicroButtonOn}`}
-                                    onClick={this.stopSpeech.bind(this)}
+                                ? <button form="send-record-form" type="button"
+                                    className={styles.MicroButtonOn}
+                                    onClick={this.speechStop.bind(this)}
                                 >
                                     <i className="material-icons">micro</i>
                                 </button>
-                                : <button form="send-message-form" type="submit"
-                                    className={`${styles.MicroButtonOff}`}
-                                    onClick={this.startSpeech.bind(this)}
+                                : <button form="send-record-form" type="button"
+                                    className={styles.MicroButtonOff}
+                                    onClick={this.speechStart.bind(this)}
                                 >
                                     <i className="material-icons">micro</i>
                                 </button>
