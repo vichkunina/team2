@@ -11,6 +11,15 @@
     background: #7f7979;
 }
 
+.InputContainer {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+}
+
 .Input,
 .InputNight
 {
@@ -52,7 +61,17 @@
     background: transparent;
     outline: none;
     border: 0;
-    width: 2%;
+    cursor: pointer;
+}
+
+.MicroButtonOn
+{
+    color: #03a9f4;
+}
+
+.MicroButtonOff
+{
+    color: #474747;
 }
 
 .MicroButtonOn
@@ -71,11 +90,23 @@
     background: #7f7979;
 }
 
-.Button:active
-{
+.Button:active {
     color: #03a9f4;
+}
+
+.Button:hover i {
+    color: #999;
 }
 
 .ImageButton {
     margin: 0 0 0 16px;
+}
+
+.UploadInput {
+    display: none;
+}
+
+.MicroButtonOff,
+.MicroButtonOn {
+    width: 24px;
 }

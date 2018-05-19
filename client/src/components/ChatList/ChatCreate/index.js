@@ -21,8 +21,12 @@ export default class ChatCreate extends Component {
         this.props.chatCreateState.toggleContactForChat(contact);
     }
 
-    buttonClickHandler() {
+    createButtonClickHandler() {
         this.props.chatCreateState.createChat();
+        this.props.chatListState.toggleCreating();
+    }
+
+    cancelButtonClickHandler() {
         this.props.chatListState.toggleCreating();
     }
 
@@ -44,10 +48,17 @@ export default class ChatCreate extends Component {
                 <div className={styles.ContactList}>
                     {contacts}
                 </div>
-                <button type="button" className={styles.Button}
-                    onClick={this.buttonClickHandler.bind(this)}
-                    {...disabled}>Create chat
-                </button>
+                <div className={styles.Buttons}>
+                    <button className={styles.CancelButton}
+                        onClick={() => this.cancelButtonClickHandler()}>
+                        <span>Cancel</span>
+                    </button>
+                    <button type="button" className={styles.CreateButton}
+                        onClick={() => this.buttonClickHandler()}
+                        {...disabled}>
+                        <span>Create chat</span>
+                    </button>
+                </div>
             </Fragment>
         );
     }

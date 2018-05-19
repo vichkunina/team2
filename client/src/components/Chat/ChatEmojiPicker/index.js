@@ -3,7 +3,7 @@ import ReactPropTypes from 'prop-types';
 import styles from './index.css';
 import EmojiPicker from 'emoji-picker-react';
 import { observer, inject } from 'mobx-react';
-import PropTypes from 'prop-types';
+import { PropTypes } from 'mobx-react';
 
 @inject('state') @observer
 export default class ChatEmojiPicker extends Component {

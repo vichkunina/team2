@@ -15,7 +15,7 @@
 }
 
 .WrapperNight {
-    background: linear-gradient(#1e1e24, #1e1e24c4);
+    background: #7f7979;
     color: white;
 }
 
@@ -34,7 +34,7 @@
     justify-content: space-around;    
     background-color: #fffffa;
     box-shadow: 2px -2px 4px 2px inherit;
-    padding: 18px 0 19px;
+    padding: 16px 0 15px;
 }
 
 .TopRowNight
@@ -49,6 +49,10 @@
     margin: 0 12px;
     align-self: center;
     cursor: pointer;
+}
+
+.Profile:hover img {
+    filter: brightness(70%);
 }
 
 .SearchForm {
@@ -134,7 +138,11 @@
     margin: 0 6px 0 6px;
 }
 
-.CreateChatBtn:active {
+.CreateChatBtn:hover i {
+    color: #222;
+}
+
+.CreateChatBtn:active i {
     color: #03a9f4;
     transform: rotate(45deg);
     transition: transform .3s;
@@ -146,19 +154,20 @@
     margin-right: 10px;
     color: #aaa;
     cursor: pointer;
+
+    transition: color 1s;
 }
 
-.NightThemeBtn
-{
-    color: #eeee2c;
-    animation: neonGlow 1.5s infinite;
+.NightThemeBtn {
+    color: #f3dc11;
 }
 
-@keyframes neonGlow {
-    0% { text-shadow: 0 0 20px #eeee2c; }
-    30% { text-shadow: 0 0 50px #eeee2c; }
-    80% { text-shadow: 0 0 50px #eeee2c; }
-    100% { text-shadow: 0 0 20px #eeee2c; }
+.NightThemeBtn:hover {
+    color: #aaa;
+}
+
+.LightThemeBtn:hover {
+    color: #f3dc11;
 }
 
 .CreateChatActive{
