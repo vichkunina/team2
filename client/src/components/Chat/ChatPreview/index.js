@@ -47,7 +47,7 @@ export default class Preview extends React.Component {
                                         {chatPreviewState.error}
                                     </span>
                                     { <span className={styles.PopupClose} onClick={close}>
-                                        ❌
+                                        <i className="material-icons">close</i>
                                     </span>}
                                 </div>
                             )
