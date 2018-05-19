@@ -30,7 +30,7 @@ export default class ChatItem extends Component {
     render() {
         return (
             <a style={this.props.current ? ChatItem.currentStyle : {}}
-                className={this.props.state.mainView.isNightTheme
+                className={!this.props.state.mainView.isNightTheme
                     ? styles.Wrapper : styles.WrapperNight} onClick={this.props.onClick}>
                 <Avatar src={this.props.photoURL} size={52} />
                 <span className={styles.Name}>

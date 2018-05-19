@@ -31,7 +31,7 @@
     top: 0;
     display: flex;
     width: 100%;
-    justify-content: space-around;    
+    justify-content: space-around;
     background-color: #fffffa;
     box-shadow: 2px -2px 4px 2px inherit;
     padding: 18px 0 19px;
@@ -146,6 +146,7 @@
     margin-right: 10px;
     color: #aaa;
     cursor: pointer;
+    padding: 7px;
 }
 
 .NightThemeBtn

@@ -41,12 +41,12 @@ export default class UIStore {
         showContacts: true,
         showChat: true,
         showProfile: false,
-        isNightTheme: localStorage.getItem('isNightTheme') === 'true'
+        isNightTheme: localStorage.getItem('isNightTheme') === 'false'
     };
 
     @action toggleNightMode = () => {
         this.mainView.isNightTheme = !this.mainView.isNightTheme;
-        localStorage.setItem('isNightTheme', this.mainView.isNightTheme = false);
+        localStorage.setItem('isNightTheme', this.mainView.isNightTheme);
     }
 
     @computed
