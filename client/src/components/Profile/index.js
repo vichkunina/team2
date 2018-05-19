@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
 import styles from './index.css';
+import Popup from 'reactjs-popup';
 
 @inject('state') @observer
 export default class Profile extends Component {
@@ -13,6 +14,14 @@ export default class Profile extends Component {
             login: PropTypes.string
         }
         )
+    };
+
+    defaultStyleOverrideNight = {
+        width: '420px',
+        padding: '0',
+        'borderRadius': '4px',
+        background: 'gray',
+        color: 'white'
     };
 
     changeHandler(event) {
@@ -35,6 +44,29 @@ export default class Profile extends Component {
                         <input type="file" onChange={this.changeHandler.bind(this)}
                             accept="image/*" className={styles.ChangeAvatarButton}/>
                         <i>Change avatar</i>
+                        {this.props.state.error &&
+                    <Popup
+                        open={true}
+                        modal
+                        closeOnEscape
+                        closeOnDocumentClick
+                        contentStyle={!this.props.state.mainView.isNightTheme
+                            ? this.defaultStyleOverride : this.defaultStyleOverrideNight}
+                        onClose={this.props.state.clearError}
+                    >
+                        {
+                            (close) => (
+                                <div className={styles.PopupContainer}>
+                                    <span className={styles.ErrorMessage}>
+                                        {this.props.state.error}
+                                    </span>
+                                    { <span className={styles.PopupClose} onClick={close}>
+                                        <i className="material-icons">close</i>
+                                    </span>}
+                                </div>
+                            )
+                        }
+                    </Popup>}
                     </label>
                     <div className={styles.Login}>
                         <span className={styles.LoginHeader}>User nickname: </span>

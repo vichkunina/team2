@@ -116,7 +116,7 @@ export default class ChatHeader extends Component {
                                 <input className={styles.PopupLinkInput} disabled
                                     value={this.props.inviteLink}/>
                                 <CopyToClipboard text={this.props.inviteLink}>
-                                    <button className={`${styles.Button} ${styles.CopyButton}`}>
+                                    <button className={styles.Button}>
                                         <i className="material-icons">content_copy</i>
                                     </button>
                                 </CopyToClipboard>
