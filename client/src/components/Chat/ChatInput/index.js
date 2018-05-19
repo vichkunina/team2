@@ -1,6 +1,5 @@
 /* eslint-disable no-undef*/
 /* eslint-disable new-cap*/
-/* eslint-disable no-implicit-coercion*/
 import React from 'react';
 import { PropTypes } from 'mobx-react';
 import { observer, inject } from 'mobx-react';
@@ -31,23 +30,23 @@ export default class ChatInput extends React.Component {
     speechStart() {
         const recognition = new webkitSpeechRecognition();
         this.props.state.chatInputState.changeRecordState();
-        this.props.state.chatInputState.recognizer = recognition;
+        this.props.state.chatInputState.recognition = recognition;
         recognition.continuous = true;
         recognition.interimResults = false;
         recognition.lang = 'ru-RU';
         let currentText = '';
         recognition.onresult = event => {
-            currentText = Array.prototype
+            this.props.state.chatInputState.chatInput = Array.prototype
                 .reduce.call(event.results, (str, result) => {
                     return str + result[0].transcript;
                 }, '');
-            this.props.state.chatInputState.chatInput = '' + currentText;
+            // this.props.state.chatInputState.chatInput = '' + currentText;
         };
         recognition.start();
     }
 
     speechStop() {
-        this.props.state.chatInputState.recognizer.stop();
+        this.props.state.chatInputState.recognition.stop();
         this.props.state.chatInputState.changeRecordState();
     }
 

@@ -15,7 +15,7 @@ export default class ChatInputState {
     @observable chatInput = '';
     @observable isRecord = false;
     @observable showEmojiList = false;
-    @observable recognizer = null;
+    @observable recognition = null;
 
     @action toggleEmojiList = () => {
         this.showEmojiList = !this.showEmojiList;
