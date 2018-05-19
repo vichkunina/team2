@@ -61,6 +61,11 @@
     color: #aaa;
 }
 
+label
+{
+    cursor: pointer;
+}
+
 .ChangeAvatarButton {
     display: none;
 }
