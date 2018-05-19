@@ -37,7 +37,6 @@ export default class ChatInput extends React.Component {
         if (this.props.state.chatInputState.chatInput) {
             this.props.state.chatInputState.chatInput += ' ';
         }
-
         let currentText = this.props.state.chatInputState.chatInput;
         recognition.onresult = event => {
             currentText = Array.prototype
