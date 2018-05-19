@@ -44,9 +44,14 @@
     width: 100%;
 }
 
-.Name {
+.Name
+{
     font-size: 20px;
     font-weight: 600;
+    width: 130px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .Info {

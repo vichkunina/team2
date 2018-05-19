@@ -36,7 +36,7 @@ export default class Profile extends Component {
                     close
                 </i>
                 <div className={styles.Info}>
-                    <div>
+                    <div title={this.props.profile.login}>
                         <div className={styles.Name}>{this.props.profile.login}</div>
                         <div className={styles.Status}>online</div>
                     </div>
