@@ -42,7 +42,7 @@ export default class ChatInput extends React.Component {
             currentText = Array.prototype
                 .reduce
                 .call(event.results, (str, result) => {
-                    return '' + result[0].transcript;
+                    return result[0].transcript;
                 }, ' ');
             this.props.state.chatInputState.chatInput += currentText;
         };
