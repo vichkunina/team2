@@ -40,11 +40,10 @@ export default class Profile extends Component {
                     <div title={this.props.profile.login}>
                         <div className={styles.Name}>{this.props.profile.login}</div>
                     </div>
-                    <label>
-                        <input type="file" onChange={this.changeHandler.bind(this)}
-                            accept="image/*" className={styles.ChangeAvatarButton}/>
-                        <i>Change avatar</i>
-                        {this.props.state.error &&
+                    <input type="file" onChange={this.changeHandler.bind(this)}
+                        accept="image/*" className={styles.ChangeAvatarButton}/>
+                    <span className={styles.ChangeAvatar}>Change avatar</span>
+                    {this.props.state.error &&
                     <Popup
                         open={true}
                         modal
@@ -67,7 +66,6 @@ export default class Profile extends Component {
                             )
                         }
                     </Popup>}
-                    </label>
                     <div className={styles.Login}>
                         <span className={styles.LoginHeader}>User nickname: </span>
                         <span className={styles.LoginValue}>{this.props.profile.login}</span>

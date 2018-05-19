@@ -51,6 +51,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    margin-bottom: 30px;
 }
 
 .Info {
@@ -73,6 +74,13 @@ label
 
 .ChangeAvatarButton {
     display: none;
+}
+
+.ChangeAvatar
+{
+    padding: 3px;
+    cursor: pointer;
+    height: 20px;
 }
 
 .LoginHeader {
