@@ -52,7 +52,10 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+<<<<<<< HEAD
     margin-bottom: 30px;
+=======
+>>>>>>> длинное имя юзера, чата; поинтеры, ночной список
 }
 
 .Info {
