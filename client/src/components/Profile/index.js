@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import styles from './index.css';
+import Popup from 'reactjs-popup';
 
 @inject('state', 'dataStore') @observer
 export default class Profile extends Component {
@@ -16,6 +17,14 @@ export default class Profile extends Component {
             link: PropTypes.string
         }).isRequired,
         canChangeAvatar: PropTypes.bool
+    };
+
+    defaultStyleOverrideNight = {
+        width: '420px',
+        padding: '0',
+        'borderRadius': '4px',
+        background: 'gray',
+        color: 'white'
     };
 
     changeHandler(event) {
@@ -45,6 +54,29 @@ export default class Profile extends Component {
                                 onChange={this.changeHandler.bind(this)}
                                 accept="image/*" className={styles.ChangeAvatarButton}/>
                             <label htmlFor="avatar-input">Change avatar</label>
+                            {this.props.state.error &&
+                    <Popup
+                        open={true}
+                        modal
+                        closeOnEscape
+                        closeOnDocumentClick
+                        contentStyle={!this.props.state.mainView.isNightTheme
+                            ? this.defaultStyleOverride : this.defaultStyleOverrideNight}
+                        onClose={this.props.state.clearError}
+                    >
+                        {
+                            (close) => (
+                                <div className={styles.PopupContainer}>
+                                    <span className={styles.ErrorMessage}>
+                                        {this.props.state.error}
+                                    </span>
+                                    { <span className={styles.PopupClose} onClick={close}>
+                                        <i className="material-icons">close</i>
+                                    </span>}
+                                </div>
+                            )
+                        }
+                    </Popup>}
                         </span>
                     }
                     {/* <div className={styles.Login}>
