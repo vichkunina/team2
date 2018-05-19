@@ -30,7 +30,6 @@ export default class Profile extends Component {
                 <div className={styles.Info}>
                     <div title={this.props.profile.login}>
                         <div className={styles.Name}>{this.props.profile.login}</div>
-                        <div className={styles.Status}>{'online'}</div>
                     </div>
                     <label>
                         <input type="file" onChange={this.changeHandler.bind(this)}
@@ -39,7 +38,7 @@ export default class Profile extends Component {
                     </label>
                     <div className={styles.Login}>
                         <span className={styles.LoginHeader}>User nickname: </span>
-                        <span className={styles.LoginValue}>@{this.props.profile.login}</span>
+                        <span className={styles.LoginValue}>{this.props.profile.login}</span>
                     </div>
                 </div>
             </div>

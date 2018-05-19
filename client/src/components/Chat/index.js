@@ -84,7 +84,6 @@ export default class Chat extends Component {
                 }
                 <ChatHeader avatar={this.props.avatar}
                     name={this.props.name}
-                    status={'online'}
                     inviteLink={this.props.inviteLink}
                     dialog={this.props.dialog}/>
                 <ChatHistory/>
