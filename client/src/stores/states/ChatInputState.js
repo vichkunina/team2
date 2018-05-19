@@ -14,16 +14,19 @@ export default class ChatInputState {
 
     @observable chatInput = '';
     @observable isRecord = false;
-    @observable recognizer = null;
     @observable showEmojiList = false;
+    @observable recognizer = null;
 
     @action toggleEmojiList = () => {
         this.showEmojiList = !this.showEmojiList;
     };
 
     @action change = (inputText) => {
-        console.log('LOOK', inputText);
         this.chatInput = inputText;
+    };
+
+    @action changeRecordState = () => {
+        this.isRecord = !this.isRecord;
     };
 
     @action submit = () => {
@@ -55,4 +58,6 @@ export default class ChatInputState {
     addEmojiIntoText(_, emojiValue) {
         this.chatInput += `${this.findEmoji(emojiValue.name)}`;
     }
+
+
 }
