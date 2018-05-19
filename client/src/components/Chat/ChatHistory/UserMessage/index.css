@@ -19,6 +19,11 @@
     margin: 0;
 }
 
+.Body code
+{
+    color: black !important;
+}
+
 .Body code {
     font-family: 'IBM Plex Mono', serif;
 
