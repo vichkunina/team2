@@ -27,6 +27,14 @@ export default class Profile extends Component {
         color: 'white'
     };
 
+    defaultStyleOverrideNight = {
+        width: '420px',
+        padding: '0',
+        'borderRadius': '4px',
+        background: 'gray',
+        color: 'white'
+    };
+
     changeHandler(event) {
         this.props.state.uploadAvatar(event.currentTarget.files[0]);
         event.currentTarget.value = '';
