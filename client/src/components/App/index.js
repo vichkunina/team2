@@ -111,7 +111,7 @@ export default class App extends Component {
                                     close();
                                     alarmState.close();
                                 }}>
-                            ❌
+                                    <i className="material-icons">close</i>
                                 </span>
                                 <span
                                     className={styles.PopupContent}
