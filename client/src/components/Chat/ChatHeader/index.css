@@ -69,11 +69,6 @@
     align-self: end;
 }
 
-.PopupName:hover{
-    cursor: pointer;
-    opacity: .7;
-}
-
 .PopupStatus {
     color: #aaa;
     grid-area: s;

@@ -156,7 +156,7 @@ export default class UserMessage extends Component {
                                         className={styles.ImgBig}/>
                                     { <span className={styles.PopupClose}
                                         onClick={close}>
-                                    ❌
+                                        <i className="material-icons">close</i>
                                     </span>}
                                 </span>
                             </div>

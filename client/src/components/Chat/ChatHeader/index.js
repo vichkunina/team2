@@ -84,7 +84,7 @@ export default class ChatHeader extends Component {
                             User Info
                         </span>
                         <span className={styles.PopupClose} onClick={close}>
-                            ❌
+                            <i className="material-icons">close</i>
                         </span>
                         <Avatar className={styles.PopupAvatar} src={this.props.avatar} size={70}/>
                         <span className={`${styles.PopupName} ${''/* this.props.state
