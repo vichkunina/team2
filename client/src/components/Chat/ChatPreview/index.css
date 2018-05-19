@@ -55,11 +55,7 @@
     grid-area: 1 / 1 / 2 / 2;
     margin-top: 3px;
     color: white;
-<<<<<<< HEAD
     transform: scale(.7);
-=======
-    transform: scale(.9);
->>>>>>> длинное имя юзера, чата; поинтеры, ночной список
     cursor: pointer;
 }
 
