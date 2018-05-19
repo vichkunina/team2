@@ -30,7 +30,6 @@ export default class ChatHeader extends Component {
         state: PropTypes.object,
         avatar: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
-        status: PropTypes.string,
         inviteLink: PropTypes.string,
         dialog: PropTypes.bool
     };
@@ -66,9 +65,6 @@ export default class ChatHeader extends Component {
                         <span className={styles.Name}>
                             {this.props.name}
                         </span>
-                        <span className={styles.Status}>
-                            {this.props.status}
-                        </span>
                     </a>
                 </div>
                 }
@@ -80,9 +76,15 @@ export default class ChatHeader extends Component {
             >
                 {close => (
                     <div className={styles.PopupContainer}>
-                        <span className={styles.PopupUserInfo}>
-                            User Info
-                        </span>
+                        {
+                            this.props.name.indexOf(',') >= 2
+                                ? <span className={styles.PopupUserInfo}>
+                                Chat Info
+                                </span>
+                                : <span className={styles.PopupUserInfo}>
+                                User Info
+                                </span>
+                        }
                         <span className={styles.PopupClose} onClick={close}>
                             <i className="material-icons">close</i>
                         </span>
@@ -107,9 +109,6 @@ export default class ChatHeader extends Component {
                                 <i className="material-icons">clear</i>
                             </button>
                         </div>
-                        <span className={styles.PopupStatus}>
-                            {this.props.status}
-                        </span>
                         {!this.props.dialog &&
                         <Fragment>
                             <span className={styles.PopupLinkHeader}>Link:</span>
@@ -117,7 +116,7 @@ export default class ChatHeader extends Component {
                                 <input className={styles.PopupLinkInput} disabled
                                     value={this.props.inviteLink}/>
                                 <CopyToClipboard text={this.props.inviteLink}>
-                                    <button className={styles.Button}>
+                                    <button className={`${styles.Button} ${styles.CopyButton}`}>
                                         <i className="material-icons">content_copy</i>
                                     </button>
                                 </CopyToClipboard>

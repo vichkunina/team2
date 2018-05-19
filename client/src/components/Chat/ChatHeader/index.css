@@ -79,10 +79,17 @@
     grid-area: s;
 }
 
+.CopyButton
+{
+    height: 20px;
+    margin: 0 !important;
+    cursor: pointer;
+}
+
 .PopupLinkHeader {
     grid-area: lh;
     font-size: 16px;
-    margin-top: 7px;
+    margin: 8px 20px;
     text-align: left;
 }
 

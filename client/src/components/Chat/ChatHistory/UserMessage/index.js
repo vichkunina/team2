@@ -164,7 +164,8 @@ export default class UserMessage extends Component {
                     }
                 </Popup>}
                 </div>
-                <div className={styles.Reactions}>
+                <div
+                    className={styles.Reactions}>
                     {this.getReactions()}
                 </div>
             </div>
