@@ -33,8 +33,9 @@ export default class ChatInput extends React.Component {
     }
 
     speechStart() {
+        console.log('dd');
         const recognition = new webkitSpeechRecognition();
-        this.props.state.chatInputState.toggleRecord();
+        this.props.state.chatInputState.isRecord = true;
         this.props.state.chatInputState.recognition = recognition;
         recognition.continuous = true;
         recognition.interimResults = false;
@@ -52,14 +53,14 @@ export default class ChatInput extends React.Component {
             this.props.state.chatInputState.chatInput += currentText;
         };
         recognition.onaudioend = () => {
-            this.props.state.chatInputState.toggleRecord();
+            this.props.state.chatInputState.isRecord = false;
         };
         recognition.start();
     }
 
     speechStop() {
+        this.props.state.chatInputState.isRecord = false;
         this.props.state.chatInputState.recognition.stop();
-        this.props.state.chatInputState.toggleRecord();
     }
 
 
