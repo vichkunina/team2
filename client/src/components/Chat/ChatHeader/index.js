@@ -61,7 +61,7 @@ export default class ChatHeader extends Component {
         return (
             <div className={!this.props.state.mainView.isNightTheme
                 ? styles.Wrapper : styles.WrapperNight}>
-                <button form="send-message-form" type="submit"
+                <button form="send-message-form" type="button"
                     className={this.props.state.mainView.isNightTheme
                         ? styles.BackButton : styles.BackButtonNight}
                     onClick={() => this.props.state.chatListState.closeChat()}>

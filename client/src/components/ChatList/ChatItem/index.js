@@ -23,7 +23,7 @@ export default class ChatItem extends Component {
     };
 
     static currentStyle = {
-        backgroundColor: '#1e1e24',
+        backgroundColor: 'gray',
         color: '#fffffa'
     };
 

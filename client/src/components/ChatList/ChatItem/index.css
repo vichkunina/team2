@@ -29,6 +29,12 @@
     white-space: nowrap;
 }
 
+div a:focus
+{
+    background: gray;
+}
+
+
 .LastMessage p {
     grid-area: m;
 

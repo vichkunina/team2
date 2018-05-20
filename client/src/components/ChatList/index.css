@@ -43,7 +43,6 @@
     color: rgb(185, 185, 185);
 }
 
-
 .Profile {
     margin: 0 12px;
     align-self: center;
@@ -147,6 +146,7 @@
     cursor: pointer;
     padding: 7px;
 }
+
 
 .NightThemeBtn
 {

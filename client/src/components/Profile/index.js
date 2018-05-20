@@ -43,7 +43,7 @@ export default class Profile extends Component {
 
     render() {
         return (
-            <div className={this.props.state.mainView.isNightTheme
+            <div className={!this.props.state.mainView.isNightTheme
                 ? styles.Wrapper : styles.WrapperNight}>
                 <img className={this.props.state.loadAvatar ? styles.Loader : styles.Photo}
                     src={this.props.profile.avatar}/>
@@ -70,9 +70,8 @@ export default class Profile extends Component {
                         closeOnEscape
                         closeOnDocumentClick
                         contentStyle={this.props.state.mainView.isNightTheme
-                            ? this.defaultStyleOverride: this.defaultStyleOverrideNight}
-                        onClose={this.props.state.clearError}
-                    >
+                            ? this.defaultStyleOverride : this.defaultStyleOverrideNight}
+                        onClose={this.props.state.clearError}>
                         {
                             (close) => (
                                 <div className={styles.PopupContainer}>

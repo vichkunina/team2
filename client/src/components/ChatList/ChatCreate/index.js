@@ -54,7 +54,7 @@ export default class ChatCreate extends Component {
                         <span>Cancel</span>
                     </button>
                     <button type="button" className={styles.CreateButton}
-                        onClick={() => createButtonClickHandler()}
+                        onClick={() => this.createButtonClickHandler()}
                         {...disabled}>
                         <span>Create chat</span>
                     </button>
