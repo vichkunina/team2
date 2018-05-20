@@ -33,7 +33,6 @@ export default class ChatInput extends React.Component {
     }
 
     speechStart() {
-        console.log('dd');
         const recognition = new webkitSpeechRecognition();
         this.props.state.chatInputState.isRecord = true;
         this.props.state.chatInputState.recognition = recognition;
