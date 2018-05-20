@@ -20,12 +20,12 @@ export default class Profile extends Component {
         canChangeAvatar: PropTypes.bool
     };
 
-    defaultStyleOverrideNight = {
+    defaultStyleOverride = {
         width: '420px',
         padding: '0',
         'borderRadius': '4px',
-        background: 'gray',
-        color: 'white'
+        background: 'white',
+        color: 'gray'
     };
 
     defaultStyleOverrideNight = {
@@ -69,7 +69,8 @@ export default class Profile extends Component {
                         modal
                         closeOnEscape
                         closeOnDocumentClick
-                        contentStyle={this.defaultStyleOverrideNight}
+                        contentStyle={this.props.state.mainView.isNightTheme
+                            ? this.defaultStyleOverride: this.defaultStyleOverrideNight}
                         onClose={this.props.state.clearError}
                     >
                         {

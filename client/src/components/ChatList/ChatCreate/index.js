@@ -45,7 +45,7 @@ export default class ChatCreate extends Component {
                     {contacts}
                 </div>
                 <button type="button" className={styles.Button}
-                    onClick={this.buttonClickHandler.bind(this)}
+                    onClick={this.createButtonClickHandler.bind(this)}
                     {...disabled}>Create chat
                 </button>
             </Fragment>
