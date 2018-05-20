@@ -40,6 +40,10 @@
     color: #aaa;
 }
 
+.BackButton:hover {
+    color: #222;
+}
+
 .Photo {
     width: 100%;
 }
@@ -100,6 +104,10 @@ label
 
 .CopyLinkButton i {
     font-size: 16px;
+}
+
+.CopyLinkButton:hover i {
+    color: #222;
 }
 
 .LoginHeader {

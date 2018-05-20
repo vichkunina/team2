@@ -10,17 +10,11 @@ import Popup from 'reactjs-popup';
 export default class Preview extends React.Component {
     constructor(props) {
         super(props);
-        this.changeHandler = this.changeHandler.bind(this);
     }
 
     static propTypes = {
         chatPreviewState: PropTypes.observableObject
     };
-
-    changeHandler(event) {
-        this.props.chatPreviewState.change(event.currentTarget.files);
-        event.currentTarget.value = '';
-    }
 
     renderPreview() {
         const { chatPreviewState } = this.props;
@@ -74,13 +68,6 @@ export default class Preview extends React.Component {
         return (
             <React.Fragment>
                 {this.renderPreview()}
-                <div className = {`${styles.ImageButton} ${styles.Button}`}>
-                    <label>
-                        <input type="file" onChange={this.changeHandler}
-                            accept="image/*" multiple className={styles.Upload}/>
-                        <i className="material-icons">image</i>
-                    </label>
-                </div>
             </ React.Fragment>
         );
     }

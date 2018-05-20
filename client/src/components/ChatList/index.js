@@ -49,7 +49,7 @@ export default class ChatList extends Component {
                         ? styles.TopRow : styles.TopRowNight}>
                         <div className={styles.Profile}
                             onClick={state.toggleProfile.bind(state)}>
-                            <Avatar src={state.profile.avatar} size={30}/>
+                            <Avatar src={state.profile.avatar} size={36}/>
                         </div>
                         <form className={styles.SearchForm}>
                             <input placeholder="Search"
@@ -76,7 +76,7 @@ export default class ChatList extends Component {
                             {searchResults.length !== 0 &&
                             <div className={styles.GlobalSearchSeparator}>
                                 <span className={styles.GlobalSearchHeader}>
-                            Global search results
+                                    Global search results
                                 </span>
                             </div>}
                             {searchResults}

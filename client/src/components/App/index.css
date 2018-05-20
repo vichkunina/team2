@@ -19,9 +19,26 @@ body {
     overflow-y: auto;
 }
 
-.StubWrapperNight
-{
-    background: linear-gradient(#1e1e24, #1e1e24c4);
+.StubWrapperNight {
+    background: linear-gradient(to right, #1e1e24, #272729);
+}
+
+
+/* Mobile */
+@media screen and (max-width: 767px) {
+    .StubWrapper,
+    .StubWrapperNight {
+        display: none;
+    }
+}
+
+
+/* Mobile */
+@media screen and (max-width: 767px) {
+    .StubWrapper,
+    .StubWrapperNight {
+        display: none;
+    }
 }
 
 

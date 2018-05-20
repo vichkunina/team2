@@ -14,6 +14,8 @@
     font-size: 14px;
 
     box-sizing: border-box;
+
+    cursor: pointer;
 }
 
 .Name {
@@ -66,10 +68,8 @@
     cursor: pointer;
 }
 
-.WrapperNight:hover
-{
-    background: #7f7979;
-    cursor: pointer;
+.WrapperNight:hover {
+    background: #e2e5e7;
 }
 
 .Wrapper:hover > .UnreadCount {
