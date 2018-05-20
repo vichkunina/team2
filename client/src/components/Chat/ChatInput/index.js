@@ -27,6 +27,11 @@ export default class ChatInput extends React.Component {
         this.props.state.chatInputState.change(event.target.value);
     }
 
+    imageInputChangeHandler(event) {
+        this.props.state.chatPreviewState.change(event.currentTarget.files);
+        event.currentTarget.value = '';
+    }
+
     speechStart() {
         const recognition = new webkitSpeechRecognition();
         this.props.state.chatInputState.toggleRecord();
@@ -80,39 +85,48 @@ export default class ChatInput extends React.Component {
                         ? styles.Wrapper : styles.WrapperNight}
                     onSubmit={this.submitHandler.bind(this)}>
                         <Preview chatPreviewState={this.props.state.chatPreviewState}/>
-                        <input type="text" className={!this.props.state.mainView.isNightTheme
-                            ? styles.Input : styles.InputNight}
-                        value={chatInputState.chatInput}
-                        placeholder=" Write a message..."
-                        onChange={this.changeHandler.bind(this)}
-                        ref={(input) => {
-                            this.chatInput = input;
-                        }}
-                        autoFocus/>
+                        <section className={styles.InputContainer}>
+                            <label className = {`${styles.ImageButton} ${styles.Button}`}>
+                                <input type="file"
+                                    onChange={this.imageInputChangeHandler.bind(this)}
+                                    accept="image/*" multiple className={styles.UploadInput}/>
+                                <i className="material-icons">image</i>
+                            </label>
+                            <input type="text" className={!this.props.state.mainView.isNightTheme
+                                ? styles.Input : styles.InputNight}
+                            value={chatInputState.chatInput}
+                            placeholder=" Write a message..."
+                            onChange={this.changeHandler.bind(this)}
+                            ref={(input) => {
+                                this.chatInput = input;
+                            }}
+                            autoFocus/>
 
-                        {
-                            this.props.state.chatInputState.isRecord
-                                ? <button form="send-record-form" type="button"
-                                    className={styles.MicroButtonOn}
-                                    onClick={this.speechStop.bind(this)}
-                                >
-                                    <i className="material-icons">micro</i>
-                                </button>
-                                : <button form="send-record-form" type="button"
-                                    className={styles.MicroButtonOff}
-                                    onClick={this.speechStart.bind(this)}
-                                >
-                                    <i className="material-icons">micro</i>
-                                </button>
-                        }
-                        <button type="button" className={`${styles.EmojiButton} ${styles.Button}`}
-                            onClick={this.emojiButtonClick.bind(this)}>
-                            <i className="material-icons">tag_faces</i>
-                        </button>
-                        <button form="send-message-form" type="submit"
-                            className={`${styles.SendButton} ${styles.Button}`}>
-                            <i className="material-icons">send</i>
-                        </button>
+                            {
+                                this.props.state.chatInputState.isRecord
+                                    ? <button form="send-record-form" type="button"
+                                        className={styles.MicroButtonOn}
+                                        onClick={this.speechStop.bind(this)}
+                                    >
+                                        <i className="material-icons">micro</i>
+                                    </button>
+                                    : <button form="send-record-form" type="button"
+                                        className={styles.MicroButtonOff}
+                                        onClick={this.speechStart.bind(this)}
+                                    >
+                                        <i className="material-icons">micro</i>
+                                    </button>
+                            }
+                            <button type="button"
+                                className={`${styles.EmojiButton} ${styles.Button}`}
+                                onClick={this.emojiButtonClick.bind(this)}>
+                                <i className="material-icons">tag_faces</i>
+                            </button>
+                            <button form="send-message-form" type="submit"
+                                className={`${styles.SendButton} ${styles.Button}`}>
+                                <i className="material-icons">send</i>
+                            </button>
+                        </section>
                     </form>
                 </article>
             </div>
